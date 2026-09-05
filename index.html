@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyclone — 确定性场景测试内核 · Deterministic Scenario Testing Kernel</title>
+<meta name="description" content="同一个 case hash，永远同一个测试结果。Cyclone 把 ADAS/机器人回归测试收进一条流水线：回放→故障注入→统计判定→证据链。Same case hash, same test result. Every time.">
+<style>
+  :root {
+    --ink: #1a1a1a; --gray: #666; --line: #ddd;
+    --accent: #0a7a2f; --code-bg: #14171a; --code-fg: #d6e2d8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif;
+    color: var(--ink); margin: 0; line-height: 1.65;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 1.4rem; }
+  body[data-lang="zh"] .en { display: none; }
+  body[data-lang="en"] .zh { display: none; }
+
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.9rem 0; border-bottom: 1px solid var(--line);
+  }
+  .brand { font-weight: 700; letter-spacing: 0.5px; }
+  .brand small { color: var(--gray); font-weight: 400; margin-left: 6px; }
+  #langbtn {
+    border: 1px solid var(--line); background: #fff; border-radius: 999px;
+    padding: 4px 14px; cursor: pointer; font-size: 0.85rem; color: var(--ink);
+  }
+  #langbtn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero { padding: 3.6rem 0 2.4rem; }
+  .hero h1 { font-size: 2rem; margin: 0 0 0.6rem; }
+  .hero .slogan { font-size: 1.25rem; font-weight: 600; color: var(--accent); margin: 0.2rem 0 1rem; }
+  .hero .sub { color: var(--gray); max-width: 46rem; margin: 0 0 1.6rem; }
+
+  .term {
+    background: var(--code-bg); color: var(--code-fg); border-radius: 8px;
+    padding: 1rem 1.2rem; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.85rem; overflow-x: auto; white-space: pre; line-height: 1.7;
+  }
+  .term .c { color: #6a9955; }
+  .term .p { color: #9cdcfe; }
+
+  section { padding: 2.6rem 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 1.3rem; margin: 0 0 1.2rem; }
+  h2 .en { color: var(--gray); font-size: 0.95rem; font-weight: 400; margin-left: 8px; }
+
+  .pains { margin: 0; padding: 0; list-style: none; }
+  .pains li { margin-bottom: 0.9rem; padding-left: 1.4rem; position: relative; }
+  .pains li::before { content: "✗"; color: #c01818; position: absolute; left: 0; }
+  .pains li b { font-weight: 600; }
+  .pains .fix { color: var(--gray); }
+
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.2rem; }
+  .card h3 { margin: 0 0 0.4rem; font-size: 1.02rem; }
+  .card h3 .en { color: var(--gray); font-weight: 400; font-size: 0.85rem; margin-left: 6px; }
+  .card p { margin: 0; color: var(--gray); font-size: 0.92rem; }
+
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .flow .step {
+    border: 1px solid var(--line); border-radius: 6px; padding: 0.45rem 0.9rem;
+    font-size: 0.9rem; background: #fafafa;
+  }
+  .flow .arrow { color: var(--gray); }
+
+  table.pos { border-collapse: collapse; width: 100%; }
+  table.pos th, table.pos td {
+    border: 1px solid var(--line); padding: 10px 14px; text-align: left;
+    font-size: 0.93rem; vertical-align: top;
+  }
+  table.pos th { background: #f5f5f5; }
+  table.pos td.no { color: var(--gray); }
+  table.pos td.yes { color: var(--accent); font-weight: 500; }
+
+  .facts { color: var(--gray); font-size: 0.9rem; margin-top: 1.2rem; }
+
+  .roadmap-img {
+    width: 100%; border: 1px solid var(--line); border-radius: 8px; display: block;
+  }
+  .roadmap-img:hover { border-color: var(--accent); }
+  .dl-card {
+    display: flex; gap: 1rem; align-items: center;
+    border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.2rem;
+    text-decoration: none; color: var(--ink);
+  }
+  .dl-card:hover { border-color: var(--accent); }
+  .dl-card img {
+    width: 84px; height: 84px; object-fit: cover;
+    border: 1px solid var(--line); border-radius: 6px; flex-shrink: 0;
+  }
+  .dl-card h3 { margin: 0 0 0.25rem; font-size: 1rem; }
+  .dl-card p { margin: 0 0 0.25rem; color: var(--gray); font-size: 0.88rem; }
+  .dl-card .meta { font-size: 0.8rem; color: var(--gray); }
+
+  .cta { text-align: center; padding: 3rem 0 3.4rem; }
+  .cta p { color: var(--gray); }
+  .btn {
+    display: inline-block; border: 1px solid var(--ink); border-radius: 999px;
+    padding: 0.55rem 1.6rem; margin: 0 0.4rem; text-decoration: none; color: var(--ink);
+    font-size: 0.95rem;
+  }
+  .btn.primary { background: var(--ink); color: #fff; }
+  .btn:hover { border-color: var(--accent); color: var(--accent); }
+  .btn.primary:hover { background: var(--accent); color: #fff; }
+
+  footer {
+    border-top: 1px solid var(--line); padding: 1.4rem 0 2.4rem;
+    color: var(--gray); font-size: 0.85rem;
+  }
+</style>
+</head>
+<body data-lang="zh">
+<div class="wrap">
+
+  <nav>
+    <div class="brand">Cyclone<small class="zh">确定性场景测试内核</small><small class="en">Deterministic Scenario Testing</small></div>
+    <button id="langbtn" onclick="toggleLang()">EN</button>
+  </nav>
+
+  <!-- ============ Hero ============ -->
+  <div class="hero">
+    <h1 class="zh">同一个 case hash，永远同一个测试结果。</h1>
+    <h1 class="en">Same case hash. Same test result. Every time.</h1>
+    <p class="slogan zh">确定性 XiL 场景测试内核</p>
+    <p class="slogan en">The deterministic XiL scenario testing kernel</p>
+    <p class="sub zh">Cyclone 把 ADAS / 机器人回归测试收进一条流水线：数据回放 → 故障注入 → 统计判定 → 证据链。PASS 不再是"跑过一次没红"，而是可复现、可审计的机器证明。</p>
+    <p class="sub en">Cyclone turns ADAS / robotics regression testing into one pipeline: replay → fault injection → statistical verdict → evidence chain. A PASS is no longer "it went green once" — it is reproducible, auditable machine proof.</p>
+    <div class="term"><span class="p">$</span> python -m cyclone run cases/aeb_cipv_50kph.yaml --out out/
+  verdict: <b>PASS</b>
+<span class="p">$</span> shasum -a 256 out/AEB_CIPV_50kph_log.jsonl
+2e075b42f19031aa…
+<span class="p">$</span> python -m cyclone run cases/aeb_cipv_50kph.yaml --out out2/ <span class="c"># 再跑一次 / run it again</span>
+<span class="p">$</span> shasum -a 256 out2/AEB_CIPV_50kph_log.jsonl
+2e075b42f19031aa…   <span class="c"># 同 seed → 逐字节一致 / same seed → bitwise identical</span></div>
+  </div>
+
+  <!-- ============ 痛点 ============ -->
+  <section>
+    <h2><span class="zh">回归测试的三个老问题</span><span class="en">Three old problems of regression testing</span></h2>
+    <ul class="pains">
+      <li class="zh"><b>FAIL 了，分不清是产品缺陷还是测试抖动。</b><br><span class="fix">Cyclone 的确定性内核让"同输入、不同结果"在结构上不可能——红就是红。</span></li>
+      <li class="en"><b>A failure: product bug or test noise? You can't tell.</b><br><span class="fix">Cyclone's deterministic kernel makes "same input, different result" structurally impossible. Red means red.</span></li>
+      <li class="zh"><b>报告写着 PASS，却没有机器可验证的证据。</b><br><span class="fix">每个用例产出 case hash + SHA-256 digest，两次运行逐字节一致是可验证的机器证明。</span></li>
+      <li class="en"><b>The report says PASS, with no machine-verifiable evidence.</b><br><span class="fix">Every case emits a case hash + SHA-256 digest; bitwise-identical reruns are machine-checkable proof.</span></li>
+      <li class="zh"><b>接进 CI 要写一周胶水代码。</b><br><span class="fix">JUnit / Bazel / BES 原生输出——不是"支持集成"，是一等公民。</span></li>
+      <li class="en"><b>CI integration costs a week of glue code.</b><br><span class="fix">Native JUnit / Bazel / BES output — not "integratable", a first-class citizen.</span></li>
+    </ul>
+  </section>
+
+  <!-- ============ 四支柱 ============ -->
+  <section>
+    <h2><span class="zh">四根支柱</span><span class="en">Four pillars</span></h2>
+    <div class="cards">
+      <div class="card">
+        <h3><span class="zh">确定性回放</span><span class="en">Deterministic Replay</span></h3>
+        <p class="zh">虚拟时间回放 + 内容寻址：同 seed 的证据日志逐字节一致。</p>
+        <p class="en">Virtual-time replay with content addressing: identical seeds produce bitwise-identical evidence logs.</p>
+      </div>
+      <div class="card">
+        <h3><span class="zh">统计判定</span><span class="en">Statistical Verdicts</span></h3>
+        <p class="zh">Wilson 置信区间 + SPRT 序贯检验——用统计显著性替代人肉阈值。</p>
+        <p class="en">Wilson score intervals + SPRT sequential testing — statistical significance instead of hand-tuned thresholds.</p>
+      </div>
+      <div class="card">
+        <h3><span class="zh">证据链</span><span class="en">Evidence Chain</span></h3>
+        <p class="zh">case hash + digest + manifest.json：每条 CI 记录可回溯到用例版本与原始数据。</p>
+        <p class="en">Case hash + SHA-256 digest + manifest.json: every CI record traces back to the case version and raw data.</p>
+      </div>
+      <div class="card">
+        <h3><span class="zh">CI 原生</span><span class="en">CI-Native</span></h3>
+        <p class="zh">JUnit XML 开箱即用；rules_cyclone 让场景测试成为 bazel test 一等公民；BES 就绪。</p>
+        <p class="en">JUnit XML out of the box; rules_cyclone makes scenario tests first-class bazel test citizens; BES-ready.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 流水线 ============ -->
+  <section>
+    <h2><span class="zh">一条流水线</span><span class="en">One pipeline</span></h2>
+    <div class="flow">
+      <span class="step"><span class="zh">用例 YAML</span><span class="en">Case YAML</span></span><span class="arrow">→</span>
+      <span class="step"><span class="zh">数据源回放</span><span class="en">Dataset replay</span></span><span class="arrow">→</span>
+      <span class="step"><span class="zh">故障注入</span><span class="en">Fault injection</span></span><span class="arrow">→</span>
+      <span class="step">SUT</span><span class="arrow">→</span>
+      <span class="step"><span class="zh">统计判定</span><span class="en">Verdicts</span></span><span class="arrow">→</span>
+      <span class="step"><span class="zh">证据报告</span><span class="en">Evidence report</span></span>
+    </div>
+    <p class="facts zh">261 项自动化测试全绿 · JUnit/Jenkins 就绪 · UDS 诊断演示 · Bazel 规则包 rules_cyclone</p>
+    <p class="facts en">261 automated tests green · JUnit/Jenkins ready · UDS diagnostics demo · Bazel ruleset rules_cyclone</p>
+  </section>
+
+  <!-- ============ 定位 ============ -->
+  <section>
+    <h2><span class="zh">划清边界</span><span class="en">Clear boundaries</span></h2>
+    <table class="pos">
+      <tr>
+        <th class="zh">Cyclone 不是</th><th class="en">What Cyclone is not</th>
+        <th class="zh">Cyclone 是</th><th class="en">What Cyclone is</th>
+      </tr>
+      <tr>
+        <td class="no zh">仿真器——CarMaker / Carla 负责"世界有多真"</td>
+        <td class="no en">A simulator — CarMaker / Carla own "how real the world is"</td>
+        <td class="yes zh">测试内核——负责"测试信不信得过"</td>
+        <td class="yes en">A testing kernel — it owns "how trustworthy the result is"</td>
+      </tr>
+      <tr>
+        <td class="no zh">测试管理平台——管人和流程</td>
+        <td class="no en">Test management — people and process</td>
+        <td class="yes zh">执行引擎——管机器和证据</td>
+        <td class="yes en">An execution engine — machines and evidence</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ============ 路线图 ============ -->
+  <section>
+    <h2><span class="zh">演进路线</span><span class="en">Roadmap</span></h2>
+    <p class="sub zh" style="margin-top:-0.5rem;">M0→M3 十二周：Walking Skeleton → 实时内核 → 数据闭环 → CI 验收——每周可交付，三周一决策。</p>
+    <p class="sub en" style="margin-top:-0.5rem;">M0→M3 in twelve weeks: walking skeleton → real-time kernel → data loop → CI acceptance. Weekly deliverables, a decision gate every three weeks.</p>
+    <a href="roadmap.pdf" title="下载原 PDF / Download PDF">
+      <img class="roadmap-img" src="assets/roadmap.webp"
+           alt="Cyclone Core MVP 演进路线图 M0→M3 / Roadmap M0–M3" loading="lazy">
+    </a>
+  </section>
+
+  <!-- ============ 接入 ============ -->
+  <section>
+    <h2><span class="zh">接入路径</span><span class="en">Two ways in</span></h2>
+    <div class="cards">
+      <div class="card">
+        <h3><span class="zh">Bazel 用户</span><span class="en">For Bazel users</span></h3>
+        <div class="term"><span class="c"># MODULE.bazel</span>
+bazel_dep(name = "rules_cyclone", version = "0.1.0")
+
+<span class="c"># BUILD.bazel</span>
+cyclone_test(
+    name = "aeb_regression",
+    scenario = "scenarios/aeb.yaml",
+)
+
+<span class="p">$</span> bazel test //...   <span class="c"># 与单元测试同图、同缓存、同看板</span></div>
+      </div>
+      <div class="card">
+        <h3><span class="zh">其他 CI</span><span class="en">Any other CI</span></h3>
+        <div class="term"><span class="c"># 单文件二进制，下载即跑 / single-file binary</span>
+<span class="p">$</span> cyclone run cases/aeb.yaml --out out/
+
+<span class="c"># JUnit XML → Jenkins / GitLab CI 直接消费</span>
+out/aeb_report.xml
+out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 资料下载 ============ -->
+  <section>
+    <h2><span class="zh">资料下载</span><span class="en">Downloads</span></h2>
+    <div class="cards">
+      <a class="dl-card" href="product-sheet.pdf">
+        <img src="assets/product-sheet-thumb.webp" alt="产品单页 / Product sheet">
+        <div>
+          <h3><span class="zh">产品单页</span><span class="en">Product Sheet</span></h3>
+          <p class="zh">确定性故障注入 × 统计化判定 × 可审计证据链</p>
+          <p class="en">Deterministic fault injection × statistical verdicts × auditable evidence chain</p>
+          <span class="meta">PDF · 3 <span class="zh">页</span><span class="en">pages</span> · 2.1 MB</span>
+        </div>
+      </a>
+      <a class="dl-card" href="roadmap.pdf">
+        <img src="assets/roadmap.webp" alt="演进路线图 / Roadmap">
+        <div>
+          <h3><span class="zh">演进路线图</span><span class="en">Roadmap</span></h3>
+          <p class="zh">M0→M3 十二周计划与决策门</p>
+          <p class="en">The M0→M3 twelve-week plan with decision gates</p>
+          <span class="meta">PDF · 1 <span class="zh">页</span><span class="en">page</span> · 243 KB</span>
+        </div>
+      </a>
+    </div>
+    <p class="facts zh">POC 合作方案（含商务条款）不公开下载，请通过下方联系方式获取。</p>
+    <p class="facts en">The POC proposal (incl. commercial terms) is not publicly downloadable — please request it via the contact below.</p>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <div class="cta">
+    <h2><span class="zh">拿你自己的场景跑一次</span><span class="en">Run it on your own scenario</span></h2>
+    <p class="zh">30 分钟演示：AEB 回归 → 注入故障 → 打开证据报告。</p>
+    <p class="en">A 30-minute demo: AEB regression → inject a fault → open the evidence report.</p>
+    <!-- TODO(deploy): 替换为真实仓库地址与联系方式 -->
+    <a class="btn primary" href="https://github.com/cyclone-core/rules-cyclone"><span class="zh">GitHub 仓库</span><span class="en">GitHub Repo</span></a>
+    <a class="btn" href="mailto:caojian258@icloud.com"><span class="zh">约演示</span><span class="en">Book a demo</span></a>
+  </div>
+
+  <footer>
+    <span class="zh">Cyclone — 确定性场景测试内核 · © 2026</span>
+    <span class="en">Cyclone — Deterministic Scenario Testing Kernel · © 2026</span>
+  </footer>
+</div>
+
+<script>
+  function setLang(l) {
+    document.body.dataset.lang = l;
+    document.documentElement.lang = l === "zh" ? "zh" : "en";
+    document.getElementById("langbtn").textContent = l === "zh" ? "EN" : "中";
+    try { localStorage.setItem("cyclone-lang", l); } catch (e) {}
+  }
+  function toggleLang() {
+    setLang(document.body.dataset.lang === "zh" ? "en" : "zh");
+  }
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem("cyclone-lang"); } catch (e) {}
+    var nav = (navigator.language || "en").toLowerCase();
+    setLang(saved || (nav.indexOf("zh") === 0 ? "zh" : "en"));
+  })();
+</script>
+</body>
+</html>
