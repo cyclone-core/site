@@ -119,6 +119,11 @@
   a.card:hover { border-color: var(--accent); }
   .aud-who { font-size: 0.78rem; color: var(--gray); letter-spacing: 0.5px; text-transform: uppercase; }
 
+  .navlinks { display: flex; gap: 1.2rem; align-items: center; }
+  .navlinks a { color: var(--gray); text-decoration: none; font-size: 0.9rem; }
+  .navlinks a:hover { color: var(--accent); }
+  @media (max-width: 640px) { .navlinks a { display: none; } .navlinks a:last-of-type { display: inline; } }
+
   .cta { text-align: center; padding: 3rem 0 3.4rem; }
   .cta p { color: var(--gray); }
   .btn {
@@ -141,7 +146,13 @@
 
   <nav>
     <div class="brand">Cyclone<small class="zh">确定性场景测试内核</small><small class="en">Deterministic Scenario Testing</small></div>
-    <button id="langbtn" onclick="toggleLang()">EN</button>
+    <div class="navlinks">
+      <a href="#evidence"><span class="zh">证据</span><span class="en">Evidence</span></a>
+      <a href="#pillars"><span class="zh">方案</span><span class="en">Product</span></a>
+      <a href="#roadmap"><span class="zh">路线</span><span class="en">Roadmap</span></a>
+      <a href="#downloads"><span class="zh">资料</span><span class="en">Downloads</span></a>
+      <button id="langbtn" onclick="toggleLang()">EN</button>
+    </div>
   </nav>
 
   <!-- ============ Hero ============ -->
@@ -212,7 +223,7 @@
   </section>
 
   <!-- ============ 四支柱 ============ -->
-  <section>
+  <section id="pillars">
     <h2><span class="zh">四根支柱</span><span class="en">Four pillars</span></h2>
     <div class="cards">
       <div class="card">
@@ -239,7 +250,7 @@
   </section>
 
   <!-- ============ 流水线 ============ -->
-  <section>
+  <section id="pipeline">
     <h2><span class="zh">一条流水线</span><span class="en">One pipeline</span></h2>
     <div class="flow">
       <span class="step"><span class="zh">用例 YAML</span><span class="en">Case YAML</span></span><span class="arrow">→</span>
@@ -271,7 +282,7 @@
   </section>
 
   <!-- ============ 定位 ============ -->
-  <section>
+  <section id="boundary">
     <h2><span class="zh">划清边界</span><span class="en">Clear boundaries</span></h2>
     <table class="pos">
       <tr>
@@ -294,7 +305,7 @@
   </section>
 
   <!-- ============ 路线图 ============ -->
-  <section>
+  <section id="roadmap">
     <h2><span class="zh">演进路线</span><span class="en">Roadmap</span></h2>
     <p class="sub zh" style="margin-top:-0.5rem;">M0→M3 十二周：Walking Skeleton → 实时内核 → 数据闭环 → CI 验收——每周可交付，三周一决策。</p>
     <p class="sub en" style="margin-top:-0.5rem;">M0→M3 in twelve weeks: walking skeleton → real-time kernel → data loop → CI acceptance. Weekly deliverables, a decision gate every three weeks.</p>
@@ -305,7 +316,7 @@
   </section>
 
   <!-- ============ 接入 ============ -->
-  <section>
+  <section id="integrate">
     <h2><span class="zh">接入路径</span><span class="en">Two ways in</span></h2>
     <div class="cards">
       <div class="card">
@@ -334,7 +345,7 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
   </section>
 
   <!-- ============ 资料下载 ============ -->
-  <section>
+  <section id="downloads">
     <h2><span class="zh">资料下载</span><span class="en">Downloads</span></h2>
     <div class="cards">
       <a class="dl-card" href="product-sheet.pdf">
