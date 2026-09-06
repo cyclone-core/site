@@ -97,6 +97,21 @@
   .dl-card p { margin: 0 0 0.25rem; color: var(--gray); font-size: 0.88rem; }
   .dl-card .meta { font-size: 0.8rem; color: var(--gray); }
 
+  html { scroll-behavior: smooth; }
+
+  .evidence { background: #0c1014; color: #e6edf3; border-top: none; padding: 2.6rem 0; }
+  .evidence h2 { color: #fff; }
+  .evidence h2 .en { color: #9fb3c8; }
+  .ev-inner { display: flex; gap: 2rem; align-items: flex-start; }
+  .ev-left { flex: 1.2; }
+  .ev-right { flex: 1; display: flex; flex-wrap: wrap; gap: 0.5rem; align-content: flex-start; padding-top: 0.4rem; }
+  .ev-steps { margin: 0; padding-left: 1.3rem; color: #9fb3c8; font-size: 0.95rem; }
+  .ev-steps li { margin-bottom: 0.5rem; }
+  .ev-steps code { color: #3fd08c; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.85em; }
+  .pill { border: 1px solid #22303c; background: #131b22; color: #9fb3c8; border-radius: 999px; padding: 0.4rem 0.9rem; font-size: 0.85rem; }
+  .pill b { color: #3fd08c; font-weight: 600; }
+  @media (max-width: 640px) { .ev-inner { flex-direction: column; } }
+
   .cta { text-align: center; padding: 3rem 0 3.4rem; }
   .cta p { color: var(--gray); }
   .btn {
@@ -137,7 +152,32 @@
 <span class="p">$</span> python -m cyclone run cases/aeb_cipv_50kph.yaml --out out2/ <span class="c"># 再跑一次 / run it again</span>
 <span class="p">$</span> shasum -a 256 out2/AEB_CIPV_50kph_log.jsonl
 2e075b42f19031aa…   <span class="c"># 同 seed → 逐字节一致 / same seed → bitwise identical</span></div>
-  </div>
+  </div><!-- /hero -->
+</div><!-- /wrap（上半） -->
+
+  <!-- ============ 深色证据带 ============ -->
+  <section class="evidence" id="evidence">
+    <div class="wrap">
+      <div class="ev-inner">
+        <div class="ev-left">
+          <h2><span class="zh">不信？你自己验。</span><span class="en">Don't take our word — verify it.</span></h2>
+          <ol class="ev-steps">
+            <li><span class="zh">同一个用例跑两次：</span><span class="en">Run the same case twice:</span> <code>cyclone run cases/aeb.yaml</code></li>
+            <li><span class="zh">比对两次输出的 SHA-256——逐字节一致，机器可证。</span><span class="en">Compare the SHA-256 of both runs — bitwise identical, machine-checkable.</span></li>
+            <li><span class="zh">打开 </span><span class="en">Open </span><code>manifest.json</code><span class="zh">：每条 verdict 可回溯到用例版本与原始数据。</span><span class="en">: every verdict traces to the case version and raw data.</span></li>
+          </ol>
+        </div>
+        <div class="ev-right">
+          <span class="pill"><b>261</b> <span class="zh">项自动化测试全绿</span><span class="en">automated tests green</span></span>
+          <span class="pill"><span class="zh">逐字节</span><span class="en">bitwise</span> <b><span class="zh">可复现</span><span class="en">reproducible</span></b></span>
+          <span class="pill">JUnit · Bazel <span class="zh">原生</span><span class="en">native</span></span>
+          <span class="pill">M0→M3 <span class="zh">十二周路线</span><span class="en">twelve-week roadmap</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><!-- 下半部分继续 -->
 
   <!-- ============ 痛点 ============ -->
   <section>
