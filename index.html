@@ -48,11 +48,12 @@
   h2 { font-size: 1.3rem; margin: 0 0 1.2rem; }
   h2 .en { color: var(--gray); font-size: 0.95rem; font-weight: 400; margin-left: 8px; }
 
-  .pains { margin: 0; padding: 0; list-style: none; }
-  .pains li { margin-bottom: 0.9rem; padding-left: 1.4rem; position: relative; }
-  .pains li::before { content: "✗"; color: #c01818; position: absolute; left: 0; }
-  .pains li b { font-weight: 600; }
-  .pains .fix { color: var(--gray); }
+  .pain-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 0.8rem; }
+  .pain-old { font-weight: 600; position: relative; padding-left: 1.4rem; }
+  .pain-old::before { content: "✗"; color: #c01818; position: absolute; left: 0; }
+  .pain-new { color: var(--gray); position: relative; padding-left: 1.4rem; }
+  .pain-new::before { content: "→"; color: var(--accent); position: absolute; left: 0; }
+  @media (max-width: 640px) { .pain-row { grid-template-columns: 1fr; } }
 
   .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   @media (max-width: 640px) { .cards { grid-template-columns: 1fr; } }
@@ -210,19 +211,6 @@
     </div>
   </section>
 
-  <!-- ============ 痛点 ============ -->
-  <section>
-    <h2><span class="zh">回归测试的三个老问题</span><span class="en">Three old problems of regression testing</span></h2>
-    <ul class="pains">
-      <li class="zh"><b>FAIL 了，分不清是产品缺陷还是测试抖动。</b><br><span class="fix">Cyclone 的确定性内核让"同输入、不同结果"在结构上不可能——红就是红。</span></li>
-      <li class="en"><b>A failure: product bug or test noise? You can't tell.</b><br><span class="fix">Cyclone's deterministic kernel makes "same input, different result" structurally impossible. Red means red.</span></li>
-      <li class="zh"><b>报告写着 PASS，却没有机器可验证的证据。</b><br><span class="fix">每个用例产出 case hash + SHA-256 digest，两次运行逐字节一致是可验证的机器证明。</span></li>
-      <li class="en"><b>The report says PASS, with no machine-verifiable evidence.</b><br><span class="fix">Every case emits a case hash + SHA-256 digest; bitwise-identical reruns are machine-checkable proof.</span></li>
-      <li class="zh"><b>接进 CI 要写一周胶水代码。</b><br><span class="fix">JUnit / Bazel / BES 原生输出——不是"支持集成"，是一等公民。</span></li>
-      <li class="en"><b>CI integration costs a week of glue code.</b><br><span class="fix">Native JUnit / Bazel / BES output — not "integratable", a first-class citizen.</span></li>
-    </ul>
-  </section>
-
   <!-- ============ 四支柱 ============ -->
   <section>
     <h2><span class="zh">四根支柱</span><span class="en">Four pillars</span></h2>
@@ -263,6 +251,23 @@
     </div>
     <p class="facts zh">261 项自动化测试全绿 · JUnit/Jenkins 就绪 · UDS 诊断演示 · Bazel 规则包 rules_cyclone</p>
     <p class="facts en">261 automated tests green · JUnit/Jenkins ready · UDS diagnostics demo · Bazel ruleset rules_cyclone</p>
+  </section>
+
+  <!-- ============ 痛点 → 答案 ============ -->
+  <section id="pains">
+    <h2><span class="zh">老问题，新答案</span><span class="en">Old problems, new answers</span></h2>
+    <div class="pain-row">
+      <div class="pain-old"><span class="zh">FAIL 了，分不清是产品缺陷还是测试抖动。</span><span class="en">A failure: product bug or test noise? You can't tell.</span></div>
+      <div class="pain-new"><span class="zh">确定性内核让"同输入、不同结果"在结构上不可能——红就是红。</span><span class="en">The deterministic kernel makes "same input, different result" structurally impossible. Red means red.</span></div>
+    </div>
+    <div class="pain-row">
+      <div class="pain-old"><span class="zh">报告写着 PASS，却没有机器可验证的证据。</span><span class="en">The report says PASS, with no machine-verifiable evidence.</span></div>
+      <div class="pain-new"><span class="zh">每个用例产出 case hash + SHA-256 digest，两次运行逐字节一致是可验证的机器证明。</span><span class="en">Every case emits a case hash + SHA-256 digest; bitwise-identical reruns are machine-checkable proof.</span></div>
+    </div>
+    <div class="pain-row">
+      <div class="pain-old"><span class="zh">接进 CI 要写一周胶水代码。</span><span class="en">CI integration costs a week of glue code.</span></div>
+      <div class="pain-new"><span class="zh">JUnit / Bazel / BES 原生输出——不是"支持集成"，是一等公民。</span><span class="en">Native JUnit / Bazel / BES output — not "integratable", a first-class citizen.</span></div>
+    </div>
   </section>
 
   <!-- ============ 定位 ============ -->
