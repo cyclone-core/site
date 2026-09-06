@@ -112,6 +112,12 @@
   .pill b { color: #3fd08c; font-weight: 600; }
   @media (max-width: 640px) { .ev-inner { flex-direction: column; } }
 
+  .cards.three { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 760px) { .cards.three { grid-template-columns: 1fr; } }
+  a.card { text-decoration: none; color: var(--ink); display: block; }
+  a.card:hover { border-color: var(--accent); }
+  .aud-who { font-size: 0.78rem; color: var(--gray); letter-spacing: 0.5px; text-transform: uppercase; }
+
   .cta { text-align: center; padding: 3rem 0 3.4rem; }
   .cta p { color: var(--gray); }
   .btn {
@@ -178,6 +184,31 @@
   </section>
 
   <div class="wrap"><!-- 下半部分继续 -->
+
+  <!-- ============ 受众分流 ============ -->
+  <section id="audience">
+    <h2><span class="zh">为谁的什么问题</span><span class="en">Who it's for</span></h2>
+    <div class="cards three">
+      <a class="card" href="#boundary">
+        <span class="aud-who">OEM · <span class="zh">主机厂智驾测试团队</span><span class="en">ADAS test teams</span></span>
+        <h3><span class="zh">给功能安全审核一份机器证据</span><span class="en">Machine evidence for safety audits</span></h3>
+        <p class="zh">每条 PASS / FAIL 可回溯到用例版本与原始数据；证据链格式可按审核要求定制。</p>
+        <p class="en">Every PASS / FAIL traces to the case version and raw data; evidence formats tailored to audit needs.</p>
+      </a>
+      <a class="card" href="#integrate">
+        <span class="aud-who">Tier1 · <span class="zh">零部件供应商</span><span class="en">Suppliers</span></span>
+        <h3><span class="zh">不替换，只增强</span><span class="en">Augment, never replace</span></h3>
+        <p class="zh">叠加在 CANoe / dSPACE / 自研脚本之上；JUnit 输出直接进现有 CI。</p>
+        <p class="en">Layers on top of CANoe / dSPACE / in-house scripts; JUnit output drops into your CI.</p>
+      </a>
+      <a class="card" href="#integrate">
+        <span class="aud-who">Robotics · <span class="zh">机器人公司</span><span class="en">Robotics teams</span></span>
+        <h3><span class="zh">五分钟跑通第一个场景</span><span class="en">First scenario in five minutes</span></h3>
+        <p class="zh">单文件二进制下载即跑；一个 YAML 就是一个回归用例。</p>
+        <p class="en">Single-file binary, download and run; one YAML is one regression case.</p>
+      </a>
+    </div>
+  </section>
 
   <!-- ============ 痛点 ============ -->
   <section>
