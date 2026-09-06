@@ -40,8 +40,7 @@
   .hero h1 { font-size: 2rem; margin: 0 0 0.6rem; }
   .hero .slogan { font-size: 1.25rem; font-weight: 600; color: var(--accent); margin: 0.2rem 0 1rem; }
   .hero .sub { color: var(--gray); max-width: 46rem; margin: 0 0 1.6rem; }
-  .hero .tagline { color: var(--gray); font-size: 0.95rem; font-weight: 500; margin: -0.8rem 0 1.6rem; }
-  .hero .tagline b { color: var(--accent); font-weight: 600; }
+  .hero .tagline { color: var(--gray); font-size: 0.88rem; margin: -0.8rem 0 1.6rem; }
 
   .term {
     background: var(--code-bg); color: var(--code-fg); border-radius: 8px;
@@ -176,8 +175,8 @@
     <p class="slogan en">The deterministic XiL scenario testing kernel</p>
     <p class="sub zh">Cyclone 把 ADAS / 机器人回归测试收进一条流水线：数据回放 → 故障注入 → 统计判定 → 证据链。PASS 不再是"跑过一次没红"，而是可复现、可审计的机器证明。</p>
     <p class="sub en">Cyclone turns ADAS / robotics regression testing into one pipeline: replay → fault injection → statistical verdict → evidence chain. A PASS is no longer "it went green once" — it is reproducible, auditable machine proof.</p>
-    <p class="tagline zh"><b>仿真测试 = 用工程学造证据，用统计学下结论。</b></p>
-    <p class="tagline en"><b>Simulation testing = engineering builds the evidence; statistics draws the verdict.</b></p>
+    <p class="tagline zh">仿真测试 = 用工程学造证据，用统计学下结论。</p>
+    <p class="tagline en">Simulation testing = engineering builds the evidence; statistics draws the verdict.</p>
     <div class="term"><span class="p">$</span> python -m cyclone run cases/aeb_cipv_50kph.yaml --out out/
   verdict: <b>PASS</b>
 <span class="p">$</span> shasum -a 256 out/AEB_CIPV_50kph_log.jsonl
