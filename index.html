@@ -124,6 +124,12 @@
   .navlinks a:hover { color: var(--accent); }
   @media (max-width: 640px) { .navlinks a { display: none; } .navlinks a:last-of-type { display: inline; } }
 
+  .wx-pop { margin-top: 1.2rem; color: var(--gray); font-size: 0.9rem; }
+  .wx-pop img { width: 140px; height: 140px; object-fit: cover; border: 1px solid var(--line); border-radius: 8px; display: block; margin: 0.6rem auto; }
+  .repo-link { margin-top: 1.2rem; font-size: 0.88rem; }
+  .repo-link a { color: var(--gray); }
+  .repo-link a:hover { color: var(--accent); }
+
   .cta { text-align: center; padding: 3rem 0 3.4rem; }
   .cta p { color: var(--gray); }
   .btn {
@@ -372,18 +378,23 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
   </section>
 
   <!-- ============ CTA ============ -->
-  <div class="cta">
+  <div class="cta" id="contact">
     <h2><span class="zh">拿你自己的场景跑一次</span><span class="en">Run it on your own scenario</span></h2>
     <p class="zh">30 分钟演示：AEB 回归 → 注入故障 → 打开证据报告。</p>
     <p class="en">A 30-minute demo: AEB regression → inject a fault → open the evidence report.</p>
-    <!-- TODO(deploy): 替换为真实仓库地址与联系方式 -->
-    <a class="btn primary" href="https://github.com/cyclone-core/rules-cyclone"><span class="zh">GitHub 仓库</span><span class="en">GitHub Repo</span></a>
-    <a class="btn" href="mailto:caojian258@icloud.com"><span class="zh">约演示</span><span class="en">Book a demo</span></a>
+    <a class="btn primary" href="mailto:caojian258@icloud.com?subject=Cyclone%20%E6%BC%94%E7%A4%BA%E9%A2%84%E7%BA%A6"><span class="zh">约 30 分钟演示</span><span class="en">Book a 30-min demo</span></a>
+    <button class="btn" id="wxbtn" type="button"><span class="zh">加微信</span><span class="en">Add WeChat</span></button>
+    <p class="wx-pop" id="wxpop" hidden>
+      <img src="assets/wechat-qr.png" alt="微信二维码 / WeChat QR" onerror="this.style.display='none'">
+      <span class="zh">微信号：</span><span class="en">WeChat ID: </span><b>jiancao258</b>
+    </p>
+    <p class="repo-link"><a href="https://github.com/cyclone-core/rules-cyclone">GitHub: cyclone-core/rules-cyclone ↗</a></p>
   </div>
 
   <footer>
     <span class="zh">Cyclone — 确定性场景测试内核 · © 2026</span>
     <span class="en">Cyclone — Deterministic Scenario Testing Kernel · © 2026</span>
+    <span class="zh"> · 联系：caojian258@icloud.com / 微信 jiancao258</span><span class="en"> · Contact: caojian258@icloud.com / WeChat jiancao258</span>
   </footer>
 </div>
 
@@ -397,6 +408,10 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
   function toggleLang() {
     setLang(document.body.dataset.lang === "zh" ? "en" : "zh");
   }
+  document.getElementById("wxbtn").addEventListener("click", function () {
+    var p = document.getElementById("wxpop");
+    p.hidden = !p.hidden;
+  });
   (function () {
     var saved = null;
     try { saved = localStorage.getItem("cyclone-lang"); } catch (e) {}
