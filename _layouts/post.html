@@ -86,6 +86,16 @@
     border-top: 1px solid var(--line); padding: 1.4rem 0 2.4rem;
     color: var(--gray); font-size: 0.85rem;
   }
+  .foot-legend { margin-bottom: 0.9rem; }
+  .foot-legend p { margin: 0.25rem 0; }
+  .tier {
+    display: inline-block; font-size: 0.72rem; line-height: 1.5;
+    border: 1px solid; border-radius: 999px; padding: 0 0.6rem;
+    vertical-align: 1px; white-space: nowrap;
+  }
+  .tier.ok { color: var(--accent); border-color: var(--accent); }
+  .tier.proto { color: #a06a00; border-color: #d9a520; }
+  .tier.plan { color: var(--gray); border-color: var(--line); }
 </style>
 </head>
 <body>
@@ -116,6 +126,9 @@
   </article>
 
   <footer>
+    <div class="foot-legend">
+      <p>能力标签：<span class="tier ok">已支持</span> 当前版本可用 · <span class="tier proto">原型验证中</span> 已有可演示原型 · <span class="tier plan">规划中</span> 路线图项，未交付。文中示例数值均为演示数据，非真实 SUT 实测。</p>
+    </div>
     Cyclone — 确定性场景测试内核 · © 2026 · 联系：caojian258@icloud.com / 微信 jiancao258
   </footer>
 </div>

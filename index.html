@@ -86,6 +86,21 @@
   table.pos td.no { color: var(--gray); }
   table.pos td.yes { color: var(--accent); font-weight: 500; }
 
+  .tier {
+    display: inline-block; font-size: 0.72rem; font-weight: 400; line-height: 1.5;
+    border: 1px solid; border-radius: 999px; padding: 0 0.6rem;
+    margin-left: 6px; vertical-align: 2px; white-space: nowrap;
+  }
+  .tier.ok { color: var(--accent); border-color: var(--accent); }
+  .tier.proto { color: #a06a00; border-color: #d9a520; }
+  .tier.plan { color: var(--gray); border-color: var(--line); }
+
+  .map-punch {
+    border-left: 3px solid var(--accent); background: #f7faf7;
+    padding: 0.8rem 1.1rem; margin-top: 1.4rem;
+  }
+  .map-punch p { margin: 0; }
+
   .facts { color: var(--gray); font-size: 0.9rem; margin-top: 1.2rem; }
 
   .roadmap-img {
@@ -163,6 +178,8 @@
     border-top: 1px solid var(--line); padding: 1.4rem 0 2.4rem;
     color: var(--gray); font-size: 0.85rem;
   }
+  .foot-legend { margin-bottom: 0.9rem; }
+  .foot-legend p { margin: 0.25rem 0; }
 </style>
 </head>
 <body data-lang="zh">
@@ -215,7 +232,7 @@
         <div class="ev-right">
           <span class="pill"><b>261</b> <span class="zh">项自动化测试全绿</span><span class="en">automated tests green</span></span>
           <span class="pill"><span class="zh">逐字节</span><span class="en">bitwise</span> <b><span class="zh">可复现</span><span class="en">reproducible</span></b></span>
-          <span class="pill">JUnit · Bazel <span class="zh">原生</span><span class="en">native</span></span>
+          <span class="pill">JUnit <span class="zh">原生</span><span class="en">native</span> · Bazel <span class="zh">规则包</span><span class="en">ruleset</span> <b><span class="zh">原型</span><span class="en">prototype</span></b></span>
           <span class="pill">M0→M3 <span class="zh">十二周路线</span><span class="en">twelve-week roadmap</span></span>
         </div>
       </div>
@@ -243,8 +260,8 @@
       <a class="card" href="#integrate">
         <span class="aud-who">Robotics · <span class="zh">机器人公司</span><span class="en">Robotics teams</span></span>
         <h3><span class="zh">五分钟跑通第一个场景</span><span class="en">First scenario in five minutes</span></h3>
-        <p class="zh">单文件二进制下载即跑；一个 YAML 就是一个回归用例。</p>
-        <p class="en">Single-file binary, download and run; one YAML is one regression case.</p>
+        <p class="zh">单文件二进制下载即跑<span class="tier plan">规划中</span>；一个 YAML 就是一个回归用例。</p>
+        <p class="en">Single-file binary, download and run <span class="tier plan">Planned</span>; one YAML is one regression case.</p>
       </a>
     </div>
   </section>
@@ -254,26 +271,127 @@
     <h2><span class="zh">四根支柱</span><span class="en">Four pillars</span></h2>
     <div class="cards">
       <div class="card">
-        <h3><span class="zh">确定性回放</span><span class="en">Deterministic Replay</span></h3>
+        <h3><span class="zh">确定性回放</span><span class="en">Deterministic Replay</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
         <p class="zh">虚拟时间回放 + 内容寻址：同 seed 的证据日志逐字节一致。</p>
         <p class="en">Virtual-time replay with content addressing: identical seeds produce bitwise-identical evidence logs.</p>
       </div>
       <div class="card">
-        <h3><span class="zh">统计判定</span><span class="en">Statistical Verdicts</span></h3>
+        <h3><span class="zh">统计判定</span><span class="en">Statistical Verdicts</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
         <p class="zh">Wilson 置信区间 + SPRT 序贯检验——用统计显著性替代人肉阈值。</p>
         <p class="en">Wilson score intervals + SPRT sequential testing — statistical significance instead of hand-tuned thresholds.</p>
       </div>
       <div class="card">
-        <h3><span class="zh">证据链</span><span class="en">Evidence Chain</span></h3>
+        <h3><span class="zh">证据链</span><span class="en">Evidence Chain</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
         <p class="zh">case hash + digest + manifest.json：每条 CI 记录可回溯到用例版本与原始数据。</p>
         <p class="en">Case hash + SHA-256 digest + manifest.json: every CI record traces back to the case version and raw data.</p>
       </div>
       <div class="card">
         <h3><span class="zh">CI 原生</span><span class="en">CI-Native</span></h3>
-        <p class="zh">JUnit XML 开箱即用；rules_cyclone 让场景测试成为 bazel test 一等公民；BES 就绪。</p>
-        <p class="en">JUnit XML out of the box; rules_cyclone makes scenario tests first-class bazel test citizens; BES-ready.</p>
+        <p class="zh">JUnit XML 开箱即用<span class="tier ok">已支持</span>；rules_cyclone 让场景测试成为 bazel test 一等公民<span class="tier proto">原型验证中</span>；BES 就绪<span class="tier proto">原型验证中</span>。</p>
+        <p class="en">JUnit XML out of the box <span class="tier ok">Supported</span>; rules_cyclone makes scenario tests first-class bazel test citizens <span class="tier proto">Prototype</span>; BES-ready <span class="tier proto">Prototype</span>.</p>
       </div>
     </div>
+  </section>
+
+  <!-- ============ 四类测试地图 ============ -->
+  <section id="testmap">
+    <h2><span class="zh">一套引擎，四种姿势</span><span class="en">One engine, four test types</span></h2>
+    <p class="sub zh" style="margin-top:-0.5rem;">四类测试共用场景 YAML、调度器、判定引擎与证据链——变的是时钟模式、指标组合和故障配方。</p>
+    <p class="sub en" style="margin-top:-0.5rem;">All four share the same scenario YAML, scheduler, verdict engine, and evidence chain — what changes is the clock mode, the metric set, and the fault recipe.</p>
+
+    <table class="pos">
+      <tr>
+        <th class="zh">测试类型</th><th class="en">Test type</th>
+        <th class="zh">回答的问题</th><th class="en">The question</th>
+        <th class="zh">核心机制</th><th class="en">Core mechanism</th>
+        <th class="zh">判定指标</th><th class="en">Verdict metrics</th>
+      </tr>
+      <tr>
+        <td class="yes zh">功能测试</td><td class="yes en">Functional</td>
+        <td class="zh">该做的事做了吗</td><td class="en">Did it do what it should</td>
+        <td class="zh">场景回放 + 行为断言</td><td class="en">Scenario replay + behavioral assertions</td>
+        <td class="zh">召回、预警时机、误触发 = 0</td><td class="en">Recall, warning timing, zero false triggers</td>
+      </tr>
+      <tr>
+        <td class="yes zh">性能测试</td><td class="yes en">Performance</td>
+        <td class="zh">够不够快、稳不稳</td><td class="en">Fast and steady enough</td>
+        <td class="zh">在线模式 + 时间戳打点</td><td class="en">Online mode + hardware timestamping</td>
+        <td class="zh">时延 p95、超死线次数、抖动</td><td class="en">Latency p95, deadline misses, jitter</td>
+      </tr>
+      <tr>
+        <td class="yes zh">可靠性测试</td><td class="yes en">Reliability</td>
+        <td class="zh">能一直对吗</td><td class="en">Does it stay right</td>
+        <td class="zh">seed 矩阵 + Wilson/SPRT</td><td class="en">Seed matrix + Wilson/SPRT</td>
+        <td class="zh">成功率下界、soak 时长</td><td class="en">Success-rate lower bound, soak duration</td>
+      </tr>
+      <tr>
+        <td class="yes zh">环境测试</td><td class="yes en">Environmental</td>
+        <td class="zh">恶劣条件下还正常吗</td><td class="en">Still normal under stress</td>
+        <td class="zh">故障注入 = 环境应力的软件投影</td><td class="en">Fault injection = the software projection of environmental stress</td>
+        <td class="zh">退化曲线、闩锁违章 = 0</td><td class="en">Degradation curve, zero latch-up violations</td>
+      </tr>
+    </table>
+
+    <div class="cards" style="margin-top:1rem;">
+      <div class="card">
+        <h3><span class="zh">功能测试</span><span class="en">Functional</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
+        <p class="zh">离线模式 + 虚拟时钟，同一用例重跑比特级一致。统计型指标判定已支持；单事件断言（"制动指令必须在 TTC &lt; 1.2s 前发出"）规划中。</p>
+        <p class="en">Offline mode on a virtual clock: rerunning the same case is bitwise identical. Statistical metric verdicts are supported; per-event assertions ("brake must fire before TTC &lt; 1.2 s") are planned.</p>
+      </div>
+      <div class="card">
+        <h3><span class="zh">性能测试</span><span class="en">Performance</span><span class="tier proto"><span class="zh">原型验证中</span><span class="en">Prototype</span></span></h3>
+        <p class="zh">在线模式 + 真实时钟，总线入站/出站打硬件时间戳。边界：CPU 占用与 WCET 是 OS 级 profiler 的活，Cyclone 管总线可见的端到端时延。</p>
+        <p class="en">Online mode on the real clock, with hardware timestamps at bus ingress/egress. Boundary: CPU load and WCET belong to OS-level profilers — Cyclone owns bus-visible end-to-end latency.</p>
+      </div>
+      <div class="card">
+        <h3><span class="zh">可靠性测试</span><span class="en">Reliability</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
+        <p class="zh">seed 矩阵跑 300 把，成功率进 Wilson/SPRT——300/300 才能以 95% 置信声明 ≥ 99% 可靠性；soak 长测盯内存泄漏与计数器溢出。报告写"0.99（95% CI 下界，n=300，case hash 可复算）"。</p>
+        <p class="en">A seed matrix of 300 runs feeding Wilson/SPRT — only 300/300 supports a ≥ 99% reliability claim at 95% confidence; soak runs watch memory leaks and counter overflows. The report reads "0.99 (95% CI lower bound, n=300, case hash recomputable)".</p>
+      </div>
+      <div class="card">
+        <h3><span class="zh">环境测试</span><span class="en">Environmental</span><span class="tier proto"><span class="zh">原型验证中</span><span class="en">Prototype</span></span></h3>
+        <p class="zh">诚实划界：高低温、振动、EMC、盐雾（ISO 16750 / GB/T 28046）是气候箱和台架的活，软件平台做不了物理环境试验。但环境应力最终都会投影在总线上——软件做的是这一半。</p>
+        <p class="en">An honest boundary: heat, vibration, EMC, salt spray (ISO 16750 / GB/T 28046) belong to climate chambers and rigs — no software platform runs physical env tests. But every environmental stress eventually projects onto the bus, and that projection is the software half.</p>
+      </div>
+    </div>
+
+    <p class="zh" style="margin:1.4rem 0 0.6rem;"><strong>环境应力在总线上的投影</strong>（注入方式标注能力状态）：</p>
+    <p class="en" style="margin:1.4rem 0 0.6rem;"><strong>Environmental stress, projected onto the bus</strong> (injection methods tagged by status):</p>
+    <table class="pos">
+      <tr>
+        <th class="zh">物理应力</th><th class="en">Physical stress</th>
+        <th class="zh">软件投影</th><th class="en">Software projection</th>
+        <th class="zh">注入方式</th><th class="en">Injection method</th>
+      </tr>
+      <tr>
+        <td class="zh">高温 → 传感器漂移</td><td class="en">Heat → sensor drift</td>
+        <td class="zh">测距偏置、噪声增大</td><td class="en">Range bias, extra noise</td>
+        <td class="zh">corrupt_field 偏置 <span class="tier proto">原型验证中</span></td><td class="en">corrupt_field offset <span class="tier proto">Prototype</span></td>
+      </tr>
+      <tr>
+        <td class="zh">振动 → 接插件松动</td><td class="en">Vibration → loose connectors</td>
+        <td class="zh">成簇丢帧</td><td class="en">Bursty frame drops</td>
+        <td class="zh">阵发性 drop <span class="tier proto">原型验证中</span></td><td class="en">Bursty drop <span class="tier proto">Prototype</span></td>
+      </tr>
+      <tr>
+        <td class="zh">EMC</td><td class="en">EMC</td>
+        <td class="zh">位翻转、CRC 错误</td><td class="en">Bit flips, CRC errors</td>
+        <td class="zh">corrupt_field / corrupt_crc <span class="tier plan">规划中</span></td><td class="en">corrupt_field / corrupt_crc <span class="tier plan">Planned</span></td>
+      </tr>
+      <tr>
+        <td class="zh">电压跌落 → ECU 重启</td><td class="en">Voltage drop → ECU restart</td>
+        <td class="zh">节点冻结恢复</td><td class="en">Node freeze &amp; recovery</td>
+        <td class="zh">freeze + restart <span class="tier plan">规划中</span></td><td class="en">freeze + restart <span class="tier plan">Planned</span></td>
+      </tr>
+    </table>
+
+    <div class="map-punch">
+      <p class="zh">别家是四套班子四套报告：功能脚本、性能夹具、可靠性跑台、环境试验。Cyclone 一套平台：四类报告同一格式、同一 hash 可验、同一 CI 门禁。环境试验的软件伴随项——样件在箱子里烤，台架上同步跑故障战役，两本证据合订进 DV/PV 报告。</p>
+      <p class="en">Elsewhere it's four teams and four report formats: functional scripts, performance fixtures, reliability rigs, env tests. Cyclone is one platform: all four reports share one format, one hash-verifiable chain, and one CI gate. It is the software companion to physical env tests — while the sample bakes in the chamber, the fault campaign runs on the rig, and both evidence sets bind into one DV/PV report.</p>
+    </div>
+
+    <p class="facts zh">能力标签：<span class="tier ok">已支持</span> 当前版本可用 · <span class="tier proto">原型验证中</span> 已有可演示原型 · <span class="tier plan">规划中</span> 路线图项，未交付</p>
+    <p class="facts en">Status tags: <span class="tier ok">Supported</span> available today · <span class="tier proto">Prototype</span> demonstrable prototype · <span class="tier plan">Planned</span> on the roadmap, not shipped</p>
   </section>
 
   <!-- ============ 流水线 ============ -->
@@ -287,8 +405,8 @@
       <span class="step"><span class="zh">统计判定</span><span class="en">Verdicts</span></span><span class="arrow">→</span>
       <span class="step"><span class="zh">证据报告</span><span class="en">Evidence report</span></span>
     </div>
-    <p class="facts zh">261 项自动化测试全绿 · JUnit/Jenkins 就绪 · UDS 诊断演示 · Bazel 规则包 rules_cyclone</p>
-    <p class="facts en">261 automated tests green · JUnit/Jenkins ready · UDS diagnostics demo · Bazel ruleset rules_cyclone</p>
+    <p class="facts zh">261 项自动化测试全绿 · JUnit/Jenkins 就绪 · UDS 诊断演示<span class="tier proto">原型验证中</span> · Bazel 规则包 rules_cyclone<span class="tier proto">原型验证中</span></p>
+    <p class="facts en">261 automated tests green · JUnit/Jenkins ready · UDS diagnostics demo <span class="tier proto">Prototype</span> · Bazel ruleset rules_cyclone <span class="tier proto">Prototype</span></p>
   </section>
 
   <!-- ============ 痛点 → 答案 ============ -->
@@ -347,7 +465,7 @@
     <h2><span class="zh">接入路径</span><span class="en">Two ways in</span></h2>
     <div class="cards">
       <div class="card">
-        <h3><span class="zh">Bazel 用户</span><span class="en">For Bazel users</span></h3>
+        <h3><span class="zh">Bazel 用户</span><span class="en">For Bazel users</span><span class="tier proto"><span class="zh">原型验证中</span><span class="en">Prototype</span></span></h3>
         <div class="term"><span class="c"># MODULE.bazel</span>
 bazel_dep(name = "rules_cyclone", version = "0.1.0")
 
@@ -361,10 +479,10 @@ cyclone_test(
       </div>
       <div class="card">
         <h3><span class="zh">其他 CI</span><span class="en">Any other CI</span></h3>
-        <div class="term"><span class="c"># 单文件二进制，下载即跑 / single-file binary</span>
+        <div class="term"><span class="c"># 单文件二进制，下载即跑（规划中）/ single-file binary (planned)</span>
 <span class="p">$</span> cyclone run cases/aeb.yaml --out out/
 
-<span class="c"># JUnit XML → Jenkins / GitLab CI 直接消费</span>
+<span class="c"># JUnit XML → Jenkins / GitLab CI 直接消费（已支持 / supported）</span>
 out/aeb_report.xml
 out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></div>
       </div>
@@ -429,9 +547,14 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
   </div>
 
   <footer>
+    <div class="foot-legend">
+      <p><span class="zh">能力标签：</span><span class="en">Status tags: </span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span> <span class="zh">当前版本可用</span><span class="en">available today</span> · <span class="tier proto"><span class="zh">原型验证中</span><span class="en">Prototype</span></span> <span class="zh">已有可演示原型</span><span class="en">demonstrable prototype</span> · <span class="tier plan"><span class="zh">规划中</span><span class="en">Planned</span></span> <span class="zh">路线图项，未交付</span><span class="en">on the roadmap, not shipped</span></p>
+      <p><span class="zh">站内示例数值（成功率、阈值等）均为演示数据，非真实 SUT 实测；阈值需按客户 SUT 基线标定。</span><span class="en">All sample figures on this site (success rates, thresholds) are demo data, not measured on a real SUT; thresholds must be calibrated against your SUT baseline.</span></p>
+    </div>
     <span class="zh">Cyclone — 确定性场景测试内核 · © 2026</span>
     <span class="en">Cyclone — Deterministic Scenario Testing Kernel · © 2026</span>
     <span class="zh"> · 联系：caojian258@icloud.com / 微信 jiancao258</span><span class="en"> · Contact: caojian258@icloud.com / WeChat jiancao258</span>
+    <span class="zh"> · 最近更新 2026-09-10</span><span class="en"> · Last updated 2026-09-10</span>
   </footer>
 </div>
 
