@@ -1,3 +1,5 @@
+---
+---
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -106,6 +108,16 @@
 
   html { scroll-behavior: smooth; }
 
+  .posts { display: flex; flex-direction: column; gap: 0.8rem; }
+  a.post-row {
+    display: block; border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.9rem 1.2rem; text-decoration: none; color: var(--ink);
+  }
+  a.post-row:hover { border-color: var(--accent); }
+  .post-row .meta { color: var(--gray); font-size: 0.82rem; }
+  .post-row h3 { margin: 0.15rem 0 0.3rem; font-size: 1.02rem; }
+  .post-row p { margin: 0; color: var(--gray); font-size: 0.9rem; }
+
   .evidence { background: #0c1014; color: #e6edf3; border-top: none; padding: 2.6rem 0; }
   .evidence h2 { color: #fff; }
   .evidence h2 .en { color: #9fb3c8; }
@@ -163,6 +175,7 @@
       <a href="#pillars"><span class="zh">方案</span><span class="en">Product</span></a>
       <a href="#roadmap"><span class="zh">路线</span><span class="en">Roadmap</span></a>
       <a href="#downloads"><span class="zh">资料</span><span class="en">Downloads</span></a>
+      <a href="#blog"><span class="zh">文章</span><span class="en">Blog</span></a>
       <button id="langbtn" onclick="toggleLang()">EN</button>
     </div>
   </nav>
@@ -383,6 +396,22 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
     </div>
     <p class="facts zh">POC 合作方案（含商务条款）不公开下载，请通过下方联系方式获取。</p>
     <p class="facts en">The POC proposal (incl. commercial terms) is not publicly downloadable — please request it via the contact below.</p>
+  </section>
+
+  <!-- ============ 博客 ============ -->
+  <section id="blog">
+    <h2><span class="zh">方法论文章</span><span class="en">Methodology articles</span></h2>
+    <p class="facts zh" style="margin-top:-0.6rem;">统计判定系列：给通过率配上统计学的尺子——从点估计、Wilson 下界、SPRT 到裕度分析。</p>
+    <p class="facts en" style="margin-top:-0.6rem;">The statistical-verdict series (articles in Chinese).</p>
+    <div class="posts">
+      {% for post in site.posts %}
+      <a class="post-row" href="{{ post.url }}">
+        <span class="meta">{{ post.date | date: "%Y-%m-%d" }} · {{ post.series }}</span>
+        <h3>{{ post.title }}</h3>
+        <p>{{ post.description }}</p>
+      </a>
+      {% endfor %}
+    </div>
   </section>
 
   <!-- ============ CTA ============ -->

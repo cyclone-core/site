@@ -1,2 +1,17 @@
 exclude:
   - docs/
+  - README.md
+  - CycloneCore_官网内容规划与素材清单.md
+  - 博客草稿_01_跑30把过27把为什么不算验证通过.md
+  - 博客草稿_02_Wilson下界判定_给通过率配一把诚实的尺子.md
+  - 博客草稿_03_SPRT与LLR_证据攒够就提前下判.md
+  - 博客草稿_04_裕度分析三步法.md
+  - 博客草稿_05_双模时钟.md
+  - 博客草稿_06_XiL阶梯对照.md
+  - 博客草稿_验证方法学的跨行业同构.md
+
+defaults:
+  - scope:
+      type: posts
+    values:
+      permalink: /blog/:title/
