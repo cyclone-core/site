@@ -394,6 +394,39 @@
     <p class="facts en">Status tags: <span class="tier ok">Supported</span> available today · <span class="tier proto">Prototype</span> demonstrable prototype · <span class="tier plan">Planned</span> on the roadmap, not shipped</p>
   </section>
 
+  <!-- ============ 架构：双模时钟 ============ -->
+  <section id="architecture">
+    <h2><span class="zh">架构：一个内核，两种时间观</span><span class="en">Architecture: one kernel, two notions of time</span></h2>
+    <p class="sub zh" style="margin-top:-0.5rem;">离线模式用虚拟时钟换可复现，在线模式用真实时钟换真实感——场景 YAML 不动，拨一下时钟模式即可切换。</p>
+    <p class="sub en" style="margin-top:-0.5rem;">Offline mode trades the real clock for reproducibility; online mode trades back for realism — same scenario YAML, just flip the clock mode.</p>
+
+    <table class="pos">
+      <tr>
+        <th></th>
+        <th class="zh">虚拟时钟</th><th class="en">Virtual clock</th>
+        <th class="zh">真实时钟</th><th class="en">Real clock</th>
+      </tr>
+      <tr>
+        <th class="zh">回放数据</th><th class="en">Replay data</th>
+        <td class="yes zh"><strong>离线模式</strong>：完全受控的实验室，同 seed 重跑比特级一致 <span class="tier ok">已支持</span></td>
+        <td class="yes en"><strong>Offline mode</strong>: a fully controlled lab — reruns with the same seed are bitwise identical <span class="tier ok">Supported</span></td>
+        <td class="no zh">很少用（回放不赶时间）</td>
+        <td class="no en">Rarely used (replays are in no hurry)</td>
+      </tr>
+      <tr>
+        <th class="zh">实采总线</th><th class="en">Live bus</th>
+        <td class="no zh">没意义——真实数据不等人</td>
+        <td class="no en">No sense — live data waits for no one</td>
+        <td class="yes zh"><strong>在线模式</strong>：真实世界的现场，SocketCAN/UDP 接入 + 硬件时间戳 <span class="tier ok">已支持</span></td>
+        <td class="yes en"><strong>Online mode</strong>: the real world live — SocketCAN/UDP ingress with hardware timestamps <span class="tier ok">Supported</span></td>
+      </tr>
+    </table>
+
+    <p class="facts zh">capture once, replay forever：实车采一次总线，回到离线模式无限复现 · C++ 内核 + Python 场景层的分层单引擎，进程边界 = YAML schema + 证据包格式</p>
+    <p class="facts en">Capture once, replay forever: record the bus once on the vehicle, replay offline indefinitely · A layered single engine — C++ kernel + Python scenario layer; the process boundary is the YAML schema + evidence-pack format</p>
+    <p class="facts"><a href="/blog/dual-clock/"><span class="zh">博客详解《双模时钟：离线可复现与在线真实感如何兼得》→</span><span class="en">Deep dive: The dual-mode clock (Chinese article) →</span></a></p>
+  </section>
+
   <!-- ============ 流水线 ============ -->
   <section id="pipeline">
     <h2><span class="zh">一条流水线</span><span class="en">One pipeline</span></h2>
@@ -449,6 +482,35 @@
     </table>
   </section>
 
+  <!-- ============ 方法论：裕度分析 ============ -->
+  <section id="methodology">
+    <h2><span class="zh">方法论：阈值是推导出来的</span><span class="en">Methodology: thresholds are derived, not guessed</span></h2>
+    <p class="sub zh" style="margin-top:-0.5rem;">验收线为什么定在 0.98 而不是 0.95？答不上来的阈值是装饰——定松了拦不住退化，定紧了冤杀健康版本。裕度分析三步法把答案写出来：</p>
+    <p class="sub en" style="margin-top:-0.5rem;">Why is the acceptance line at 0.98 and not 0.95? A threshold you can't explain is decoration — too loose it misses regressions, too tight it kills healthy builds. The three-step margin analysis derives the answer:</p>
+
+    <div class="cards three">
+      <div class="card">
+        <h3><span class="zh">① 跑基线</span><span class="en">Run the baseline</span></h3>
+        <p class="zh">不注故障跑若干轮，得到指标基线——一个分布，不是一个数（演示例：近距召回 0.9931）。</p>
+        <p class="en">Run fault-free rounds to get the metric baseline — a distribution, not a number (demo example: near-range recall 0.9931).</p>
+      </div>
+      <div class="card">
+        <h3><span class="zh">② 定裕度</span><span class="en">Set the margin</span></h3>
+        <p class="zh">阈值 = 基线 − 可接受退化量（演示例：收紧 1.3 个百分点，τ = 0.98）。</p>
+        <p class="en">Threshold = baseline − acceptable degradation (demo example: tighten by 1.3 points, τ = 0.98).</p>
+      </div>
+      <div class="card">
+        <h3><span class="zh">③ 双向校验</span><span class="en">Verify both ways</span></h3>
+        <p class="zh">故障场景必须 FAIL，基线必须 PASS——只验证一边，不算标定完成。</p>
+        <p class="en">Fault scenarios must FAIL while the baseline must PASS — checking only one side is not calibration.</p>
+      </div>
+    </div>
+
+    <p class="facts zh">可行性判据：基线 CI 下界 &gt; 故障 CI 上界，否则该故障强度下不可检 · 窗口相位：故障窗口 × 指标分箱 × 场景相位三者对齐 · 剂量-响应曲线：扫故障强度得鲁棒性剖面，是安全档案的高级素材</p>
+    <p class="facts en">Feasibility criterion: baseline CI lower bound &gt; fault CI upper bound, otherwise the fault is undetectable at that intensity · Window phasing: fault window × metric bin × scenario phase must align · Dose-response curve: sweep fault intensity for a robustness profile — first-class safety-case material</p>
+    <p class="facts"><a href="/blog/margin-analysis/"><span class="zh">博客详解《裕度分析三步法》→</span><span class="en">Deep dive: Margin analysis in three steps (Chinese article) →</span></a> <span class="zh">· 阈值标定是 POC 标准服务项</span><span class="en">· Threshold calibration is a standard POC service</span></p>
+  </section>
+
   <!-- ============ 路线图 ============ -->
   <section id="roadmap">
     <h2><span class="zh">演进路线</span><span class="en">Roadmap</span></h2>
@@ -487,6 +549,28 @@ out/aeb_report.xml
 out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></div>
       </div>
     </div>
+  </section>
+
+  <!-- ============ 场景包 ============ -->
+  <section id="scenariopack">
+    <h2><span class="zh">场景包</span><span class="en">The scenario pack</span></h2>
+    <p class="sub zh" style="margin-top:-0.5rem;">22 个 ADAS 场景 YAML，全部实测判定符合预期。一个 YAML 就是一个回归用例，改参数即得新场景。</p>
+    <p class="sub en" style="margin-top:-0.5rem;">22 ADAS scenario YAMLs, every verdict matching expectations. One YAML is one regression case — tweak parameters to derive new scenarios.</p>
+
+    <div class="flow">
+      <span class="step"><span class="zh">主动安全 ×13</span><span class="en">Active safety ×13</span></span>
+      <span class="step"><span class="zh">行车辅助 ×5</span><span class="en">Driving assist ×5</span></span>
+      <span class="step"><span class="zh">泊车 ×1</span><span class="en">Parking ×1</span></span>
+      <span class="step"><span class="zh">人机共驾 ×2</span><span class="en">Shared driving ×2</span></span>
+      <span class="step"><span class="zh">L3 准入 ×1</span><span class="en">L3 admission ×1</span></span>
+    </div>
+
+    <p class="zh" style="margin:1.4rem 0 0.8rem;">目录公开；完整 22 个场景 YAML 留邮箱发送：</p>
+    <p class="en" style="margin:1.4rem 0 0.8rem;">The catalog is public; the full pack of 22 YAMLs is sent on request:</p>
+    <a class="btn primary" href="mailto:caojian258@icloud.com?subject=Cyclone%20%E5%9C%BA%E6%99%AF%E5%8C%85%E7%94%B3%E8%AF%B7"><span class="zh">留邮箱，发完整场景包</span><span class="en">Email us for the full pack</span></a>
+
+    <p class="facts zh">场景内数值为演示数据，非真实 SUT 实测；阈值需按你的 SUT 基线标定（属裕度分析服务项）。</p>
+    <p class="facts en">All in-scenario figures are demo data, not measured on a real SUT; thresholds must be calibrated against your SUT baseline (a margin-analysis service item).</p>
   </section>
 
   <!-- ============ 资料下载 ============ -->

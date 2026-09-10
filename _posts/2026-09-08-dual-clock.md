@@ -4,7 +4,7 @@ title: "双模时钟：离线可复现与在线真实感如何兼得"
 description: "要可复现就得离线，要真实感就得在线？双模时钟让同一套引擎在两种物理里行走：虚拟钟管回放，真实钟管现场。"
 series: "架构篇"
 cta_text: "下载场景包亲手跑一遍"
-cta_url: "/#downloads"
+cta_url: "/#scenariopack"
 ---
 
 
