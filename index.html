@@ -213,35 +213,53 @@
 <div class="wrap">
 
   <nav>
-    <div class="brand">Cyclone<small class="zh">确定性场景测试内核</small><small class="en">Deterministic Scenario Testing</small></div>
+    <div class="brand">CYCLONE<small class="zh">确定性场景测试内核</small><small class="en">Deterministic Scenario Testing</small></div>
     <div class="navlinks">
-      <a href="#evidence"><span class="zh">证据</span><span class="en">Evidence</span></a>
-      <a href="#pillars"><span class="zh">方案</span><span class="en">Product</span></a>
-      <a href="#roadmap"><span class="zh">路线</span><span class="en">Roadmap</span></a>
-      <a href="#downloads"><span class="zh">资料</span><span class="en">Downloads</span></a>
-      <a href="#blog"><span class="zh">文章</span><span class="en">Blog</span></a>
+      <a href="#pillars"><span class="zh">§02 特性</span><span class="en">§02 Features</span></a>
+      <a href="#testmap"><span class="zh">§03 测试</span><span class="en">§03 Testing</span></a>
+      <a href="#evidence"><span class="zh">§05 证据</span><span class="en">§05 Evidence</span></a>
+      <a href="#scenariopack"><span class="zh">附录A 场景包</span><span class="en">App.A Scenarios</span></a>
+      <a href="#blog"><span class="zh">附录C 笔记</span><span class="en">App.C Notes</span></a>
       <button id="langbtn" onclick="toggleLang()">EN</button>
     </div>
   </nav>
 
-  <!-- ============ Hero ============ -->
-  <div class="hero">
-    <h1 class="zh">同一个 case hash，永远同一个测试结果。</h1>
-    <h1 class="en">Same case hash. Same test result. Every time.</h1>
-    <p class="slogan zh">确定性 XiL 场景测试内核</p>
-    <p class="slogan en">The deterministic XiL scenario testing kernel</p>
-    <p class="sub zh">Cyclone 把 ADAS / 机器人回归测试收进一条流水线：数据回放 → 故障注入 → 统计判定 → 证据链。PASS 不再是"跑过一次没红"，而是可复现、可审计的机器证明。</p>
-    <p class="sub en">Cyclone turns ADAS / robotics regression testing into one pipeline: replay → fault injection → statistical verdict → evidence chain. A PASS is no longer "it went green once" — it is reproducible, auditable machine proof.</p>
-    <p class="tagline zh">仿真测试 = 用工程学造证据，用统计学下结论。</p>
-    <p class="tagline en">Simulation testing = engineering builds the evidence; statistics draws the verdict.</p>
-    <div class="term"><span class="p">$</span> python -m cyclone run cases/aeb_cipv_50kph.yaml --out out/
-  verdict: <b>PASS</b>
+  <!-- ============ 封面 ============ -->
+  <div class="cover">
+    <div class="docmeta">
+      <span>CYCLONE SPECIFICATION</span>
+      <span>DOC NO. CY-SPEC-001 · REV 2026-09-11</span>
+    </div>
+    <h1><span class="zh">同一个 case hash，<br>永远同一个测试结果。</span><span class="en">Same case hash.<br>Same test result. Every time.</span></h1>
+    <p class="sub-en"><span class="zh">确定性 XiL 场景测试内核 · Deterministic XiL Scenario Testing Kernel</span><span class="en">The deterministic XiL scenario testing kernel</span></p>
+    <div class="abstract">
+      <span class="lbl">摘要 / ABSTRACT</span>
+      <span class="zh">Cyclone 把 ADAS / 机器人回归测试收进一条流水线：数据回放 → 故障注入 → 统计判定 → 证据链。PASS 不再是"跑过一次没红"，而是可复现、可审计的机器证明。</span>
+      <span class="en">Cyclone turns ADAS / robotics regression testing into one pipeline: replay → fault injection → statistical verdict → evidence chain. A PASS is no longer "it went green once" — it is reproducible, auditable machine proof.</span>
+    </div>
+    <div class="fig">
+      <div class="figtag">FIG. 0-1 · <span class="zh">运行实录（可复算）</span><span class="en">Live run (recomputable)</span></div>
+      <div class="term"><span class="p">$</span> cyclone run cases/aeb_cipv_50kph.yaml --out out/
+verdict: <span class="ok">PASS</span>
 <span class="p">$</span> shasum -a 256 out/AEB_CIPV_50kph_log.jsonl
 2e075b42f19031aa…
-<span class="p">$</span> python -m cyclone run cases/aeb_cipv_50kph.yaml --out out2/ <span class="c"># 再跑一次 / run it again</span>
+<span class="p">$</span> cyclone run cases/aeb_cipv_50kph.yaml --out out2/ <span class="c"># 再跑一次 / run it again</span>
 <span class="p">$</span> shasum -a 256 out2/AEB_CIPV_50kph_log.jsonl
 2e075b42f19031aa…   <span class="c"># 同 seed → 逐字节一致 / same seed → bitwise identical</span></div>
-  </div><!-- /hero -->
+      <div class="figcap"><span class="zh">图 0-1 — 同一用例两次运行，SHA-256 逐字节一致，机器可证</span><span class="en">Fig. 0-1 — Two runs of the same case, bitwise-identical SHA-256. Machine-checkable.</span></div>
+    </div>
+    <p class="facts" style="margin-top:1.2rem;">
+      <span class="st"><i class="sdot g"></i>261 <span class="zh">项自动化测试全绿</span><span class="en">tests green</span></span> ·
+      <span class="st"><i class="sdot g"></i><span class="zh">逐字节可复现</span><span class="en">bitwise reproducible</span></span> ·
+      <span class="st"><i class="sdot g"></i>Wilson · SPRT <span class="zh">判定</span><span class="en">verdicts</span></span> ·
+      <span class="st"><i class="sdot a"></i>rules_cyclone <span class="zh">原型</span><span class="en">prototype</span></span> ·
+      <span class="st"><i class="sdot o"></i><span class="zh">单文件二进制 规划中</span><span class="en">single binary planned</span></span>
+    </p>
+    <p style="margin-top:1.6rem;">
+      <a class="btn primary" href="mailto:caojian258@icloud.com?subject=Cyclone%20%E6%BC%94%E7%A4%BA%E9%A2%84%E7%BA%A6"><span class="zh">预约 POC 演示 →</span><span class="en">Book a POC demo →</span></a>
+      <a class="btn" href="#scenariopack"><span class="zh">§A · 获取场景包</span><span class="en">App.A · Get the scenario pack</span></a>
+    </p>
+  </div><!-- /cover -->
 </div><!-- /wrap（上半） -->
 
   <!-- ============ 深色证据带 ============ -->
