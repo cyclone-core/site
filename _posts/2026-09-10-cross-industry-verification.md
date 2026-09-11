@@ -3,6 +3,7 @@ layout: post
 title: '确定性、故障注入与证据链：三个行业共用的一套"考试哲学"'
 description: "芯片、AI Agent、汽车电子：被测对象复杂到无法穷举、失败代价高到不能试错，于是三个行业长出了同一套方法学。"
 series: "扩圈篇（下）"
+tn: "TN-07"
 cta_text: "下载场景包"
 cta_url: "/#scenariopack"
 ---

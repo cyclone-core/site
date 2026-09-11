@@ -11,103 +11,107 @@
 <meta property="og:url" content="https://www.cyclone-xil.com{{ page.url }}">
 <style>
   :root {
-    --ink: #1a1a1a; --gray: #666; --line: #ddd;
-    --accent: #0a7a2f; --code-bg: #14171a; --code-fg: #d6e2d8;
+    --paper:#fdfdfa; --ink:#16181a; --hair:#d9d9d2; --mono:#6b6f6b;
+    --grn:#0a7a2f; --red:#c01818; --amb:#a06a00; --ambdot:#d9a520;
+    --term-bg:#10141a; --term-fg:#d6e2d8;
   }
   * { box-sizing: border-box; }
   body {
     font-family: -apple-system, "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif;
-    color: var(--ink); margin: 0; line-height: 1.75;
+    color: var(--ink); background: var(--paper); margin: 0; line-height: 1.75;
   }
   .wrap { max-width: 760px; margin: 0 auto; padding: 0 1.4rem; }
 
   nav {
     display: flex; justify-content: space-between; align-items: center;
-    padding: 0.9rem 0; border-bottom: 1px solid var(--line);
+    padding: 0.9rem 0; border-bottom: 1px solid var(--hair);
+    font-family: ui-monospace, Menlo, monospace;
   }
   .brand { font-weight: 700; letter-spacing: 0.5px; }
   .brand a { color: var(--ink); text-decoration: none; }
-  .brand small { color: var(--gray); font-weight: 400; margin-left: 6px; }
-  .navlinks a { color: var(--gray); text-decoration: none; font-size: 0.9rem; }
-  .navlinks a:hover { color: var(--accent); }
+  .navlinks { color: var(--mono); font-size: 0.9rem; }
+  .navlinks a { color: var(--mono); text-decoration: none; }
+  .navlinks a:hover { color: var(--grn); }
 
   article { padding: 2.4rem 0 3rem; }
-  .post-meta { color: var(--gray); font-size: 0.85rem; margin: 0 0 0.4rem; }
+  .post-meta { color: var(--mono); font-size: 0.85rem; margin: 0 0 0.4rem; }
   h1 { font-size: 1.7rem; line-height: 1.4; margin: 0 0 1.6rem; }
   article h2 { font-size: 1.2rem; margin: 2.2rem 0 0.8rem; }
   article p { margin: 0.9rem 0; }
   article ul, article ol { padding-left: 1.5rem; }
   article li { margin: 0.3rem 0; }
-  article a { color: var(--accent); }
-  hr { border: none; border-top: 1px solid var(--line); margin: 2.2rem 0; }
+  article a { color: var(--grn); }
+  hr { border: none; border-top: 1px solid var(--hair); margin: 2.2rem 0; }
 
   blockquote {
     margin: 1rem 0; padding: 0.6rem 1.1rem;
-    border-left: 3px solid var(--accent); background: #f7faf7;
+    border-left: 3px solid var(--grn); background: #f7faf7;
     color: #333;
   }
   blockquote p { margin: 0.3rem 0; }
 
   table { border-collapse: collapse; width: 100%; margin: 1.1rem 0; font-size: 0.92rem; }
-  th, td { border: 1px solid var(--line); padding: 8px 12px; text-align: left; vertical-align: top; }
-  th { background: #f5f5f5; }
+  th, td { border: 1px solid var(--hair); padding: 8px 12px; text-align: left; vertical-align: top; }
+  th {
+    background: #f4f4ef;
+    font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; letter-spacing: 1px;
+  }
 
   code {
     font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    font-size: 0.88em; background: #f2f4f3; padding: 0.1em 0.35em; border-radius: 4px;
+    font-size: 0.88em; background: #f2f4f3; padding: 0.1em 0.35em; border-radius: 0;
   }
   pre {
-    background: var(--code-bg); color: var(--code-fg); border-radius: 8px;
+    background: var(--term-bg); color: var(--term-fg); border-radius: 0;
     padding: 1rem 1.2rem; overflow-x: auto; line-height: 1.65; font-size: 0.85rem;
   }
   pre code { background: none; padding: 0; color: inherit; }
 
   .post-cta {
-    margin-top: 2.4rem; border: 1px solid var(--line); border-radius: 8px;
+    margin-top: 2.4rem; border: 1px solid var(--hair); border-radius: 0;
     padding: 1rem 1.2rem; background: #fafafa;
   }
-  .post-cta p { margin: 0 0 0.6rem; color: var(--gray); font-size: 0.92rem; }
+  .post-cta p { margin: 0 0 0.6rem; color: var(--mono); font-size: 0.92rem; }
   .btn {
-    display: inline-block; border: 1px solid var(--ink); border-radius: 999px;
+    display: inline-block; border: 1px solid var(--ink); border-radius: 0;
     padding: 0.45rem 1.4rem; text-decoration: none; color: var(--ink); font-size: 0.92rem;
+    font-family: ui-monospace, Menlo, monospace; letter-spacing: 1px;
+    background: transparent;
   }
-  .btn.primary { background: var(--ink); color: #fff; }
-  .btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+  .btn:hover { border-color: var(--grn); color: var(--grn); }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn.primary:hover { background: var(--grn); border-color: var(--grn); color: var(--paper); }
 
   .series-nav {
     display: flex; justify-content: space-between; gap: 1rem;
-    margin-top: 2rem; padding-top: 1.4rem; border-top: 1px solid var(--line);
+    margin-top: 2rem; padding-top: 1.4rem; border-top: 1px solid var(--hair);
     font-size: 0.9rem;
   }
-  .series-nav a { color: var(--gray); text-decoration: none; }
-  .series-nav a:hover { color: var(--accent); }
+  .series-nav a { color: var(--mono); text-decoration: none; }
+  .series-nav a:hover { color: var(--grn); }
 
   footer {
-    border-top: 1px solid var(--line); padding: 1.4rem 0 2.4rem;
-    color: var(--gray); font-size: 0.85rem;
+    border-top: 2px solid var(--ink); padding: 1.4rem 0 2.4rem;
+    color: var(--mono); font-size: 0.85rem;
   }
   .foot-legend { margin-bottom: 0.9rem; }
   .foot-legend p { margin: 0.25rem 0; }
-  .tier {
-    display: inline-block; font-size: 0.72rem; line-height: 1.5;
-    border: 1px solid; border-radius: 999px; padding: 0 0.6rem;
-    vertical-align: 1px; white-space: nowrap;
-  }
-  .tier.ok { color: var(--accent); border-color: var(--accent); }
-  .tier.proto { color: #a06a00; border-color: #d9a520; }
-  .tier.plan { color: var(--gray); border-color: var(--line); }
+  /* 状态点：●绿 supported / ●琥珀 proto / ○灰 planned */
+  .st { display: inline-flex; align-items: center; gap: 5px; font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; color: var(--mono); white-space: nowrap; }
+  .sdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .sdot.g { background: var(--grn); } .sdot.a { background: var(--ambdot); } .sdot.o { background: transparent; border: 1.5px solid #999; }
 </style>
 </head>
 <body>
 <div class="wrap">
 
   <nav>
-    <div class="brand"><a href="/">Cyclone<small>确定性场景测试内核</small></a></div>
-    <div class="navlinks"><a href="/#blog">← 全部文章</a></div>
+    <div class="brand"><a href="/">CYCLONE · TECHNICAL NOTE</a></div>
+    <div class="navlinks">{{ page.tn }} · <a href="/#blog">全部笔记 ←</a></div>
   </nav>
 
   <article>
-    <p class="post-meta">{{ page.date | date: "%Y-%m-%d" }}{% if page.series %} · {{ page.series }}{% endif %}</p>
+    <p class="post-meta">{{ page.tn }} · {{ page.date | date: "%Y-%m-%d" }}{% if page.series %} · {{ page.series }}{% endif %}</p>
     <h1>{{ page.title }}</h1>
 
     {{ content }}
@@ -127,7 +131,7 @@
 
   <footer>
     <div class="foot-legend">
-      <p>能力标签：<span class="tier ok">已支持</span> 当前版本可用 · <span class="tier proto">原型验证中</span> 已有可演示原型 · <span class="tier plan">规划中</span> 路线图项，未交付。文中示例数值均为演示数据，非真实 SUT 实测。</p>
+      <p>能力标签：<span class="st"><span class="sdot g"></span>已支持</span> 当前版本可用 · <span class="st"><span class="sdot a"></span>原型验证中</span> 已有可演示原型 · <span class="st"><span class="sdot o"></span>规划中</span> 路线图项，未交付。文中示例数值均为演示数据，非真实 SUT 实测。</p>
     </div>
     Cyclone — 确定性场景测试内核 · © 2026 · 联系：caojian258@icloud.com / 微信 jiancao258
   </footer>
