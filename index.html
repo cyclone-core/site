@@ -620,10 +620,11 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
   </section>
 
   <!-- ============ 场景包 ============ -->
-  <section id="scenariopack">
-    <h2><span class="zh">场景包</span><span class="en">The scenario pack</span></h2>
-    <p class="sub zh" style="margin-top:-0.5rem;">22 个 ADAS 场景 YAML，全部实测判定符合预期。一个 YAML 就是一个回归用例，改参数即得新场景。</p>
-    <p class="sub en" style="margin-top:-0.5rem;">22 ADAS scenario YAMLs, every verdict matching expectations. One YAML is one regression case — tweak parameters to derive new scenarios.</p>
+  <section class="clause reveal" id="scenariopack">
+    <p class="clause-head">APPENDIX A · SCENARIO PACK</p>
+    <h2 class="clause-name"><span class="zh">附录 A · 场景包目录</span><span class="en">Appendix A · Scenario pack</span></h2>
+    <p class="clause-sub zh">22 个 ADAS 场景 YAML，全部实测判定符合预期。一个 YAML 就是一个回归用例，改参数即得新场景。</p>
+    <p class="clause-sub en">22 ADAS scenario YAMLs, every verdict matching expectations. One YAML is one regression case — tweak parameters to derive new scenarios.</p>
 
     <div class="flow">
       <span class="step"><span class="zh">主动安全 ×13</span><span class="en">Active safety ×13</span></span>
@@ -642,8 +643,9 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
   </section>
 
   <!-- ============ 资料下载 ============ -->
-  <section id="downloads">
-    <h2><span class="zh">资料下载</span><span class="en">Downloads</span></h2>
+  <section class="clause reveal" id="downloads">
+    <p class="clause-head">APPENDIX B · REFERENCES</p>
+    <h2 class="clause-name"><span class="zh">附录 B · 参考资料</span><span class="en">Appendix B · References</span></h2>
     <div class="cards">
       <a class="dl-card" href="product-sheet.pdf">
         <img src="assets/product-sheet-thumb.webp" alt="产品单页 / Product sheet">
@@ -669,16 +671,17 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
   </section>
 
   <!-- ============ 博客 ============ -->
-  <section id="blog">
-    <h2><span class="zh">方法论文章</span><span class="en">Methodology articles</span></h2>
+  <section class="clause reveal" id="blog">
+    <p class="clause-head">APPENDIX C · TECHNICAL NOTES</p>
+    <h2 class="clause-name"><span class="zh">附录 C · 技术笔记</span><span class="en">Appendix C · Technical notes</span></h2>
     <p class="facts zh" style="margin-top:-0.6rem;">统计判定系列（点估计 → Wilson 下界 → SPRT → 裕度分析）+ 架构篇与跨行业方法学。</p>
     <p class="facts en" style="margin-top:-0.6rem;">Statistical verdicts, architecture notes, and cross-industry methodology (articles in Chinese).</p>
     <div class="posts">
       {% for post in site.posts %}
       <a class="post-row" href="{{ post.url }}">
-        <span class="meta">{{ post.date | date: "%Y-%m-%d" }} · {{ post.series }}</span>
-        <h3>{{ post.title }}</h3>
-        <p>{{ post.description }}</p>
+        <span class="meta">{{ post.tn }} · {{ post.date | date: "%Y-%m-%d" }}</span>
+        <span class="post-title">{{ post.title }}</span>
+        <span class="post-desc">{{ post.description }}</span>
       </a>
       {% endfor %}
     </div>
@@ -686,6 +689,7 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
 
   <!-- ============ CTA ============ -->
   <div class="cta" id="contact">
+    <p class="clause-head">DOCUMENT CONTROL</p>
     <h2><span class="zh">拿你自己的场景跑一次</span><span class="en">Run it on your own scenario</span></h2>
     <p class="zh">30 分钟演示：AEB 回归 → 注入故障 → 打开证据报告。</p>
     <p class="en">A 30-minute demo: AEB regression → inject a fault → open the evidence report.</p>
@@ -701,7 +705,7 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
 
   <footer>
     <div class="foot-legend">
-      <p><span class="zh">能力标签：</span><span class="en">Status tags: </span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span> <span class="zh">当前版本可用</span><span class="en">available today</span> · <span class="tier proto"><span class="zh">原型验证中</span><span class="en">Prototype</span></span> <span class="zh">已有可演示原型</span><span class="en">demonstrable prototype</span> · <span class="tier plan"><span class="zh">规划中</span><span class="en">Planned</span></span> <span class="zh">路线图项，未交付</span><span class="en">on the roadmap, not shipped</span></p>
+      <p><span class="zh">能力标签：</span><span class="en">Status tags: </span><span class="st"><i class="sdot g"></i><span class="zh">已支持</span><span class="en">Supported</span></span> <span class="zh">当前版本可用</span><span class="en">available today</span> · <span class="st"><i class="sdot a"></i><span class="zh">原型验证中</span><span class="en">Prototype</span></span> <span class="zh">已有可演示原型</span><span class="en">demonstrable prototype</span> · <span class="st"><i class="sdot o"></i><span class="zh">规划中</span><span class="en">Planned</span></span> <span class="zh">路线图项，未交付</span><span class="en">on the roadmap, not shipped</span></p>
       <p><span class="zh">站内示例数值（成功率、阈值等）均为演示数据，非真实 SUT 实测；阈值需按客户 SUT 基线标定。</span><span class="en">All sample figures on this site (success rates, thresholds) are demo data, not measured on a real SUT; thresholds must be calibrated against your SUT baseline.</span></p>
     </div>
     <span class="zh">Cyclone — 确定性场景测试内核 · © 2026</span>
