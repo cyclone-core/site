@@ -290,26 +290,27 @@ verdict: <span class="ok">PASS</span>
   <div class="wrap"><!-- 下半部分继续 -->
 
   <!-- ============ 受众分流 ============ -->
-  <section id="audience">
-    <h2><span class="zh">为谁的什么问题</span><span class="en">Who it's for</span></h2>
+  <section class="clause reveal" id="audience">
+    <p class="clause-head">§07 · APPLICABILITY</p>
+    <h2 class="clause-name"><span class="zh">适用范围：为谁的什么问题</span><span class="en">Applicability: who it's for</span></h2>
     <div class="cards three">
       <a class="card" href="#boundary">
         <span class="aud-who">OEM · <span class="zh">主机厂智驾测试团队</span><span class="en">ADAS test teams</span></span>
-        <h3><span class="zh">给功能安全审核一份机器证据</span><span class="en">Machine evidence for safety audits</span></h3>
+        <h3>§7.1 <span class="zh">给功能安全审核一份机器证据</span><span class="en">Machine evidence for safety audits</span></h3>
         <p class="zh">每条 PASS / FAIL 可回溯到用例版本与原始数据；证据链格式可按审核要求定制。</p>
         <p class="en">Every PASS / FAIL traces to the case version and raw data; evidence formats tailored to audit needs.</p>
       </a>
       <a class="card" href="#integrate">
         <span class="aud-who">Tier1 · <span class="zh">零部件供应商</span><span class="en">Suppliers</span></span>
-        <h3><span class="zh">不替换，只增强</span><span class="en">Augment, never replace</span></h3>
+        <h3>§7.2 <span class="zh">不替换，只增强</span><span class="en">Augment, never replace</span></h3>
         <p class="zh">叠加在 CANoe / dSPACE / 自研脚本之上；JUnit 输出直接进现有 CI。</p>
         <p class="en">Layers on top of CANoe / dSPACE / in-house scripts; JUnit output drops into your CI.</p>
       </a>
       <a class="card" href="#integrate">
         <span class="aud-who">Robotics · <span class="zh">机器人公司</span><span class="en">Robotics teams</span></span>
-        <h3><span class="zh">五分钟跑通第一个场景</span><span class="en">First scenario in five minutes</span></h3>
-        <p class="zh">单文件二进制下载即跑<span class="tier plan">规划中</span>；一个 YAML 就是一个回归用例。</p>
-        <p class="en">Single-file binary, download and run <span class="tier plan">Planned</span>; one YAML is one regression case.</p>
+        <h3>§7.3 <span class="zh">五分钟跑通第一个场景</span><span class="en">First scenario in five minutes</span></h3>
+        <p class="zh">单文件二进制下载即跑<span class="st"><i class="sdot o"></i>规划中</span>；一个 YAML 就是一个回归用例。</p>
+        <p class="en">Single-file binary, download and run <span class="st"><i class="sdot o"></i>Planned</span>; one YAML is one regression case.</p>
       </a>
     </div>
   </section>
@@ -543,24 +544,25 @@ verdict: <span class="ok">PASS</span>
   </section>
 
   <!-- ============ 方法论：裕度分析 ============ -->
-  <section id="methodology">
-    <h2><span class="zh">方法论：阈值是推导出来的</span><span class="en">Methodology: thresholds are derived, not guessed</span></h2>
-    <p class="sub zh" style="margin-top:-0.5rem;">验收线为什么定在 0.98 而不是 0.95？答不上来的阈值是装饰——定松了拦不住退化，定紧了冤杀健康版本。裕度分析三步法把答案写出来：</p>
-    <p class="sub en" style="margin-top:-0.5rem;">Why is the acceptance line at 0.98 and not 0.95? A threshold you can't explain is decoration — too loose it misses regressions, too tight it kills healthy builds. The three-step margin analysis derives the answer:</p>
+  <section class="clause reveal" id="methodology">
+    <p class="clause-head">§06 · VERDICT METHODOLOGY</p>
+    <h2 class="clause-name"><span class="zh">判定方法学：阈值是推导出来的</span><span class="en">Verdict methodology: thresholds are derived, not guessed</span></h2>
+    <p class="clause-sub zh">验收线为什么定在 0.98 而不是 0.95？答不上来的阈值是装饰——定松了拦不住退化，定紧了冤杀健康版本。裕度分析三步法把答案写出来：</p>
+    <p class="clause-sub en">Why is the acceptance line at 0.98 and not 0.95? A threshold you can't explain is decoration — too loose it misses regressions, too tight it kills healthy builds. The three-step margin analysis derives the answer:</p>
 
     <div class="cards three">
       <div class="card">
-        <h3><span class="zh">① 跑基线</span><span class="en">Run the baseline</span></h3>
+        <h3>§6.1 <span class="zh">跑基线</span><span class="en">Run the baseline</span></h3>
         <p class="zh">不注故障跑若干轮，得到指标基线——一个分布，不是一个数（演示例：近距召回 0.9931）。</p>
         <p class="en">Run fault-free rounds to get the metric baseline — a distribution, not a number (demo example: near-range recall 0.9931).</p>
       </div>
       <div class="card">
-        <h3><span class="zh">② 定裕度</span><span class="en">Set the margin</span></h3>
+        <h3>§6.2 <span class="zh">定裕度</span><span class="en">Set the margin</span></h3>
         <p class="zh">阈值 = 基线 − 可接受退化量（演示例：收紧 1.3 个百分点，τ = 0.98）。</p>
         <p class="en">Threshold = baseline − acceptable degradation (demo example: tighten by 1.3 points, τ = 0.98).</p>
       </div>
       <div class="card">
-        <h3><span class="zh">③ 双向校验</span><span class="en">Verify both ways</span></h3>
+        <h3>§6.3 <span class="zh">双向校验</span><span class="en">Verify both ways</span></h3>
         <p class="zh">故障场景必须 FAIL，基线必须 PASS——只验证一边，不算标定完成。</p>
         <p class="en">Fault scenarios must FAIL while the baseline must PASS — checking only one side is not calibration.</p>
       </div>
