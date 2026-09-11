@@ -442,10 +442,11 @@ verdict: <span class="ok">PASS</span>
   </section>
 
   <!-- ============ 架构：双模时钟 ============ -->
-  <section id="architecture">
-    <h2><span class="zh">架构：一个内核，两种时间观</span><span class="en">Architecture: one kernel, two notions of time</span></h2>
-    <p class="sub zh" style="margin-top:-0.5rem;">离线模式用虚拟时钟换可复现，在线模式用真实时钟换真实感——场景 YAML 不动，拨一下时钟模式即可切换。</p>
-    <p class="sub en" style="margin-top:-0.5rem;">Offline mode trades the real clock for reproducibility; online mode trades back for realism — same scenario YAML, just flip the clock mode.</p>
+  <section class="clause reveal" id="architecture">
+    <p class="clause-head">§04 · ARCHITECTURE</p>
+    <h2 class="clause-name"><span class="zh">架构：一个内核，两种时间观</span><span class="en">Architecture: one kernel, two notions of time</span></h2>
+    <p class="clause-sub zh">离线模式用虚拟时钟换可复现，在线模式用真实时钟换真实感——场景 YAML 不动，拨一下时钟模式即可切换。</p>
+    <p class="clause-sub en">Offline mode trades the real clock for reproducibility; online mode trades back for realism — same scenario YAML, just flip the clock mode.</p>
 
     <table class="pos">
       <tr>
@@ -455,8 +456,8 @@ verdict: <span class="ok">PASS</span>
       </tr>
       <tr>
         <th class="zh">回放数据</th><th class="en">Replay data</th>
-        <td class="yes zh"><strong>离线模式</strong>：完全受控的实验室，同 seed 重跑比特级一致 <span class="tier ok">已支持</span></td>
-        <td class="yes en"><strong>Offline mode</strong>: a fully controlled lab — reruns with the same seed are bitwise identical <span class="tier ok">Supported</span></td>
+        <td class="yes zh"><strong>离线模式</strong>：完全受控的实验室，同 seed 重跑比特级一致 <span class="st"><i class="sdot g"></i>已支持</span></td>
+        <td class="yes en"><strong>Offline mode</strong>: a fully controlled lab — reruns with the same seed are bitwise identical <span class="st"><i class="sdot g"></i>Supported</span></td>
         <td class="no zh">很少用（回放不赶时间）</td>
         <td class="no en">Rarely used (replays are in no hurry)</td>
       </tr>
@@ -464,8 +465,8 @@ verdict: <span class="ok">PASS</span>
         <th class="zh">实采总线</th><th class="en">Live bus</th>
         <td class="no zh">没意义——真实数据不等人</td>
         <td class="no en">No sense — live data waits for no one</td>
-        <td class="yes zh"><strong>在线模式</strong>：真实世界的现场，SocketCAN/UDP 接入 + 硬件时间戳 <span class="tier ok">已支持</span></td>
-        <td class="yes en"><strong>Online mode</strong>: the real world live — SocketCAN/UDP ingress with hardware timestamps <span class="tier ok">Supported</span></td>
+        <td class="yes zh"><strong>在线模式</strong>：真实世界的现场，SocketCAN/UDP 接入 + 硬件时间戳 <span class="st"><i class="sdot g"></i>已支持</span></td>
+        <td class="yes en"><strong>Online mode</strong>: the real world live — SocketCAN/UDP ingress with hardware timestamps <span class="st"><i class="sdot g"></i>Supported</span></td>
       </tr>
     </table>
 
@@ -474,19 +475,23 @@ verdict: <span class="ok">PASS</span>
     <p class="facts"><a href="/blog/dual-clock/"><span class="zh">博客详解《双模时钟：离线可复现与在线真实感如何兼得》→</span><span class="en">Deep dive: The dual-mode clock (Chinese article) →</span></a></p>
   </section>
 
-  <!-- ============ 流水线 ============ -->
-  <section id="pipeline">
-    <h2><span class="zh">一条流水线</span><span class="en">One pipeline</span></h2>
-    <div class="flow">
-      <span class="step"><span class="zh">用例 YAML</span><span class="en">Case YAML</span></span><span class="arrow">→</span>
-      <span class="step"><span class="zh">数据源回放</span><span class="en">Dataset replay</span></span><span class="arrow">→</span>
-      <span class="step"><span class="zh">故障注入</span><span class="en">Fault injection</span></span><span class="arrow">→</span>
-      <span class="step">SUT</span><span class="arrow">→</span>
-      <span class="step"><span class="zh">统计判定</span><span class="en">Verdicts</span></span><span class="arrow">→</span>
-      <span class="step"><span class="zh">证据报告</span><span class="en">Evidence report</span></span>
+  <!-- ============ §04-B 数据流 ============ -->
+  <section class="clause reveal" id="pipeline">
+    <p class="clause-head">§04-B · DATA FLOW</p>
+    <div class="fig">
+      <div class="figtag">FIG. 4-1 · <span class="zh">判定流水线</span><span class="en">Verdict pipeline</span></div>
+      <div class="flow">
+        <span class="step"><span class="zh">用例 YAML</span><span class="en">Case YAML</span></span><span class="arrow">→</span>
+        <span class="step"><span class="zh">数据源回放</span><span class="en">Dataset replay</span></span><span class="arrow">→</span>
+        <span class="step"><span class="zh">故障注入</span><span class="en">Fault injection</span></span><span class="arrow">→</span>
+        <span class="step">SUT</span><span class="arrow">→</span>
+        <span class="step"><span class="zh">统计判定</span><span class="en">Verdicts</span></span><span class="arrow">→</span>
+        <span class="step"><span class="zh">证据报告</span><span class="en">Evidence report</span></span>
+      </div>
+      <div class="figcap"><span class="zh">图 4-1 — 从用例 YAML 到证据报告的一条流水线</span><span class="en">Fig. 4-1 — One pipeline from case YAML to evidence report.</span></div>
     </div>
-    <p class="facts zh">261 项自动化测试全绿 · JUnit/Jenkins 就绪 · UDS 诊断演示<span class="tier proto">原型验证中</span> · Bazel 规则包 rules_cyclone<span class="tier proto">原型验证中</span></p>
-    <p class="facts en">261 automated tests green · JUnit/Jenkins ready · UDS diagnostics demo <span class="tier proto">Prototype</span> · Bazel ruleset rules_cyclone <span class="tier proto">Prototype</span></p>
+    <p class="facts zh">261 项自动化测试全绿 · JUnit/Jenkins 就绪 · UDS 诊断演示<span class="st"><i class="sdot a"></i>原型验证中</span> · Bazel 规则包 rules_cyclone<span class="st"><i class="sdot a"></i>原型验证中</span></p>
+    <p class="facts en">261 automated tests green · JUnit/Jenkins ready · UDS diagnostics demo <span class="st"><i class="sdot a"></i>Prototype</span> · Bazel ruleset rules_cyclone <span class="st"><i class="sdot a"></i>Prototype</span></p>
   </section>
 
   <!-- ============ §01 问题定义 ============ -->
