@@ -346,7 +346,7 @@ git add index.html && git commit -m "feat(site): 规格书封面 Hero + 眉线�
 ### Task 3: §01 问题定义（pains + boundary）
 
 **Files:**
-- Modify: `index.html`（#pains 与 #boundary 两区块，需把 boundary 移入 pains 之后合并为一个 clause）
+- Modify: `index.html`（#pains 与 #boundary 两区块各自条款化，保持 id 不变）
 
 **通用规则（Task 3–10）**：各板块原有的引导段落 `<p class="sub zh" style="margin-top:-0.5rem;">…</p>` / `<p class="sub en" …>…</p>` 统一改为 `<p class="clause-sub zh">…</p>` / `<p class="clause-sub en">…</p>`（去掉内联 style；文案原样）。
 
@@ -586,6 +586,12 @@ grep -q 'TN-04' _site/blog/margin-analysis/index.html && echo tn-ok
 **Files:** Modify: `index.html`（script 块）
 
 - [ ] **Step 1: 滚动淡入 JS —— 已于 Task 1 评审修复中提前落地**（commit a1c3970，含 reduced-motion 与无 IO 回退）。本步无需操作，仅核对 `_site/index.html` 含 `IntersectionObserver`。
+
+- [ ] **Step 1.5: noscript 兜底**——`.reveal` 依赖 JS 恢复可见，在 `</style>` 后加一行兜底：
+
+```html
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+```
 
 - [ ] **Step 2: 整站终验清单（全部必须过）**
 
