@@ -505,10 +505,10 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#roadmap、#integrate）
 
-- [ ] **Step 1: #roadmap**：clause-head `§08 · REVISION ROADMAP`，clause-name zh「修订路线」/ en「Revision roadmap」；sub 文案原样；图片包 `.fig`：figtag `FIG. 8-1 · M0→M3 十二周路线`，figcap zh「图 8-1 — 每周可交付，三周一决策」/ en 对应。roadmap.pdf 链接保留。
-- [ ] **Step 2: #integrate**：clause-head `§09 · INTEGRATION INTERFACES`，clause-name zh「集成接口」/ en「Integration interfaces」；两张卡标题编号 §9.1（Bazel，状态点 a 原型）/ §9.2（其他 CI）；终端块包 `.fig` 或保持卡内；终端注释文字原样。
-- [ ] **Step 3: 构建 + 断言**
-- [ ] **Step 4: Commit** `git commit -m "feat(site): §08/§09 条款化"`
+- [x] **Step 1: #roadmap**：clause-head `§08 · REVISION ROADMAP`，clause-name zh「修订路线」/ en「Revision roadmap」；sub 文案原样；图片包 `.fig`：figtag `FIG. 8-1 · M0→M3 十二周路线`，figcap zh「图 8-1 — 每周可交付，三周一决策」/ en 对应。roadmap.pdf 链接保留。
+- [x] **Step 2: #integrate**：clause-head `§09 · INTEGRATION INTERFACES`，clause-name zh「集成接口」/ en「Integration interfaces」；两张卡标题编号 §9.1（Bazel，状态点 a 原型）/ §9.2（其他 CI）；终端块包 `.fig` 或保持卡内；终端注释文字原样。
+- [x] **Step 3: 构建 + 断言**
+- [x] **Step 4: Commit** `git commit -m "feat(site): §08/§09 条款化"`
 
 ---
 
