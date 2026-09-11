@@ -488,34 +488,36 @@ verdict: <span class="ok">PASS</span>
     <p class="facts en">261 automated tests green · JUnit/Jenkins ready · UDS diagnostics demo <span class="tier proto">Prototype</span> · Bazel ruleset rules_cyclone <span class="tier proto">Prototype</span></p>
   </section>
 
-  <!-- ============ 痛点 → 答案 ============ -->
-  <section id="pains">
-    <h2><span class="zh">老问题，新答案</span><span class="en">Old problems, new answers</span></h2>
-    <div class="pain-row">
-      <div class="pain-old"><span class="zh">FAIL 了，分不清是产品缺陷还是测试抖动。</span><span class="en">A failure: product bug or test noise? You can't tell.</span></div>
-      <div class="pain-new"><span class="zh">确定性内核让"同输入、不同结果"在结构上不可能——红就是红。</span><span class="en">The deterministic kernel makes "same input, different result" structurally impossible. Red means red.</span></div>
+  <!-- ============ §01 问题定义 ============ -->
+  <section class="clause reveal" id="pains">
+    <p class="clause-head">§01 · PROBLEM STATEMENT</p>
+    <h2 class="clause-name"><span class="zh">问题定义：老问题，新答案</span><span class="en">Problem statement: old problems, new answers</span></h2>
+    <div class="c-row"><span class="c-no">§1.1</span>
+      <span class="c-bad"><span class="zh">FAIL 了，分不清是产品缺陷还是测试抖动。</span><span class="en">A failure: product bug or test noise? You can't tell.</span></span>
+      <span class="c-fix"><span class="zh">确定性内核让"同输入、不同结果"在结构上不可能——红就是红。</span><span class="en">The deterministic kernel makes "same input, different result" structurally impossible. Red means red.</span></span>
     </div>
-    <div class="pain-row">
-      <div class="pain-old"><span class="zh">报告写着 PASS，却没有机器可验证的证据。</span><span class="en">The report says PASS, with no machine-verifiable evidence.</span></div>
-      <div class="pain-new"><span class="zh">每个用例产出 case hash + SHA-256 digest，两次运行逐字节一致是可验证的机器证明。</span><span class="en">Every case emits a case hash + SHA-256 digest; bitwise-identical reruns are machine-checkable proof.</span></div>
+    <div class="c-row"><span class="c-no">§1.2</span>
+      <span class="c-bad"><span class="zh">报告写着 PASS，却没有机器可验证的证据。</span><span class="en">The report says PASS, with no machine-verifiable evidence.</span></span>
+      <span class="c-fix"><span class="zh">每个用例产出 case hash + SHA-256 digest，两次运行逐字节一致是可验证的机器证明。</span><span class="en">Every case emits a case hash + SHA-256 digest; bitwise-identical reruns are machine-checkable proof.</span></span>
     </div>
-    <div class="pain-row">
-      <div class="pain-old"><span class="zh">接进 CI 要写一周胶水代码。</span><span class="en">CI integration costs a week of glue code.</span></div>
-      <div class="pain-new"><span class="zh">JUnit / Bazel / BES 原生输出——不是"支持集成"，是一等公民。</span><span class="en">Native JUnit / Bazel / BES output — not "integratable", a first-class citizen.</span></div>
+    <div class="c-row"><span class="c-no">§1.3</span>
+      <span class="c-bad"><span class="zh">接进 CI 要写一周胶水代码。</span><span class="en">CI integration costs a week of glue code.</span></span>
+      <span class="c-fix"><span class="zh">JUnit / Bazel / BES 原生输出——不是"支持集成"，是一等公民。</span><span class="en">Native JUnit / Bazel / BES output — not "integratable", a first-class citizen.</span></span>
     </div>
-    <div class="pain-row">
-      <div class="pain-old"><span class="zh">验收线定在 0.98 还是 0.95？评审一追问，全场冷场。</span><span class="en">Why is the acceptance line 0.98 and not 0.95? One question in review, and the room goes silent.</span></div>
-      <div class="pain-new"><span class="zh">Wilson 下界替代表面通过率，阈值经裕度分析三步推导——有推导过程的是门禁，没有的是装饰。</span><span class="en">Wilson lower bounds replace surface pass rates, and thresholds are derived by three-step margin analysis — a threshold with a derivation is a gate; without one, decoration.</span></div>
+    <div class="c-row"><span class="c-no">§1.4</span>
+      <span class="c-bad"><span class="zh">验收线定在 0.98 还是 0.95？评审一追问，全场冷场。</span><span class="en">Why is the acceptance line 0.98 and not 0.95? One question in review, and the room goes silent.</span></span>
+      <span class="c-fix"><span class="zh">Wilson 下界替代表面通过率，阈值经裕度分析三步推导——有推导过程的是门禁，没有的是装饰。</span><span class="en">Wilson lower bounds replace surface pass rates, and thresholds are derived by three-step margin analysis — a threshold with a derivation is a gate; without one, decoration.</span></span>
     </div>
   </section>
 
-  <!-- ============ 定位 ============ -->
-  <section id="boundary">
-    <h2><span class="zh">划清边界</span><span class="en">Clear boundaries</span></h2>
+  <!-- ============ §01-B 范围与非范围 ============ -->
+  <section class="clause reveal" id="boundary">
+    <p class="clause-head">§01-B · SCOPE / NON-SCOPE</p>
+    <h2 class="clause-name"><span class="zh">范围与非范围</span><span class="en">Scope and non-scope</span></h2>
     <table class="pos">
       <tr>
-        <th class="zh">Cyclone 不是</th><th class="en">What Cyclone is not</th>
-        <th class="zh">Cyclone 是</th><th class="en">What Cyclone is</th>
+        <th class="zh">非范围（Cyclone 不是）</th><th class="en">Non-scope</th>
+        <th class="zh">范围（Cyclone 是）</th><th class="en">Scope</th>
       </tr>
       <tr>
         <td class="no zh">仿真器——CarMaker / Carla 负责"世界有多真"</td>
