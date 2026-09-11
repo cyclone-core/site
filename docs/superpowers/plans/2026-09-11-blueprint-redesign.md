@@ -25,7 +25,7 @@ grep -o 'class="en"' _site/index.html | wc -l
 grep -o '已支持\|原型验证中\|规划中' _site/index.html | sort | uniq -c
 # 基线值（Task 2 封面落地后实测）：已支持 12 · 原型验证中 11 · 规划中 8
 # （规划中 含封面验证条新增的「单文件二进制」状态点 +1；其余与改版前相等）
-# zh/en span 基线：各 170，应始终保持相等
+# zh/en span 基线：各 172（Task 6/7 各 +1 对），应始终保持相等
 # 约定：状态点 <i class="sdot"> 为装饰性元素，状态语义由相邻文字携带，不加 aria-hidden（评审 Minor 豁免）
 for id in evidence pillars testmap architecture pipeline pains boundary methodology roadmap integrate scenariopack downloads blog contact; do
   grep -q "id=\"$id\"" _site/index.html || echo "MISSING ANCHOR: $id"
