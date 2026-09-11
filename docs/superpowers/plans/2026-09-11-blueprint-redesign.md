@@ -552,7 +552,7 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 - Modify: `_layouts/post.html`
 - Modify: `_posts/*.md`（7 篇 front matter 各加一行 `tn`）
 
-- [ ] **Step 1: 7 篇 front matter 加 tn（按日期正序）**
+- [x] **Step 1: 7 篇 front matter 加 tn（按日期正序）**
 
 ```bash
 cd /Users/caojian/tech/site
@@ -568,21 +568,21 @@ cd /Users/caojian/tech/site
 
 用 Edit 逐篇在 `series: "…"` 行后加 `tn: "TN-0x"`。
 
-- [ ] **Step 2: `_layouts/post.html` 规格书化**
+- [x] **Step 2: `_layouts/post.html` 规格书化**
 
 - CSS 变量对齐主站（`--paper` 等），body 背景改 `var(--paper)`；卡片/引用/表格改直角发丝线（`border-radius: 0`，边框色 `var(--hair)`，表头 mono 小号）；`.btn` 改方形墨框；footer 顶部 `2px solid var(--ink)`。
 - nav 眉线化：左 `CYCLONE · TECHNICAL NOTE`，右 `{{ page.tn }} · <a href="/#blog">全部笔记 ←</a>`，全 mono。
 - post-meta 行改为：`{{ page.tn }} · {{ page.date | date: "%Y-%m-%d" }} · {{ page.series }}`（mono 小号）。
-- 页脚图例行原样保留。
+- 页脚图例行文字原样，三个 tier 徽章按全站迁移转为 st/sdot 状态点（实现已落地）。
 
-- [ ] **Step 3: 构建 + 断言**
+- [x] **Step 3: 构建 + 断言**
 
 ```bash
 grep -o 'TN-0[1-7]' _site/index.html | sort | uniq | wc -l   # 应输出 7
 grep -q 'TN-04' _site/blog/margin-analysis/index.html && echo tn-ok
 ```
 
-- [ ] **Step 4: Commit** `git add _layouts/post.html _posts/ && git commit -m "feat(blog): 文章页规格书化 + TN-01…07 编号"`
+- [x] **Step 4: Commit** `git add _layouts/post.html _posts/ && git commit -m "feat(blog): 文章页规格书化 + TN-01…07 编号"`
 
 ---
 
@@ -590,17 +590,17 @@ grep -q 'TN-04' _site/blog/margin-analysis/index.html && echo tn-ok
 
 **Files:** Modify: `index.html`（script 块）
 
-- [ ] **Step 1: 滚动淡入 JS —— 已于 Task 1 评审修复中提前落地**（commit a1c3970，含 reduced-motion 与无 IO 回退）。本步无需操作，仅核对 `_site/index.html` 含 `IntersectionObserver`。
+- [x] **Step 1: 滚动淡入 JS —— 已于 Task 1 评审修复中提前落地**（commit a1c3970，含 reduced-motion 与无 IO 回退）。本步无需操作，仅核对 `_site/index.html` 含 `IntersectionObserver`。
 
-- [ ] **Step 1.5: noscript 兜底**——`.reveal` 依赖 JS 恢复可见，在 `</style>` 后加一行兜底：
+- [x] **Step 1.5: noscript 兜底**——`.reveal` 依赖 JS 恢复可见，在 `</style>` 后加一行兜底：
 
 ```html
 <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 ```
 
-- [ ] **Step 1.7: 附录 C 副标对齐**（Task 10 评审建议）：#blog 的两行 `<p class="facts zh/en" style="margin-top:-0.6rem;">` 改为 `clause-sub`（文案不动），与附录 A/B 一致；同时统一残留的旧注释标签（四支柱→§02、路线图→§08、接入→§09、场景包→附录A、资料下载→附录B、博客→附录C、深色证据带→§05 证据链）。
+- [x] **Step 1.7: 附录 C 副标对齐**（Task 10 评审建议）：#blog 的两行 `<p class="facts zh/en" style="margin-top:-0.6rem;">` 改为 `clause-sub`（文案不动），与附录 A/B 一致；同时统一残留的旧注释标签（四支柱→§02、路线图→§08、接入→§09、场景包→附录A、资料下载→附录B、博客→附录C、深色证据带→§05 证据链）。
 
-- [ ] **Step 2: 整站终验清单（全部必须过）**
+- [x] **Step 2: 整站终验清单（全部必须过）**
 
 ```bash
 export PATH="$HOME/.local/share/gem/ruby/4.0.0/bin:$PATH"
@@ -619,9 +619,9 @@ for c in '§01' '§02' '§03' '§04' '§05' '§06' '§07' '§08' '§09' 'APPENDI
 ! grep -qE 'class="(hero|pain-row)' _site/index.html && echo legacy-clean
 ```
 
-- [ ] **Step 3: 本地视觉走查**：`jekyll serve`，开 http://localhost:4000 中英各过一遍；640px 宽度模拟移动端。
+- [x] **Step 3: 本地视觉走查**：`jekyll serve`，开 http://localhost:4000 中英各过一遍；640px 宽度模拟移动端。
 
-- [ ] **Step 4: Commit** `git add index.html && git commit -m "feat(site): 条款滚动淡入 + 蓝图风改版收尾"`
+- [x] **Step 4: Commit** `git add index.html && git commit -m "feat(site): 条款滚动淡入 + 蓝图风改版收尾"`
 
 ---
 
