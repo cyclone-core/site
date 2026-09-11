@@ -350,6 +350,11 @@ git add index.html && git commit -m "feat(site): 规格书封面 Hero + 眉线�
 
 **通用规则（Task 3–10）**：各板块原有的引导段落 `<p class="sub zh" style="margin-top:-0.5rem;">…</p>` / `<p class="sub en" …>…</p>` 统一改为 `<p class="clause-sub zh">…</p>` / `<p class="clause-sub en">…</p>`（去掉内联 style；文案原样）。
 
+**状态点转换两种定式**（沿用 Task 2/4 已确立的写法，不得漂移）：
+- 标题/徽章语境（h3 内）：`<span class="st"><i class="sdot g|a|o"></i><span class="zh">已支持</span><span class="en">Supported</span></span>`（zh/en 成对）
+- 段落内联语境（段落本身已有语言）：`<span class="st"><i class="sdot g|a|o"></i>已支持</span>`（裸文字，不再嵌 zh/en）
+- 映射：tier ok → sdot g，tier proto → sdot a，tier plan → sdot o
+
 - [ ] **Step 1: 将 #pains 与 #boundary 合并替换为一个区块**
 
 结构模板如下，**文案逐字取自现有 #pains 四条与 #boundary 两行**（含 zh/en 双语 span）：
