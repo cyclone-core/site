@@ -494,8 +494,8 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#methodology、#audience）
 
-- [ ] **Step 1: #methodology 条款化**：clause-head `§06 · VERDICT METHODOLOGY`，clause-name zh「判定方法学：阈值是推导出来的」/ en 原样；三卡编号 §6.1–6.3；facts 两行原样。
-- [ ] **Step 2: #audience 条款化**：clause-head `§07 · APPLICABILITY`，clause-name zh「适用范围：为谁的什么问题」/ en「Who it's for」；三卡编号 §7.1–7.3；机器人卡内「规划中」徽章改状态点 `.sdot o`。
+- [ ] **Step 1: #methodology 条款化**：clause-head `§06 · VERDICT METHODOLOGY`，clause-name zh「判定方法学：阈值是推导出来的」/ en「Verdict methodology: thresholds are derived, not guessed」（前缀定式）；三卡编号 §6.1–6.3；facts 两行原样。
+- [ ] **Step 2: #audience 条款化**：clause-head `§07 · APPLICABILITY`，clause-name zh「适用范围：为谁的什么问题」/ en「Applicability: who it's for」（前缀定式）；三卡编号 §7.1–7.3；机器人卡内「规划中」徽章改状态点 `.sdot o`。
 - [ ] **Step 3: 构建 + 断言**（头部断言）
 - [ ] **Step 4: Commit** `git commit -m "feat(site): §06/§07 条款化"`
 
