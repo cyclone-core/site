@@ -341,10 +341,11 @@ verdict: <span class="ok">PASS</span>
   </section>
 
   <!-- ============ 四类测试地图 ============ -->
-  <section id="testmap">
-    <h2><span class="zh">一套引擎，四种姿势</span><span class="en">One engine, four test types</span></h2>
-    <p class="sub zh" style="margin-top:-0.5rem;">四类测试共用场景 YAML、调度器、判定引擎与证据链——变的是时钟模式、指标组合和故障配方。</p>
-    <p class="sub en" style="margin-top:-0.5rem;">All four share the same scenario YAML, scheduler, verdict engine, and evidence chain — what changes is the clock mode, the metric set, and the fault recipe.</p>
+  <section class="clause reveal" id="testmap">
+    <p class="clause-head">§03 · TEST-TYPE MATRIX</p>
+    <h2 class="clause-name"><span class="zh">测试类型矩阵：一套引擎，四种姿势</span><span class="en">Test-type matrix: one engine, four test types</span></h2>
+    <p class="clause-sub zh">四类测试共用场景 YAML、调度器、判定引擎与证据链——变的是时钟模式、指标组合和故障配方。</p>
+    <p class="clause-sub en">All four share the same scenario YAML, scheduler, verdict engine, and evidence chain — what changes is the clock mode, the metric set, and the fault recipe.</p>
 
     <table class="pos">
       <tr>
@@ -381,29 +382,28 @@ verdict: <span class="ok">PASS</span>
 
     <div class="cards" style="margin-top:1rem;">
       <div class="card">
-        <h3><span class="zh">功能测试</span><span class="en">Functional</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
+        <h3>§3.1 <span class="zh">功能测试</span><span class="en">Functional</span> <span class="st"><i class="sdot g"></i><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
         <p class="zh">离线模式 + 虚拟时钟，同一用例重跑比特级一致。统计型指标判定已支持；单事件断言（"制动指令必须在 TTC &lt; 1.2s 前发出"）规划中。</p>
         <p class="en">Offline mode on a virtual clock: rerunning the same case is bitwise identical. Statistical metric verdicts are supported; per-event assertions ("brake must fire before TTC &lt; 1.2 s") are planned.</p>
       </div>
       <div class="card">
-        <h3><span class="zh">性能测试</span><span class="en">Performance</span><span class="tier proto"><span class="zh">原型验证中</span><span class="en">Prototype</span></span></h3>
+        <h3>§3.2 <span class="zh">性能测试</span><span class="en">Performance</span> <span class="st"><i class="sdot a"></i><span class="zh">原型验证中</span><span class="en">Prototype</span></span></h3>
         <p class="zh">在线模式 + 真实时钟，总线入站/出站打硬件时间戳。边界：CPU 占用与 WCET 是 OS 级 profiler 的活，Cyclone 管总线可见的端到端时延。</p>
         <p class="en">Online mode on the real clock, with hardware timestamps at bus ingress/egress. Boundary: CPU load and WCET belong to OS-level profilers — Cyclone owns bus-visible end-to-end latency.</p>
       </div>
       <div class="card">
-        <h3><span class="zh">可靠性测试</span><span class="en">Reliability</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
+        <h3>§3.3 <span class="zh">可靠性测试</span><span class="en">Reliability</span> <span class="st"><i class="sdot g"></i><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
         <p class="zh">seed 矩阵跑 300 把，成功率进 Wilson/SPRT——300/300 才能以 95% 置信声明 ≥ 99% 可靠性；soak 长测盯内存泄漏与计数器溢出。报告写"0.99（95% CI 下界，n=300，case hash 可复算）"。</p>
         <p class="en">A seed matrix of 300 runs feeding Wilson/SPRT — only 300/300 supports a ≥ 99% reliability claim at 95% confidence; soak runs watch memory leaks and counter overflows. The report reads "0.99 (95% CI lower bound, n=300, case hash recomputable)".</p>
       </div>
       <div class="card">
-        <h3><span class="zh">环境测试</span><span class="en">Environmental</span><span class="tier proto"><span class="zh">原型验证中</span><span class="en">Prototype</span></span></h3>
+        <h3>§3.4 <span class="zh">环境测试</span><span class="en">Environmental</span> <span class="st"><i class="sdot a"></i><span class="zh">原型验证中</span><span class="en">Prototype</span></span></h3>
         <p class="zh">诚实划界：高低温、振动、EMC、盐雾（ISO 16750 / GB/T 28046）是气候箱和台架的活，软件平台做不了物理环境试验。但环境应力最终都会投影在总线上——软件做的是这一半。</p>
         <p class="en">An honest boundary: heat, vibration, EMC, salt spray (ISO 16750 / GB/T 28046) belong to climate chambers and rigs — no software platform runs physical env tests. But every environmental stress eventually projects onto the bus, and that projection is the software half.</p>
       </div>
     </div>
 
-    <p class="zh" style="margin:1.4rem 0 0.6rem;"><strong>环境应力在总线上的投影</strong>（注入方式标注能力状态）：</p>
-    <p class="en" style="margin:1.4rem 0 0.6rem;"><strong>Environmental stress, projected onto the bus</strong> (injection methods tagged by status):</p>
+    <p class="mono" style="font-size:0.78rem;letter-spacing:1.5px;color:var(--mono);margin:1.4rem 0 0.6rem;">§3.5 · <span class="zh">环境应力的软件投影（注入方式标注能力状态）</span><span class="en">ENV-STRESS PROJECTION (INJECTION METHODS TAGGED BY STATUS)</span></p>
     <table class="pos">
       <tr>
         <th class="zh">物理应力</th><th class="en">Physical stress</th>
@@ -413,22 +413,22 @@ verdict: <span class="ok">PASS</span>
       <tr>
         <td class="zh">高温 → 传感器漂移</td><td class="en">Heat → sensor drift</td>
         <td class="zh">测距偏置、噪声增大</td><td class="en">Range bias, extra noise</td>
-        <td class="zh">corrupt_field 偏置 <span class="tier proto">原型验证中</span></td><td class="en">corrupt_field offset <span class="tier proto">Prototype</span></td>
+        <td class="zh">corrupt_field 偏置 <span class="st"><i class="sdot a"></i>原型验证中</span></td><td class="en">corrupt_field offset <span class="st"><i class="sdot a"></i>Prototype</span></td>
       </tr>
       <tr>
         <td class="zh">振动 → 接插件松动</td><td class="en">Vibration → loose connectors</td>
         <td class="zh">成簇丢帧</td><td class="en">Bursty frame drops</td>
-        <td class="zh">阵发性 drop <span class="tier proto">原型验证中</span></td><td class="en">Bursty drop <span class="tier proto">Prototype</span></td>
+        <td class="zh">阵发性 drop <span class="st"><i class="sdot a"></i>原型验证中</span></td><td class="en">Bursty drop <span class="st"><i class="sdot a"></i>Prototype</span></td>
       </tr>
       <tr>
         <td class="zh">EMC</td><td class="en">EMC</td>
         <td class="zh">位翻转、CRC 错误</td><td class="en">Bit flips, CRC errors</td>
-        <td class="zh">corrupt_field / corrupt_crc <span class="tier plan">规划中</span></td><td class="en">corrupt_field / corrupt_crc <span class="tier plan">Planned</span></td>
+        <td class="zh">corrupt_field / corrupt_crc <span class="st"><i class="sdot o"></i>规划中</span></td><td class="en">corrupt_field / corrupt_crc <span class="st"><i class="sdot o"></i>Planned</span></td>
       </tr>
       <tr>
         <td class="zh">电压跌落 → ECU 重启</td><td class="en">Voltage drop → ECU restart</td>
         <td class="zh">节点冻结恢复</td><td class="en">Node freeze &amp; recovery</td>
-        <td class="zh">freeze + restart <span class="tier plan">规划中</span></td><td class="en">freeze + restart <span class="tier plan">Planned</span></td>
+        <td class="zh">freeze + restart <span class="st"><i class="sdot o"></i>规划中</span></td><td class="en">freeze + restart <span class="st"><i class="sdot o"></i>Planned</span></td>
       </tr>
     </table>
 
@@ -437,8 +437,8 @@ verdict: <span class="ok">PASS</span>
       <p class="en">Elsewhere it's four teams and four report formats: functional scripts, performance fixtures, reliability rigs, env tests. Cyclone is one platform: all four reports share one format, one hash-verifiable chain, and one CI gate. It is the software companion to physical env tests — while the sample bakes in the chamber, the fault campaign runs on the rig, and both evidence sets bind into one DV/PV report.</p>
     </div>
 
-    <p class="facts zh">能力标签：<span class="tier ok">已支持</span> 当前版本可用 · <span class="tier proto">原型验证中</span> 已有可演示原型 · <span class="tier plan">规划中</span> 路线图项，未交付</p>
-    <p class="facts en">Status tags: <span class="tier ok">Supported</span> available today · <span class="tier proto">Prototype</span> demonstrable prototype · <span class="tier plan">Planned</span> on the roadmap, not shipped</p>
+    <p class="facts zh">能力标签：<span class="st"><i class="sdot g"></i>已支持</span> 当前版本可用 · <span class="st"><i class="sdot a"></i>原型验证中</span> 已有可演示原型 · <span class="st"><i class="sdot o"></i>规划中</span> 路线图项，未交付</p>
+    <p class="facts en">Status tags: <span class="st"><i class="sdot g"></i>Supported</span> available today · <span class="st"><i class="sdot a"></i>Prototype</span> demonstrable prototype · <span class="st"><i class="sdot o"></i>Planned</span> on the roadmap, not shipped</p>
   </section>
 
   <!-- ============ 架构：双模时钟 ============ -->
