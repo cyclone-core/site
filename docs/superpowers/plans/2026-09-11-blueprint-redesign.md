@@ -424,9 +424,9 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 - [ ] **Step 1: 区块头条款化，卡片加编号与状态点，表头已是 mono 风格**
 
-- clause-head：`§03 · TEST-TYPE MATRIX`；clause-name：zh「测试类型矩阵：一套引擎，四种姿势」/ en「One engine, four test types」。
+- clause-head：`§03 · TEST-TYPE MATRIX`；clause-name：zh「测试类型矩阵：一套引擎，四种姿势」/ en「Test-type matrix: one engine, four test types」（与 Task 3 条款名前缀定式一致）。
 - 四卡编号 §3.1–§3.4；卡内 `<span class="tier ok/proto">` 全部改为 `<span class="st"><i class="sdot g/a"></i>…</span>`。
-- 环境应力投影子表前导语改为 `§3.5 备注` 样式：`<p class="mono" style="font-size:0.78rem;letter-spacing:1.5px;color:var(--mono)">§3.5 · <span class="zh">环境应力的软件投影</span><span class="en">ENV-STRESS PROJECTION</span></p>`；表内 tier 徽章同样改状态点（o=规划中）。
+- 环境应力投影子表前导语改为 `§3.5 备注` 样式：`<p class="mono" style="font-size:0.78rem;letter-spacing:1.5px;color:var(--mono);margin:1.4rem 0 0.6rem;">§3.5 · <span class="zh">环境应力的软件投影（注入方式标注能力状态）</span><span class="en">ENV-STRESS PROJECTION (INJECTION METHODS TAGGED BY STATUS)</span></p>`（保留原文括号说明与原段距）；表内 tier 徽章同样改状态点（o=规划中）。
 - 四合一 `.map-punch` 保留；底部图例行改为：`● <span class="zh">已支持</span>…`（用 .st 写法），文案不变。
 
 - [ ] **Step 2: 构建 + 断言**（头部断言；标签计数守恒）
