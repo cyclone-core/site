@@ -313,28 +313,29 @@ verdict: <span class="ok">PASS</span>
   </section>
 
   <!-- ============ 四支柱 ============ -->
-  <section id="pillars">
-    <h2><span class="zh">四根支柱</span><span class="en">Four pillars</span></h2>
+  <section class="clause reveal" id="pillars">
+    <p class="clause-head">§02 · SYSTEM CHARACTERISTICS</p>
+    <h2 class="clause-name"><span class="zh">系统特性</span><span class="en">System characteristics</span></h2>
     <div class="cards">
       <div class="card">
-        <h3><span class="zh">确定性回放</span><span class="en">Deterministic Replay</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
+        <h3>§2.1 <span class="zh">确定性回放</span><span class="en">Deterministic Replay</span> <span class="st"><i class="sdot g"></i><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
         <p class="zh">虚拟时间回放 + 内容寻址：同 seed 的证据日志逐字节一致。</p>
         <p class="en">Virtual-time replay with content addressing: identical seeds produce bitwise-identical evidence logs.</p>
       </div>
       <div class="card">
-        <h3><span class="zh">统计判定</span><span class="en">Statistical Verdicts</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
+        <h3>§2.2 <span class="zh">统计判定</span><span class="en">Statistical Verdicts</span> <span class="st"><i class="sdot g"></i><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
         <p class="zh">Wilson 置信区间 + SPRT 序贯检验——用统计显著性替代人肉阈值。</p>
         <p class="en">Wilson score intervals + SPRT sequential testing — statistical significance instead of hand-tuned thresholds.</p>
       </div>
       <div class="card">
-        <h3><span class="zh">证据链</span><span class="en">Evidence Chain</span><span class="tier ok"><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
+        <h3>§2.3 <span class="zh">证据链</span><span class="en">Evidence Chain</span> <span class="st"><i class="sdot g"></i><span class="zh">已支持</span><span class="en">Supported</span></span></h3>
         <p class="zh">四件套：case hash + JSONL SHA-256 digest + 失败快照 + JUnit XML——每条 CI 记录可回溯到用例版本与原始数据。</p>
         <p class="en">The four-piece set: case hash + JSONL SHA-256 digest + failure snapshot + JUnit XML — every CI record traces back to the case version and raw data.</p>
       </div>
       <div class="card">
-        <h3><span class="zh">CI 原生</span><span class="en">CI-Native</span></h3>
-        <p class="zh">JUnit XML 开箱即用<span class="tier ok">已支持</span>；rules_cyclone 让场景测试成为 bazel test 一等公民<span class="tier proto">原型验证中</span>；BES 就绪<span class="tier proto">原型验证中</span>。</p>
-        <p class="en">JUnit XML out of the box <span class="tier ok">Supported</span>; rules_cyclone makes scenario tests first-class bazel test citizens <span class="tier proto">Prototype</span>; BES-ready <span class="tier proto">Prototype</span>.</p>
+        <h3>§2.4 <span class="zh">CI 原生</span><span class="en">CI-Native</span></h3>
+        <p class="zh">JUnit XML 开箱即用<span class="st"><i class="sdot g"></i>已支持</span>；rules_cyclone 让场景测试成为 bazel test 一等公民<span class="st"><i class="sdot a"></i>原型验证中</span>；BES 就绪<span class="st"><i class="sdot a"></i>原型验证中</span>。</p>
+        <p class="en">JUnit XML out of the box <span class="st"><i class="sdot g"></i>Supported</span>; rules_cyclone makes scenario tests first-class bazel test citizens <span class="st"><i class="sdot a"></i>Prototype</span>; BES-ready <span class="st"><i class="sdot a"></i>Prototype</span>.</p>
       </div>
     </div>
   </section>
