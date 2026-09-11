@@ -516,9 +516,9 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#scenariopack、#downloads、#blog、CTA、footer）
 
-- [ ] **Step 1: #scenariopack**：clause-head `APPENDIX A · SCENARIO PACK`，clause-name zh「附录 A · 场景包目录」/ en「Appendix A · Scenario pack」；目录 step 与留资 mailto 原样。
-- [ ] **Step 2: #downloads**：clause-head `APPENDIX B · REFERENCES`，clause-name zh「附录 B · 参考资料」/ en「Appendix B · References」；两卡原样。
-- [ ] **Step 3: #blog**：clause-head `APPENDIX C · TECHNICAL NOTES`，clause-name zh「附录 C · 技术笔记」/ en「Appendix C · Technical notes」；列表项加 TN 编号——post-row 改为：
+- [x] **Step 1: #scenariopack**：clause-head `APPENDIX A · SCENARIO PACK`，clause-name zh「附录 A · 场景包目录」/ en「Appendix A · Scenario pack」；目录 step 与留资 mailto 原样。
+- [x] **Step 2: #downloads**：clause-head `APPENDIX B · REFERENCES`，clause-name zh「附录 B · 参考资料」/ en「Appendix B · References」；两卡原样。
+- [x] **Step 3: #blog**：clause-head `APPENDIX C · TECHNICAL NOTES`，clause-name zh「附录 C · 技术笔记」/ en「Appendix C · Technical notes」；列表项加 TN 编号——post-row 改为：
 
 ```html
       {% for post in site.posts %}
@@ -532,7 +532,7 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 （`post.tn` 在 Task 11 加入各篇 front matter；本步先改模板。）
 
-- [ ] **Step 4: CTA/footer 文档控制化**：CTA 区块加 clause-head `DOCUMENT CONTROL`，h2 与三按钮（演示/报价/微信）原样；footer 结构原样（已有图例与版本日期），**但页脚图例行里的三个 `.tier` 徽章必须转换为状态点写法**（`.tier` 的 CSS 已删除，不转换会退化成无样式文本）：
+- [x] **Step 4: CTA/footer 文档控制化**：CTA 区块加 clause-head `DOCUMENT CONTROL`，h2 与三按钮（演示/报价/微信）原样；footer 结构原样（已有图例与版本日期），**但页脚图例行里的三个 `.tier` 徽章必须转换为状态点写法**（`.tier` 的 CSS 已删除，不转换会退化成无样式文本）：
 
 ```html
 <span class="st"><i class="sdot g"></i><span class="zh">已支持</span><span class="en">Supported</span></span>
@@ -541,8 +541,8 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 ```
 
 `.foot-legend` 样式已在新 CSS。
-- [ ] **Step 5: 构建 + 断言**：`grep -q 'APPENDIX C' _site/index.html && echo appc-ok`
-- [ ] **Step 6: Commit** `git commit -m "feat(site): 附录 A/B/C + 文档控制区块"`
+- [x] **Step 5: 构建 + 断言**：`grep -q 'APPENDIX C' _site/index.html && echo appc-ok`
+- [x] **Step 6: Commit** `git commit -m "feat(site): 附录 A/B/C + 文档控制区块"`
 
 ---
 
@@ -597,6 +597,8 @@ grep -q 'TN-04' _site/blog/margin-analysis/index.html && echo tn-ok
 ```html
 <noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 ```
+
+- [ ] **Step 1.7: 附录 C 副标对齐**（Task 10 评审建议）：#blog 的两行 `<p class="facts zh/en" style="margin-top:-0.6rem;">` 改为 `clause-sub`（文案不动），与附录 A/B 一致；同时统一残留的旧注释标签（四支柱→§02、路线图→§08、接入→§09、场景包→附录A、资料下载→附录B、博客→附录C、深色证据带→§05 证据链）。
 
 - [ ] **Step 2: 整站终验清单（全部必须过）**
 
