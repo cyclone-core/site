@@ -346,6 +346,8 @@ git add index.html && git commit -m "feat(site): 规格书封面 Hero + 眉线�
 **Files:**
 - Modify: `index.html`（#pains 与 #boundary 两区块，需把 boundary 移入 pains 之后合并为一个 clause）
 
+**通用规则（Task 3–10）**：各板块原有的引导段落 `<p class="sub zh" style="margin-top:-0.5rem;">…</p>` / `<p class="sub en" …>…</p>` 统一改为 `<p class="clause-sub zh">…</p>` / `<p class="clause-sub en">…</p>`（去掉内联 style；文案原样）。
+
 - [ ] **Step 1: 将 #pains 与 #boundary 合并替换为一个区块**
 
 结构模板如下，**文案逐字取自现有 #pains 四条与 #boundary 两行**（含 zh/en 双语 span）：
@@ -523,7 +525,15 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 （`post.tn` 在 Task 11 加入各篇 front matter；本步先改模板。）
 
-- [ ] **Step 4: CTA/footer 文档控制化**：CTA 区块加 clause-head `DOCUMENT CONTROL`，h2 与三按钮（演示/报价/微信）原样；footer 结构原样（已有图例与版本日期），`.foot-legend` 样式已在新 CSS。
+- [ ] **Step 4: CTA/footer 文档控制化**：CTA 区块加 clause-head `DOCUMENT CONTROL`，h2 与三按钮（演示/报价/微信）原样；footer 结构原样（已有图例与版本日期），**但页脚图例行里的三个 `.tier` 徽章必须转换为状态点写法**（`.tier` 的 CSS 已删除，不转换会退化成无样式文本）：
+
+```html
+<span class="st"><i class="sdot g"></i><span class="zh">已支持</span><span class="en">Supported</span></span>
+<span class="st"><i class="sdot a"></i><span class="zh">原型验证中</span><span class="en">Prototype</span></span>
+<span class="st"><i class="sdot o"></i><span class="zh">规划中</span><span class="en">Planned</span></span>
+```
+
+`.foot-legend` 样式已在新 CSS。
 - [ ] **Step 5: 构建 + 断言**：`grep -q 'APPENDIX C' _site/index.html && echo appc-ok`
 - [ ] **Step 6: Commit** `git commit -m "feat(site): 附录 A/B/C + 文档控制区块"`
 
@@ -573,18 +583,7 @@ grep -q 'TN-04' _site/blog/margin-analysis/index.html && echo tn-ok
 
 **Files:** Modify: `index.html`（script 块）
 
-- [ ] **Step 1: 在现有 `<script>` 内追加滚动淡入**
-
-```javascript
-  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-    }, { threshold: 0.08 });
-    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
-  } else {
-    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
-  }
-```
+- [ ] **Step 1: 滚动淡入 JS —— 已于 Task 1 评审修复中提前落地**（commit a1c3970，含 reduced-motion 与无 IO 回退）。本步无需操作，仅核对 `_site/index.html` 含 `IntersectionObserver`。
 
 - [ ] **Step 2: 整站终验清单（全部必须过）**
 
