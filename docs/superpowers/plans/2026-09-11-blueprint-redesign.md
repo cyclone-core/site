@@ -25,7 +25,7 @@ grep -o 'class="en"' _site/index.html | wc -l
 grep -o '已支持\|原型验证中\|规划中' _site/index.html | sort | uniq -c
 # 基线值（Task 2 封面落地后实测）：已支持 12 · 原型验证中 11 · 规划中 8
 # （规划中 含封面验证条新增的「单文件二进制」状态点 +1；其余与改版前相等）
-# zh/en span 基线：各 172（Task 6/7 各 +1 对），应始终保持相等
+# zh/en span 基线：各 174（Task 6 +1 对，Task 7 +1 对，Task 9 +2 对），应始终保持相等
 # 约定：状态点 <i class="sdot"> 为装饰性元素，状态语义由相邻文字携带，不加 aria-hidden（评审 Minor 豁免）
 for id in evidence pillars testmap architecture pipeline pains boundary methodology roadmap integrate scenariopack downloads blog contact; do
   grep -q "id=\"$id\"" _site/index.html || echo "MISSING ANCHOR: $id"
@@ -505,7 +505,7 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#roadmap、#integrate）
 
-- [x] **Step 1: #roadmap**：clause-head `§08 · REVISION ROADMAP`，clause-name zh「修订路线」/ en「Revision roadmap」；sub 文案原样；图片包 `.fig`：figtag `FIG. 8-1 · M0→M3 十二周路线`，figcap zh「图 8-1 — 每周可交付，三周一决策」/ en 对应。roadmap.pdf 链接保留。
+- [x] **Step 1: #roadmap**：clause-head `§08 · REVISION ROADMAP`，clause-name zh「修订路线」/ en「Revision roadmap」；sub 文案原样；图片包 `.fig`：figtag `FIG. 8-1 · M0→M3 十二周路线`，figcap zh「图 8-1 — 每周可交付，三周一决策（点击下载原 PDF）」/ en「Fig. 8-1 — Weekly deliverables, a decision gate every three weeks (click for the PDF).」（后缀为已核准的实现补充）。roadmap.pdf 链接保留。
 - [x] **Step 2: #integrate**：clause-head `§09 · INTEGRATION INTERFACES`，clause-name zh「集成接口」/ en「Integration interfaces」；两张卡标题编号 §9.1（Bazel，状态点 a 原型）/ §9.2（其他 CI）；终端块包 `.fig` 或保持卡内；终端注释文字原样。
 - [x] **Step 3: 构建 + 断言**
 - [x] **Step 4: Commit** `git commit -m "feat(site): §08/§09 条款化"`
