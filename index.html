@@ -574,22 +574,28 @@ verdict: <span class="ok">PASS</span>
   </section>
 
   <!-- ============ 路线图 ============ -->
-  <section id="roadmap">
-    <h2><span class="zh">演进路线</span><span class="en">Roadmap</span></h2>
-    <p class="sub zh" style="margin-top:-0.5rem;">M0→M3 十二周：Walking Skeleton → 实时内核 → 数据闭环 → CI 验收——每周可交付，三周一决策。</p>
-    <p class="sub en" style="margin-top:-0.5rem;">M0→M3 in twelve weeks: walking skeleton → real-time kernel → data loop → CI acceptance. Weekly deliverables, a decision gate every three weeks.</p>
-    <a href="roadmap.pdf" title="下载原 PDF / Download PDF">
-      <img class="roadmap-img" src="assets/roadmap.webp"
-           alt="Cyclone Core MVP 演进路线图 M0→M3 / Roadmap M0–M3" loading="lazy">
-    </a>
+  <section class="clause reveal" id="roadmap">
+    <p class="clause-head">§08 · REVISION ROADMAP</p>
+    <h2 class="clause-name"><span class="zh">修订路线</span><span class="en">Revision roadmap</span></h2>
+    <p class="clause-sub zh">M0→M3 十二周：Walking Skeleton → 实时内核 → 数据闭环 → CI 验收——每周可交付，三周一决策。</p>
+    <p class="clause-sub en">M0→M3 in twelve weeks: walking skeleton → real-time kernel → data loop → CI acceptance. Weekly deliverables, a decision gate every three weeks.</p>
+    <div class="fig">
+      <div class="figtag">FIG. 8-1 · <span class="zh">M0→M3 十二周路线</span><span class="en">M0→M3 twelve-week roadmap</span></div>
+      <a href="roadmap.pdf" title="下载原 PDF / Download PDF">
+        <img class="roadmap-img" src="assets/roadmap.webp"
+             alt="Cyclone Core MVP 演进路线图 M0→M3 / Roadmap M0–M3" loading="lazy">
+      </a>
+      <div class="figcap"><span class="zh">图 8-1 — 每周可交付，三周一决策（点击下载原 PDF）</span><span class="en">Fig. 8-1 — Weekly deliverables, a decision gate every three weeks (click for the PDF).</span></div>
+    </div>
   </section>
 
   <!-- ============ 接入 ============ -->
-  <section id="integrate">
-    <h2><span class="zh">接入路径</span><span class="en">Two ways in</span></h2>
+  <section class="clause reveal" id="integrate">
+    <p class="clause-head">§09 · INTEGRATION INTERFACES</p>
+    <h2 class="clause-name"><span class="zh">集成接口</span><span class="en">Integration interfaces</span></h2>
     <div class="cards">
       <div class="card">
-        <h3><span class="zh">Bazel 用户</span><span class="en">For Bazel users</span><span class="tier proto"><span class="zh">原型验证中</span><span class="en">Prototype</span></span></h3>
+        <h3>§9.1 <span class="zh">Bazel 用户</span><span class="en">For Bazel users</span> <span class="st"><i class="sdot a"></i><span class="zh">原型验证中</span><span class="en">Prototype</span></span></h3>
         <div class="term"><span class="c"># MODULE.bazel</span>
 bazel_dep(name = "rules_cyclone", version = "0.1.0")
 
@@ -602,7 +608,7 @@ cyclone_test(
 <span class="p">$</span> bazel test //...   <span class="c"># 与单元测试同图、同缓存、同看板</span></div>
       </div>
       <div class="card">
-        <h3><span class="zh">其他 CI</span><span class="en">Any other CI</span></h3>
+        <h3>§9.2 <span class="zh">其他 CI</span><span class="en">Any other CI</span></h3>
         <div class="term"><span class="c"># 单文件二进制，下载即跑（规划中）/ single-file binary (planned)</span>
 <span class="p">$</span> cyclone run cases/aeb.yaml --out out/
 
