@@ -300,6 +300,7 @@ verdict: <span class="ok">PASS</span>
             <li><span class="zh">打开 </span><span class="en">Open </span><code>manifest.json</code><span class="zh">：每条 verdict 可回溯到用例版本与原始数据。</span><span class="en">: every verdict traces to the case version and raw data.</span></li>
           </ol>
           <p class="ev-note"><span class="zh">证据四件套：</span><span class="en">The evidence four-piece set: </span><code>case hash</code> · <code>JSONL SHA-256 digest</code> · <code>failure snapshot</code> · <code>JUnit XML</code></p>
+          <p class="ev-note"><span class="zh"><a href="/solutions/test-evidence-chain/" style="color:#3fd08c">深入了解：可审计测试证据链 →</a></span><span class="en"><a href="/en/solutions/test-evidence-chain/" style="color:#3fd08c">Deep dive: the auditable test evidence chain →</a></span></p>
         </div>
         <div class="ev-right">
           <span class="pill"><b>261</b> <span class="zh">项自动化测试全绿</span><span class="en">automated tests green</span></span>
@@ -365,6 +366,7 @@ verdict: <span class="ok">PASS</span>
         <p class="en">JUnit XML out of the box <span class="st"><i class="sdot g"></i>Supported</span>; rules_cyclone makes scenario tests first-class bazel test citizens <span class="st"><i class="sdot a"></i>Prototype</span>; BES-ready <span class="st"><i class="sdot a"></i>Prototype</span>.</p>
       </div>
     </div>
+    <p class="facts"><span class="zh">深入了解：<a href="/solutions/fault-injection/">确定性故障注入</a> · <a href="/solutions/adas-regression-testing/">ADAS 场景回归测试</a> · <a href="/solutions/test-evidence-chain/">可审计测试证据链</a></span><span class="en">Deep dives: <a href="/en/solutions/fault-injection/">Deterministic fault injection</a> · <a href="/en/solutions/adas-regression-testing/">ADAS scenario regression testing</a> · <a href="/en/solutions/test-evidence-chain/">Auditable test evidence chain</a></span></p>
   </section>
 
   <!-- ============ §03 测试类型矩阵 ============ -->
@@ -664,6 +666,7 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
 
     <p class="facts zh">场景内数值为演示数据，非真实 SUT 实测；阈值需按你的 SUT 基线标定（属裕度分析服务项）。</p>
     <p class="facts en">All in-scenario figures are demo data, not measured on a real SUT; thresholds must be calibrated against your SUT baseline (a margin-analysis service item).</p>
+    <p class="facts"><span class="zh">场景如何进 CI 回归：<a href="/solutions/adas-regression-testing/">ADAS 场景回归测试方案 →</a></span><span class="en">How scenarios become CI regression: <a href="/en/solutions/adas-regression-testing/">ADAS scenario regression testing →</a></span></p>
   </section>
 
   <!-- ============ 附录 B 参考资料 ============ -->

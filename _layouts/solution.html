@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: 'zh' }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page.title }} · Cyclone</title>
+<meta name="description" content="{{ page.description }}">
+<meta property="og:title" content="{{ page.title }} · Cyclone">
+<meta property="og:description" content="{{ page.description }}">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://www.cyclone-xil.com{{ page.url }}">
+<meta property="og:image" content="https://www.cyclone-xil.com/assets/og-cover.png">
+{% if page.lang == "en" %}<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+{% else %}<meta property="og:locale" content="zh_CN">
+<meta property="og:locale:alternate" content="en_US">
+{% endif %}<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.cyclone-xil.com/assets/og-cover.png">
+<link rel="canonical" href="https://www.cyclone-xil.com{{ page.url }}">
+{% if page.lang == "en" %}<link rel="alternate" hreflang="en" href="https://www.cyclone-xil.com{{ page.url }}">
+{% if page.zh_url %}<link rel="alternate" hreflang="zh" href="https://www.cyclone-xil.com{{ page.zh_url }}">
+{% endif %}{% else %}<link rel="alternate" hreflang="zh" href="https://www.cyclone-xil.com{{ page.url }}">
+{% if page.en_url %}<link rel="alternate" hreflang="en" href="https://www.cyclone-xil.com{{ page.en_url }}">
+{% endif %}{% endif %}<link rel="alternate" hreflang="x-default" href="https://www.cyclone-xil.com{{ page.zh_url | default: page.url }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "{{ page.title }}",
+  "description": "{{ page.description }}",
+  "inLanguage": "{% if page.lang == 'en' %}en{% else %}zh-CN{% endif %}",
+  "url": "https://www.cyclone-xil.com{{ page.url }}",
+  "author": { "@type": "Organization", "name": "Cyclone", "url": "https://www.cyclone-xil.com/" }
+}
+</script>
+<style>
+  :root {
+    --paper: #fdfdfa; --ink: #16181a; --hair: #d9d9d2; --mono: #6b6f6b;
+    --grn: #0a7a2f; --red: #c01818; --amb: #a06a00; --ambdot: #d9a520;
+    --term-bg: #10141a; --term-fg: #d6e2d8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif;
+    color: var(--ink); background: var(--paper); margin: 0; line-height: 1.75;
+  }
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 1.4rem; }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+
+  nav {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.8rem 0; border-bottom: 1px solid var(--ink);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .brand { font-weight: 700; letter-spacing: 1.5px; font-size: 0.95rem; }
+  .brand a { color: var(--ink); text-decoration: none; }
+  .brand small { color: var(--mono); font-weight: 400; margin-left: 8px; letter-spacing: 0.5px; }
+  .navlinks a { color: var(--mono); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.5px; margin-left: 1.2rem; }
+  .navlinks a:hover { color: var(--grn); }
+
+  article { padding: 2.2rem 0 2.6rem; }
+  .docmeta {
+    font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem;
+    letter-spacing: 1.6px; color: var(--mono);
+    padding-bottom: 0.7rem; margin-bottom: 1.6rem; border-bottom: 1px solid var(--ink);
+    display: flex; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap;
+  }
+  h1 { font-size: 1.8rem; font-weight: 800; letter-spacing: -0.5px; line-height: 1.35; margin: 0 0 0.6rem; }
+  .lede { color: #333; font-size: 1.02rem; border-left: 3px solid var(--ink); padding-left: 1rem; margin: 0 0 2rem; }
+  article h2 {
+    font-size: 1.2rem; margin: 2.4rem 0 0.8rem; padding-top: 0.4rem;
+  }
+  article h2 .sec-no { font-family: ui-monospace, Menlo, monospace; font-size: 0.75rem; letter-spacing: 2px; color: var(--mono); display: block; margin-bottom: 0.2rem; }
+  article h3 { font-size: 1.02rem; margin: 1.6rem 0 0.5rem; }
+  article p { margin: 0.9rem 0; }
+  article ul, article ol { padding-left: 1.5rem; }
+  article li { margin: 0.35rem 0; }
+  article a { color: var(--grn); }
+
+  table { border-collapse: collapse; width: 100%; margin: 1.1rem 0; font-size: 0.92rem; }
+  th, td { border: 1px solid var(--hair); padding: 8px 12px; text-align: left; vertical-align: top; }
+  th { background: #f4f4ef; font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; letter-spacing: 1px; font-weight: 600; }
+  td.no { color: var(--mono); }
+  td.yes { color: var(--grn); }
+  td.yes strong { color: var(--grn); }
+
+  code { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: 0.88em; background: #f2f4f3; padding: 0.1em 0.35em; }
+  pre {
+    background: var(--term-bg); color: var(--term-fg);
+    padding: 1rem 1.2rem; overflow-x: auto; line-height: 1.65; font-size: 0.85rem;
+  }
+  pre code { background: none; padding: 0; color: inherit; }
+
+  blockquote {
+    margin: 1rem 0; padding: 0.6rem 1.1rem;
+    border-left: 3px solid var(--grn); background: #f7faf7; color: #333;
+  }
+  blockquote p { margin: 0.3rem 0; }
+
+  .facts { color: var(--mono); font-size: 0.9rem; margin-top: 1.1rem; }
+  .facts a { color: var(--ink); }
+
+  .st { display: inline-flex; align-items: center; gap: 5px; font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; color: var(--mono); white-space: nowrap; }
+  .sdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .sdot.g { background: var(--grn); } .sdot.a { background: var(--ambdot); } .sdot.o { background: transparent; border: 1.5px solid #999; }
+
+  .cta {
+    border: 1px solid var(--ink); padding: 1.4rem 1.4rem; margin: 2.6rem 0 0;
+    background: #fff;
+  }
+  .cta h2 { margin: 0 0 0.4rem; font-size: 1.15rem; }
+  .cta p { color: var(--mono); margin: 0 0 1rem; }
+  .btn {
+    display: inline-block; border: 1px solid var(--ink);
+    padding: 0.55rem 1.5rem; margin: 0 0.4rem 0.4rem 0; text-decoration: none; color: var(--ink);
+    font-size: 0.85rem; font-family: ui-monospace, Menlo, monospace; letter-spacing: 1px;
+    background: transparent;
+  }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn:hover { border-color: var(--grn); color: var(--grn); }
+  .btn.primary:hover { background: var(--grn); border-color: var(--grn); color: #fff; }
+
+  footer { border-top: 2px solid var(--ink); padding: 1.4rem 0 2.4rem; color: var(--mono); font-size: 0.85rem; }
+  .foot-legend { margin-bottom: 0.9rem; font-size: 0.8rem; }
+  .foot-legend p { margin: 0.25rem 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+{% if page.lang == "en" %}
+  <nav>
+    <div class="brand"><a href="/en/">CYCLONE</a><small>Deterministic Scenario Testing</small></div>
+    <div class="navlinks">
+      <a href="/en/">Home ↑</a>
+      <a href="/en/#blog">Notes</a>
+      {% if page.zh_url %}<a href="{{ page.zh_url }}" hreflang="zh">中文</a>{% endif %}
+    </div>
+  </nav>
+  <article>
+    <div class="docmeta">
+      <span>CYCLONE SOLUTION BRIEF</span>
+      <span>{{ page.docno }} · REV 2026-09-12</span>
+    </div>
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.description }}</p>
+
+    {{ content }}
+
+    <div class="cta">
+      <h2>Run it on your own scenario</h2>
+      <p>A 30-minute demo: AEB regression → inject a fault → open the evidence report.</p>
+      <a class="btn primary" href="mailto:caojian258@icloud.com?subject=Cyclone%20demo%20booking">Book a 30-min demo</a>
+      <a class="btn" href="/en/#scenariopack">Get the scenario pack</a>
+    </div>
+  </article>
+  <footer>
+    <div class="foot-legend">
+      <p>Status tags: <span class="st"><i class="sdot g"></i>Supported</span> available today · <span class="st"><i class="sdot a"></i>Prototype</span> demonstrable prototype · <span class="st"><i class="sdot o"></i>Planned</span> on the roadmap, not shipped. Sample figures are demo data, not measured on a real SUT.</p>
+    </div>
+    Cyclone — Deterministic Scenario Testing Kernel · © 2026 · Contact: caojian258@icloud.com / WeChat jiancao258
+  </footer>
+{% else %}
+  <nav>
+    <div class="brand"><a href="/">CYCLONE</a><small>确定性场景测试内核</small></div>
+    <div class="navlinks">
+      <a href="/">首页 ↑</a>
+      <a href="/#blog">技术笔记</a>
+      {% if page.en_url %}<a href="{{ page.en_url }}" hreflang="en">EN</a>{% endif %}
+    </div>
+  </nav>
+  <article>
+    <div class="docmeta">
+      <span>CYCLONE SOLUTION BRIEF</span>
+      <span>{{ page.docno }} · REV 2026-09-12</span>
+    </div>
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.description }}</p>
+
+    {{ content }}
+
+    <div class="cta">
+      <h2>拿你自己的场景跑一次</h2>
+      <p>30 分钟演示：AEB 回归 → 注入故障 → 打开证据报告。</p>
+      <a class="btn primary" href="mailto:caojian258@icloud.com?subject=Cyclone%20%E6%BC%94%E7%A4%BA%E9%A2%84%E7%BA%A6">约 30 分钟演示</a>
+      <a class="btn" href="/#scenariopack">获取场景包</a>
+    </div>
+  </article>
+  <footer>
+    <div class="foot-legend">
+      <p>能力标签：<span class="st"><i class="sdot g"></i>已支持</span> 当前版本可用 · <span class="st"><i class="sdot a"></i>原型验证中</span> 已有可演示原型 · <span class="st"><i class="sdot o"></i>规划中</span> 路线图项，未交付。示例数值均为演示数据，非真实 SUT 实测。</p>
+    </div>
+    Cyclone — 确定性场景测试内核 · © 2026 · 联系：caojian258@icloud.com / 微信 jiancao258
+  </footer>
+{% endif %}
+</div>
+</body>
+</html>
