@@ -1,6 +1,6 @@
 # 官网蓝图风改版实施计划
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [x]`) syntax for tracking.
 
 **Goal:** 将官网重塑为「工程图纸风 × 规格书叙事」：整站即一份《Cyclone 规格书》，Hero 为封面，板块为 §01–§10 条款 + 附录，博客为技术笔记 TN-01…07。
 
@@ -23,8 +23,10 @@ rm -rf _site && jekyll build 2>&1 | grep -iE 'error|warn|done'
 grep -o 'class="zh"' _site/index.html | wc -l   # zh 与 en 数量应相等：
 grep -o 'class="en"' _site/index.html | wc -l
 grep -o '已支持\|原型验证中\|规划中' _site/index.html | sort | uniq -c
-# 基线值（改版前实测）：已支持 12 · 原型验证中 11 · 规划中 7（含页脚图例，改版后应完全相等）
-# zh/en span 基线：各 159，应保持相等
+# 基线值（Task 2 封面落地后实测）：已支持 12 · 原型验证中 11 · 规划中 8
+# （规划中 含封面验证条新增的「单文件二进制」状态点 +1；其余与改版前相等）
+# zh/en span 基线：各 174（Task 6 +1 对，Task 7 +1 对，Task 9 +2 对），应始终保持相等
+# 约定：状态点 <i class="sdot"> 为装饰性元素，状态语义由相邻文字携带，不加 aria-hidden（评审 Minor 豁免）
 for id in evidence pillars testmap architecture pipeline pains boundary methodology roadmap integrate scenariopack downloads blog contact; do
   grep -q "id=\"$id\"" _site/index.html || echo "MISSING ANCHOR: $id"
 done; echo anchors-ok
@@ -36,7 +38,7 @@ done; echo anchors-ok
 
 **Files:** 无（仅 git）
 
-- [ ] **Step 1: 提交改版前全部工作**
+- [x] **Step 1: 提交改版前全部工作**
 
 ```bash
 cd /Users/caojian/tech/site
@@ -53,7 +55,7 @@ git commit -m "feat(site): 博客系统(7篇) + 四类测试地图 + 全站诚�
 **Files:**
 - Modify: `index.html`（替换整个 `<style>` 块，约第 14–200 行）
 
-- [ ] **Step 1: 用以下完整样式替换 `<style>` 全部内容**
+- [x] **Step 1: 用以下完整样式替换 `<style>` 全部内容**
 
 ```css
   :root {
@@ -254,12 +256,12 @@ git commit -m "feat(site): 博客系统(7篇) + 四类测试地图 + 全站诚�
 
 同时删除旧样式中不再使用的：`.hero`、`.slogan`、`.tagline`、`.pain-row/.pain-old/.pain-new`（Task 3 会以新类重新引入，见 Task 3 Step 1）、旧 `.tier` 徽章样式（由 `.st`/`.sdot` 取代）。
 
-- [ ] **Step 2: 构建 + 语义守恒断言**
+- [x] **Step 2: 构建 + 语义守恒断言**
 
 执行「构建命令」和「全局语义守恒断言」（见本计划头部）。此时页面样式会半旧半新（正常，后续任务逐区替换结构）。
 预期：构建无 error；zh/en 数量相等；锚点全在。
 
-- [ ] **Step 3: Commit**
+- [x] **Step 3: Commit**
 
 ```bash
 git add index.html && git commit -m "refactor(site): 蓝图风设计系统 CSS 基座"
@@ -272,7 +274,7 @@ git add index.html && git commit -m "refactor(site): 蓝图风设计系统 CSS �
 **Files:**
 - Modify: `index.html`（nav 与 hero 区块）
 
-- [ ] **Step 1: 替换 nav**
+- [x] **Step 1: 替换 nav**
 
 ```html
   <nav>
@@ -288,7 +290,7 @@ git add index.html && git commit -m "refactor(site): 蓝图风设计系统 CSS �
   </nav>
 ```
 
-- [ ] **Step 2: 用封面替换整个 `.hero` 区块（`<!-- ============ Hero ============ -->` 到 `</div><!-- /hero -->`）**
+- [x] **Step 2: 用封面替换整个 `.hero` 区块（`<!-- ============ Hero ============ -->` 到 `</div><!-- /hero -->`）**
 
 ```html
   <!-- ============ 封面 ============ -->
@@ -331,7 +333,7 @@ verdict: <span class="ok">PASS</span>
 
 注：`.cover` 在 `.wrap` 内；方格纹通过 CSS `background-image` 生效，无需额外元素。原 `.hero`  closing 注释 `</div><!-- /hero -->` 一并替换。原 `</div><!-- /wrap（上半） -->` 结构保留。
 
-- [ ] **Step 3: 构建 + 断言 + Commit**
+- [x] **Step 3: 构建 + 断言 + Commit**
 
 ```bash
 # 构建 + 全局断言（计划头部）后：
@@ -344,9 +346,16 @@ git add index.html && git commit -m "feat(site): 规格书封面 Hero + 眉线�
 ### Task 3: §01 问题定义（pains + boundary）
 
 **Files:**
-- Modify: `index.html`（#pains 与 #boundary 两区块，需把 boundary 移入 pains 之后合并为一个 clause）
+- Modify: `index.html`（#pains 与 #boundary 两区块各自条款化，保持 id 不变）
 
-- [ ] **Step 1: 将 #pains 与 #boundary 合并替换为一个区块**
+**通用规则（Task 3–10）**：各板块原有的引导段落 `<p class="sub zh" style="margin-top:-0.5rem;">…</p>` / `<p class="sub en" …>…</p>` 统一改为 `<p class="clause-sub zh">…</p>` / `<p class="clause-sub en">…</p>`（去掉内联 style；文案原样）。
+
+**状态点转换两种定式**（沿用 Task 2/4 已确立的写法，不得漂移）：
+- 标题/徽章语境（h3 内）：`<span class="st"><i class="sdot g|a|o"></i><span class="zh">已支持</span><span class="en">Supported</span></span>`（zh/en 成对）
+- 段落内联语境（段落本身已有语言）：`<span class="st"><i class="sdot g|a|o"></i>已支持</span>`（裸文字，不再嵌 zh/en）
+- 映射：tier ok → sdot g，tier proto → sdot a，tier plan → sdot o
+
+- [x] **Step 1: 将 #pains 与 #boundary 合并替换为一个区块**
 
 结构模板如下，**文案逐字取自现有 #pains 四条与 #boundary 两行**（含 zh/en 双语 span）：
 
@@ -374,11 +383,11 @@ git add index.html && git commit -m "feat(site): 规格书封面 Hero + 眉线�
 
 （两区块保持各自 id 不变，锚点不受损。）
 
-- [ ] **Step 2: 构建 + 断言**
+- [x] **Step 2: 构建 + 断言**
 
 额外检查：`grep -c 'c-row' _site/index.html` 应 ≥ 4；`grep -q '§01 · PROBLEM STATEMENT' _site/index.html && echo s01-ok`。
 
-- [ ] **Step 3: Commit** `git commit -m "feat(site): §01 问题定义条款化"`
+- [x] **Step 3: Commit** `git commit -m "feat(site): §01 问题定义条款化"`
 
 ---
 
@@ -386,7 +395,7 @@ git add index.html && git commit -m "feat(site): 规格书封面 Hero + 眉线�
 
 **Files:** Modify: `index.html`（#pillars）
 
-- [ ] **Step 1: 区块头改为条款头，四卡编号化，`.tier` 徽章改状态点**
+- [x] **Step 1: 区块头改为条款头，四卡编号化，`.tier` 徽章改状态点**
 
 ```html
   <section class="clause reveal" id="pillars">
@@ -404,8 +413,8 @@ git add index.html && git commit -m "feat(site): 规格书封面 Hero + 眉线�
 
 CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` 等，替换原 `<span class="tier ok">已支持</span>` 写法。
 
-- [ ] **Step 2: 构建 + 断言**：`grep -c 'sdot g' _site/index.html` 数量应 ≥ 改版前 tier ok 对应数；标签总数守恒（头部断言）。
-- [ ] **Step 3: Commit** `git commit -m "feat(site): §02 系统特性条款化 + 状态点"`
+- [x] **Step 2: 构建 + 断言**：`grep -c 'sdot g' _site/index.html` 数量应 ≥ 改版前 tier ok 对应数；标签总数守恒（头部断言）。
+- [x] **Step 3: Commit** `git commit -m "feat(site): §02 系统特性条款化 + 状态点"`
 
 ---
 
@@ -413,15 +422,15 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#testmap）
 
-- [ ] **Step 1: 区块头条款化，卡片加编号与状态点，表头已是 mono 风格**
+- [x] **Step 1: 区块头条款化，卡片加编号与状态点，表头已是 mono 风格**
 
-- clause-head：`§03 · TEST-TYPE MATRIX`；clause-name：zh「测试类型矩阵：一套引擎，四种姿势」/ en「One engine, four test types」。
+- clause-head：`§03 · TEST-TYPE MATRIX`；clause-name：zh「测试类型矩阵：一套引擎，四种姿势」/ en「Test-type matrix: one engine, four test types」（与 Task 3 条款名前缀定式一致）。
 - 四卡编号 §3.1–§3.4；卡内 `<span class="tier ok/proto">` 全部改为 `<span class="st"><i class="sdot g/a"></i>…</span>`。
-- 环境应力投影子表前导语改为 `§3.5 备注` 样式：`<p class="mono" style="font-size:0.78rem;letter-spacing:1.5px;color:var(--mono)">§3.5 · <span class="zh">环境应力的软件投影</span><span class="en">ENV-STRESS PROJECTION</span></p>`；表内 tier 徽章同样改状态点（o=规划中）。
+- 环境应力投影子表前导语改为 `§3.5 备注` 样式：`<p class="mono" style="font-size:0.78rem;letter-spacing:1.5px;color:var(--mono);margin:1.4rem 0 0.6rem;">§3.5 · <span class="zh">环境应力的软件投影（注入方式标注能力状态）</span><span class="en">ENV-STRESS PROJECTION (INJECTION METHODS TAGGED BY STATUS)</span></p>`（保留原文括号说明与原段距）；表内 tier 徽章同样改状态点（o=规划中）。
 - 四合一 `.map-punch` 保留；底部图例行改为：`● <span class="zh">已支持</span>…`（用 .st 写法），文案不变。
 
-- [ ] **Step 2: 构建 + 断言**（头部断言；标签计数守恒）
-- [ ] **Step 3: Commit** `git commit -m "feat(site): §03 测试类型矩阵条款化"`
+- [x] **Step 2: 构建 + 断言**（头部断言；标签计数守恒）
+- [x] **Step 3: Commit** `git commit -m "feat(site): §03 测试类型矩阵条款化"`
 
 ---
 
@@ -429,13 +438,13 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#architecture、#pipeline）
 
-- [ ] **Step 1: #architecture 条款化**
+- [x] **Step 1: #architecture 条款化**
 
 - clause-head：`§04 · ARCHITECTURE`；clause-name：zh「架构：一个内核，两种时间观」/ en 原样。
 - 2×2 表内 `<span class="tier ok">已支持</span>` 改状态点 `.st + .sdot g`。
 - facts 两行原样保留。
 
-- [ ] **Step 2: #pipeline 并入为 FIG. 4-1（保留 id="pipeline"）**
+- [x] **Step 2: #pipeline 并入为 FIG. 4-1（保留 id="pipeline"）**
 
 ```html
   <section class="clause reveal" id="pipeline">
@@ -449,8 +458,8 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
   </section>
 ```
 
-- [ ] **Step 3: 构建 + 断言**：`grep -q 'FIG. 4-1' _site/index.html && echo fig41-ok`
-- [ ] **Step 4: Commit** `git commit -m "feat(site): §04 架构条款化 + 流水线图件化"`
+- [x] **Step 3: 构建 + 断言**：`grep -q 'FIG. 4-1' _site/index.html && echo fig41-ok`
+- [x] **Step 4: Commit** `git commit -m "feat(site): §04 架构条款化 + 流水线图件化"`
 
 ---
 
@@ -458,7 +467,7 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#evidence）
 
-- [ ] **Step 1: 深色带条款化（深色保留，作实物打印件）**
+- [x] **Step 1: 深色带条款化（深色保留，作实物打印件）**
 
 ```html
   <section class="evidence" id="evidence">
@@ -476,8 +485,8 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
   </section>
 ```
 
-- [ ] **Step 2: 构建 + 断言**：`grep -q 'FIG. 5-1' _site/index.html && echo fig51-ok`
-- [ ] **Step 3: Commit** `git commit -m "feat(site): §05 证据链规范条款化"`
+- [x] **Step 2: 构建 + 断言**：`grep -q 'FIG. 5-1' _site/index.html && echo fig51-ok`
+- [x] **Step 3: Commit** `git commit -m "feat(site): §05 证据链规范条款化"`
 
 ---
 
@@ -485,10 +494,10 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#methodology、#audience）
 
-- [ ] **Step 1: #methodology 条款化**：clause-head `§06 · VERDICT METHODOLOGY`，clause-name zh「判定方法学：阈值是推导出来的」/ en 原样；三卡编号 §6.1–6.3；facts 两行原样。
-- [ ] **Step 2: #audience 条款化**：clause-head `§07 · APPLICABILITY`，clause-name zh「适用范围：为谁的什么问题」/ en「Who it's for」；三卡编号 §7.1–7.3；机器人卡内「规划中」徽章改状态点 `.sdot o`。
-- [ ] **Step 3: 构建 + 断言**（头部断言）
-- [ ] **Step 4: Commit** `git commit -m "feat(site): §06/§07 条款化"`
+- [x] **Step 1: #methodology 条款化**：clause-head `§06 · VERDICT METHODOLOGY`，clause-name zh「判定方法学：阈值是推导出来的」/ en「Verdict methodology: thresholds are derived, not guessed」（前缀定式）；三卡编号 §6.1–6.3；facts 两行原样。
+- [x] **Step 2: #audience 条款化**：clause-head `§07 · APPLICABILITY`，clause-name zh「适用范围：为谁的什么问题」/ en「Applicability: who it's for」（前缀定式）；三卡编号 §7.1–7.3；机器人卡内「规划中」徽章改状态点 `.sdot o`。
+- [x] **Step 3: 构建 + 断言**（头部断言）
+- [x] **Step 4: Commit** `git commit -m "feat(site): §06/§07 条款化"`
 
 ---
 
@@ -496,10 +505,10 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#roadmap、#integrate）
 
-- [ ] **Step 1: #roadmap**：clause-head `§08 · REVISION ROADMAP`，clause-name zh「修订路线」/ en「Revision roadmap」；sub 文案原样；图片包 `.fig`：figtag `FIG. 8-1 · M0→M3 十二周路线`，figcap zh「图 8-1 — 每周可交付，三周一决策」/ en 对应。roadmap.pdf 链接保留。
-- [ ] **Step 2: #integrate**：clause-head `§09 · INTEGRATION INTERFACES`，clause-name zh「集成接口」/ en「Integration interfaces」；两张卡标题编号 §9.1（Bazel，状态点 a 原型）/ §9.2（其他 CI）；终端块包 `.fig` 或保持卡内；终端注释文字原样。
-- [ ] **Step 3: 构建 + 断言**
-- [ ] **Step 4: Commit** `git commit -m "feat(site): §08/§09 条款化"`
+- [x] **Step 1: #roadmap**：clause-head `§08 · REVISION ROADMAP`，clause-name zh「修订路线」/ en「Revision roadmap」；sub 文案原样；图片包 `.fig`：figtag `FIG. 8-1 · M0→M3 十二周路线`，figcap zh「图 8-1 — 每周可交付，三周一决策（点击下载原 PDF）」/ en「Fig. 8-1 — Weekly deliverables, a decision gate every three weeks (click for the PDF).」（后缀为已核准的实现补充）。roadmap.pdf 链接保留。
+- [x] **Step 2: #integrate**：clause-head `§09 · INTEGRATION INTERFACES`，clause-name zh「集成接口」/ en「Integration interfaces」；两张卡标题编号 §9.1（Bazel，状态点 a 原型）/ §9.2（其他 CI）；终端块包 `.fig` 或保持卡内；终端注释文字原样。
+- [x] **Step 3: 构建 + 断言**
+- [x] **Step 4: Commit** `git commit -m "feat(site): §08/§09 条款化"`
 
 ---
 
@@ -507,9 +516,9 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 **Files:** Modify: `index.html`（#scenariopack、#downloads、#blog、CTA、footer）
 
-- [ ] **Step 1: #scenariopack**：clause-head `APPENDIX A · SCENARIO PACK`，clause-name zh「附录 A · 场景包目录」/ en「Appendix A · Scenario pack」；目录 step 与留资 mailto 原样。
-- [ ] **Step 2: #downloads**：clause-head `APPENDIX B · REFERENCES`，clause-name zh「附录 B · 参考资料」/ en「Appendix B · References」；两卡原样。
-- [ ] **Step 3: #blog**：clause-head `APPENDIX C · TECHNICAL NOTES`，clause-name zh「附录 C · 技术笔记」/ en「Appendix C · Technical notes」；列表项加 TN 编号——post-row 改为：
+- [x] **Step 1: #scenariopack**：clause-head `APPENDIX A · SCENARIO PACK`，clause-name zh「附录 A · 场景包目录」/ en「Appendix A · Scenario pack」；目录 step 与留资 mailto 原样。
+- [x] **Step 2: #downloads**：clause-head `APPENDIX B · REFERENCES`，clause-name zh「附录 B · 参考资料」/ en「Appendix B · References」；两卡原样。
+- [x] **Step 3: #blog**：clause-head `APPENDIX C · TECHNICAL NOTES`，clause-name zh「附录 C · 技术笔记」/ en「Appendix C · Technical notes」；列表项加 TN 编号——post-row 改为：
 
 ```html
       {% for post in site.posts %}
@@ -523,9 +532,17 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 
 （`post.tn` 在 Task 11 加入各篇 front matter；本步先改模板。）
 
-- [ ] **Step 4: CTA/footer 文档控制化**：CTA 区块加 clause-head `DOCUMENT CONTROL`，h2 与三按钮（演示/报价/微信）原样；footer 结构原样（已有图例与版本日期），`.foot-legend` 样式已在新 CSS。
-- [ ] **Step 5: 构建 + 断言**：`grep -q 'APPENDIX C' _site/index.html && echo appc-ok`
-- [ ] **Step 6: Commit** `git commit -m "feat(site): 附录 A/B/C + 文档控制区块"`
+- [x] **Step 4: CTA/footer 文档控制化**：CTA 区块加 clause-head `DOCUMENT CONTROL`，h2 与三按钮（演示/报价/微信）原样；footer 结构原样（已有图例与版本日期），**但页脚图例行里的三个 `.tier` 徽章必须转换为状态点写法**（`.tier` 的 CSS 已删除，不转换会退化成无样式文本）：
+
+```html
+<span class="st"><i class="sdot g"></i><span class="zh">已支持</span><span class="en">Supported</span></span>
+<span class="st"><i class="sdot a"></i><span class="zh">原型验证中</span><span class="en">Prototype</span></span>
+<span class="st"><i class="sdot o"></i><span class="zh">规划中</span><span class="en">Planned</span></span>
+```
+
+`.foot-legend` 样式已在新 CSS。
+- [x] **Step 5: 构建 + 断言**：`grep -q 'APPENDIX C' _site/index.html && echo appc-ok`
+- [x] **Step 6: Commit** `git commit -m "feat(site): 附录 A/B/C + 文档控制区块"`
 
 ---
 
@@ -535,7 +552,7 @@ CI 原生卡内联：`<span class="st"><i class="sdot g"></i>已支持</span>` �
 - Modify: `_layouts/post.html`
 - Modify: `_posts/*.md`（7 篇 front matter 各加一行 `tn`）
 
-- [ ] **Step 1: 7 篇 front matter 加 tn（按日期正序）**
+- [x] **Step 1: 7 篇 front matter 加 tn（按日期正序）**
 
 ```bash
 cd /Users/caojian/tech/site
@@ -551,21 +568,21 @@ cd /Users/caojian/tech/site
 
 用 Edit 逐篇在 `series: "…"` 行后加 `tn: "TN-0x"`。
 
-- [ ] **Step 2: `_layouts/post.html` 规格书化**
+- [x] **Step 2: `_layouts/post.html` 规格书化**
 
 - CSS 变量对齐主站（`--paper` 等），body 背景改 `var(--paper)`；卡片/引用/表格改直角发丝线（`border-radius: 0`，边框色 `var(--hair)`，表头 mono 小号）；`.btn` 改方形墨框；footer 顶部 `2px solid var(--ink)`。
 - nav 眉线化：左 `CYCLONE · TECHNICAL NOTE`，右 `{{ page.tn }} · <a href="/#blog">全部笔记 ←</a>`，全 mono。
 - post-meta 行改为：`{{ page.tn }} · {{ page.date | date: "%Y-%m-%d" }} · {{ page.series }}`（mono 小号）。
-- 页脚图例行原样保留。
+- 页脚图例行文字原样，三个 tier 徽章按全站迁移转为 st/sdot 状态点（实现已落地）。
 
-- [ ] **Step 3: 构建 + 断言**
+- [x] **Step 3: 构建 + 断言**
 
 ```bash
 grep -o 'TN-0[1-7]' _site/index.html | sort | uniq | wc -l   # 应输出 7
 grep -q 'TN-04' _site/blog/margin-analysis/index.html && echo tn-ok
 ```
 
-- [ ] **Step 4: Commit** `git add _layouts/post.html _posts/ && git commit -m "feat(blog): 文章页规格书化 + TN-01…07 编号"`
+- [x] **Step 4: Commit** `git add _layouts/post.html _posts/ && git commit -m "feat(blog): 文章页规格书化 + TN-01…07 编号"`
 
 ---
 
@@ -573,20 +590,17 @@ grep -q 'TN-04' _site/blog/margin-analysis/index.html && echo tn-ok
 
 **Files:** Modify: `index.html`（script 块）
 
-- [ ] **Step 1: 在现有 `<script>` 内追加滚动淡入**
+- [x] **Step 1: 滚动淡入 JS —— 已于 Task 1 评审修复中提前落地**（commit a1c3970，含 reduced-motion 与无 IO 回退）。本步无需操作，仅核对 `_site/index.html` 含 `IntersectionObserver`。
 
-```javascript
-  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
-    }, { threshold: 0.08 });
-    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
-  } else {
-    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
-  }
+- [x] **Step 1.5: noscript 兜底**——`.reveal` 依赖 JS 恢复可见，在 `</style>` 后加一行兜底：
+
+```html
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
 ```
 
-- [ ] **Step 2: 整站终验清单（全部必须过）**
+- [x] **Step 1.7: 附录 C 副标对齐**（Task 10 评审建议）：#blog 的两行 `<p class="facts zh/en" style="margin-top:-0.6rem;">` 改为 `clause-sub`（文案不动），与附录 A/B 一致；同时统一残留的旧注释标签（四支柱→§02、路线图→§08、接入→§09、场景包→附录A、资料下载→附录B、博客→附录C、深色证据带→§05 证据链）。
+
+- [x] **Step 2: 整站终验清单（全部必须过）**
 
 ```bash
 export PATH="$HOME/.local/share/gem/ruby/4.0.0/bin:$PATH"
@@ -600,13 +614,14 @@ for id in evidence pillars testmap architecture pipeline pains boundary methodol
 grep -l 'href="/#scenariopack"' _site/blog/*/index.html | wc -l   # ≥ 3
 # 4) 条款编号齐全
 for c in '§01' '§02' '§03' '§04' '§05' '§06' '§07' '§08' '§09' 'APPENDIX A' 'APPENDIX B' 'APPENDIX C' 'DOCUMENT CONTROL' 'FIG. 0-1' 'FIG. 4-1' 'FIG. 5-1' 'FIG. 8-1'; do grep -q "$c" _site/index.html || echo "MISSING CLAUSE: $c"; done; echo clauses-ok
-# 5) 无残留旧类名
-! grep -qE 'class="(hero|pain-row|tier)' _site/index.html && echo legacy-clean
+# 5) 无残留旧类名（tier 徽章应全部清零）
+[ "$(grep -o 'class="tier' _site/index.html | wc -l | tr -d ' ')" = "0" ] && echo tier-zero
+! grep -qE 'class="(hero|pain-row)' _site/index.html && echo legacy-clean
 ```
 
-- [ ] **Step 3: 本地视觉走查**：`jekyll serve`，开 http://localhost:4000 中英各过一遍；640px 宽度模拟移动端。
+- [x] **Step 3: 本地视觉走查**：`jekyll serve`，开 http://localhost:4000 中英各过一遍；640px 宽度模拟移动端。
 
-- [ ] **Step 4: Commit** `git add index.html && git commit -m "feat(site): 条款滚动淡入 + 蓝图风改版收尾"`
+- [x] **Step 4: Commit** `git add index.html && git commit -m "feat(site): 条款滚动淡入 + 蓝图风改版收尾"`
 
 ---
 

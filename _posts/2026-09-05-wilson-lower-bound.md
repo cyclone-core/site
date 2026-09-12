@@ -3,6 +3,7 @@ layout: post
 title: "Wilson 下界判定：给通过率配一把诚实的尺子"
 description: "Wald、Clopper-Pearson、Wilson 三把尺子量出三个保底分——为什么验收承诺只能立在下界上，附速查表与五行实现。"
 series: "统计判定系列 · 第 2 篇"
+tn: "TN-02"
 cta_text: "了解 Cyclone 判定引擎"
 cta_url: "/#pillars"
 ---
