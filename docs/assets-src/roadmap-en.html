@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Cyclone Core MVP Roadmap</title>
+<style>
+  @page { size: 1280pt 720pt; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 1280pt; height: 720pt; }
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #ffffff;
+    padding: 36pt 42pt 0 42pt;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    position: relative;
+    color: #12264e;
+  }
+
+  /* ---------- header ---------- */
+  .top { display: flex; justify-content: space-between; align-items: flex-start; }
+  h1 { font-size: 29pt; font-weight: 800; letter-spacing: -0.2pt; color: #101f3d; }
+  h1 .meta { font-size: 13pt; font-weight: 600; color: #45536e; margin-left: 10pt; letter-spacing: 0; }
+  .sub { margin-top: 9pt; font-size: 10.3pt; color: #7d8aa0; letter-spacing: 0.1pt; }
+  .legend { margin-top: 8pt; font-size: 9pt; color: #8b95a9; white-space: nowrap; }
+  .legend .dia {
+    display: inline-block; width: 7.5pt; height: 7.5pt; margin-right: 6pt;
+    background: linear-gradient(135deg, #f8bd4a, #eda228);
+    transform: rotate(45deg); border-radius: 1.5pt; vertical-align: -0.5pt;
+  }
+  .legend .sep { margin: 0 7pt; color: #c3cad6; }
+
+  /* ---------- phase columns ---------- */
+  .cols { display: flex; gap: 26pt; margin-top: 30pt; }
+  .col { flex: 1; }
+  .chead {
+    display: inline-block; border-bottom: 2.2pt solid #152a52; padding-bottom: 5pt;
+  }
+  .chead .m { font-size: 16.5pt; font-weight: 800; color: #12264e; }
+  .chead .name { font-size: 11pt; font-weight: 700; color: #12264e; margin-left: 5pt; }
+  .chead .w { font-size: 8.8pt; font-weight: 600; color: #9aa4b6; margin-left: 5pt; }
+  .col ul { list-style: none; margin-top: 11pt; }
+  .col li {
+    display: flex; font-size: 9.2pt; line-height: 1.42; color: #55668a; margin-bottom: 5.5pt;
+  }
+  .col li::before { content: "·"; font-weight: 800; color: #55668a; margin-right: 6pt; }
+  .exit { margin-top: 10pt; font-size: 9.2pt; color: #33415e; }
+  .exit .lbl { font-weight: 800; color: #12264e; margin-right: 8pt; }
+
+  /* ---------- chevron band ---------- */
+  .band { position: relative; margin-top: 46pt; }
+  .stub { position: absolute; top: -15pt; height: 13pt; border-left: 1.2pt dashed #ccd4e0; }
+  .chevrons { display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 12pt; }
+  .chev {
+    height: 52pt; display: flex; align-items: center; justify-content: center;
+    color: #ffffff; font-size: 14pt; font-weight: 700; letter-spacing: 1pt;
+    padding-right: 14pt;
+    clip-path: polygon(0 0, calc(100% - 19pt) 0, 100% 50%, calc(100% - 19pt) 100%, 0 100%);
+  }
+  .c0 { grid-column: span 2; background: linear-gradient(90deg, #8ca6cc, #7f9ac3); }
+  .c1 { grid-column: span 3; background: linear-gradient(90deg, #6287b8, #557cb0); }
+  .c2 { grid-column: span 3; background: linear-gradient(90deg, #3d68a3, #315c99); }
+  .c3 { grid-column: span 4; background: linear-gradient(90deg, #1c4a82, #133e73); }
+  .ticks {
+    display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 12pt;
+    margin-top: 8pt; font-size: 8.5pt; color: #9aa4b6; text-align: center;
+  }
+
+  /* ---------- decision gates ---------- */
+  .gates { position: relative; height: 162pt; margin-top: 12pt; }
+  .conn { position: absolute; top: 0; height: 34pt; border-left: 1.5pt dashed #e0b56c; }
+  .diamond {
+    position: absolute; top: 31pt; width: 33pt; height: 33pt;
+    background: linear-gradient(135deg, #f9be4c, #ee9d22);
+    transform: rotate(45deg); border-radius: 5pt;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 2pt 4pt rgba(238, 157, 34, 0.25);
+  }
+  .diamond span { transform: rotate(-45deg); color: #ffffff; font-size: 10.5pt; font-weight: 800; }
+  .cap { position: absolute; top: 92pt; font-size: 8.8pt; line-height: 1.55; color: #6a7690; }
+  .cap .ct { font-size: 9.8pt; font-weight: 800; color: #12264e; margin-bottom: 3pt; }
+  .cap .amber { color: #e8961f; font-weight: 700; }
+
+  /* ---------- bottom info boxes ---------- */
+  footer {
+    position: absolute; left: 42pt; right: 42pt; bottom: 30pt;
+    display: flex; gap: 22pt;
+  }
+  .box {
+    flex: 1; background: #f2f4f8; border-radius: 8pt;
+    padding: 17pt 18pt; display: flex; gap: 13pt; align-items: flex-start;
+  }
+  .box .icon { flex: 0 0 auto; margin-top: 1pt; }
+  .box .bt { font-size: 10.4pt; font-weight: 800; color: #12264e; margin-bottom: 5pt; }
+  .box p.b { font-size: 9.2pt; line-height: 1.6; color: #55668a; }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div>
+    <h1>Cyclone Core MVP Roadmap<span class="meta">M0 → M3 · 12 weeks</span></h1>
+    <p class="sub">Walking Skeleton quick validation → ADAS domain-controller SiL loop into CI&nbsp;&nbsp;·&nbsp;&nbsp;C++17 real-time foundation&nbsp;&nbsp;·&nbsp;&nbsp;weekly deliverables, one decision every three weeks</p>
+  </div>
+  <div class="legend"><span class="dia"></span>Decision gate<span class="sep">·</span>Exit = phase acceptance criteria</div>
+</div>
+
+<section class="cols">
+  <div class="col">
+    <div class="chead"><span class="m">M0</span><span class="name">Walking Skeleton</span><span class="w">W1–2</span></div>
+    <ul>
+      <li>C++17 foundation + TaskThread / fmt wrappers</li>
+      <li>Scheduler v0 + Time Master abstraction</li>
+      <li>FMU runner (motor demo model)</li>
+      <li>Lua bindings + minimal MAPort subset</li>
+      <li>JSON report, first end-to-end pass</li>
+    </ul>
+    <p class="exit"><span class="lbl">Exit</span>FMU → script → report chain runs end-to-end</p>
+  </div>
+  <div class="col">
+    <div class="chead"><span class="m">M1</span><span class="name">Real-Time Kernel</span><span class="w">W3–5</span></div>
+    <ul>
+      <li>Time Master dual-mode clock (real-time + PTP reservation)</li>
+      <li>Scheduler v1: jitter &lt; 500µs on target</li>
+      <li>FlatBuffers shared-memory zero-copy message bus</li>
+      <li>SocketCAN / UDP adapters (IBusAdapter)</li>
+    </ul>
+    <p class="exit"><span class="lbl">Exit</span>Unified timebase + bus I/O working</p>
+  </div>
+  <div class="col">
+    <div class="chead"><span class="m">M2</span><span class="name">Data Loop</span><span class="w">W6–8</span></div>
+    <ul>
+      <li>MF4 / rosbag replay engine (time-aligned, rate-scaled)</li>
+      <li>MDF4 measurement: ring buffer + side-channel dump</li>
+      <li>Docker SUT lifecycle management (start / stop / inject)</li>
+      <li>OSI target-level injection interface</li>
+    </ul>
+    <p class="exit"><span class="lbl">Exit</span>Replay → perception feed → measurement loop closed</p>
+  </div>
+  <div class="col">
+    <div class="chead"><span class="m">M3</span><span class="name">Automation &amp; Acceptance</span><span class="w">W9–12</span></div>
+    <ul>
+      <li>YAML case engine + measurement-flow real-time verdicts</li>
+      <li>JUnit XML report + CLI / REST API</li>
+      <li>Jenkins / GitLab CI integration</li>
+      <li>AEB scenario end-to-end regression validation (factory reference cases)</li>
+    </ul>
+    <p class="exit"><span class="lbl">Exit</span>CI regression all green, team daily-use ready</p>
+  </div>
+</section>
+
+<section class="band">
+  <div class="stub" style="left: 10%;"></div>
+  <div class="stub" style="left: 33%;"></div>
+  <div class="stub" style="left: 55.5%;"></div>
+  <div class="stub" style="left: 83.5%;"></div>
+  <div class="chevrons">
+    <div class="chev c0">M0</div>
+    <div class="chev c1">M1</div>
+    <div class="chev c2">M2</div>
+    <div class="chev c3">M3</div>
+  </div>
+  <div class="ticks">
+    <span>W1</span><span>W2</span><span>W3</span><span>W4</span><span>W5</span><span>W6</span>
+    <span>W7</span><span>W8</span><span>W9</span><span>W10</span><span>W11</span><span>W12</span>
+  </div>
+</section>
+
+<section class="gates">
+  <!-- D1 at the W2/W3 boundary -->
+  <div class="conn" style="left: calc(100% * 2 / 12);"></div>
+  <div class="diamond" style="left: calc(100% * 2 / 12 - 16.5pt);"><span>D1</span></div>
+  <div class="cap" style="left: calc(100% * 2 / 12 - 152pt); width: 304pt; text-align: center;">
+    <p class="ct">ASAM XIL API compliant?</p>
+    <p>Yes → keep and deepen Lua / MAPort</p>
+    <p>No → drop Lua, switch to YAML case engine (<span class="amber">default route</span>)</p>
+  </div>
+
+  <!-- D2 at the W5/W6 boundary (M1 → M2 transition, as in the Chinese original) -->
+  <div class="conn" style="left: calc(100% * 5 / 12);"></div>
+  <div class="diamond" style="left: calc(100% * 5 / 12 - 16.5pt);"><span>D2</span></div>
+  <div class="cap" style="left: calc(100% * 5 / 12 - 150pt); width: 300pt; text-align: center;">
+    <p class="ct">Adapter scope freeze</p>
+    <p>Whether DDS joins Phase 0?</p>
+    <p>If yes → use the 1-week buffer, M3 slips accordingly</p>
+  </div>
+
+  <!-- D3 at W12 -->
+  <div class="conn" style="left: calc(100% * 11.5 / 12);"></div>
+  <div class="diamond" style="left: calc(100% * 11.5 / 12 - 16.5pt);"><span>D3</span></div>
+  <div class="cap" style="right: 0; width: 400pt; text-align: right;">
+    <p class="ct">Go / No-Go → Phase 1 (HIL)</p>
+    <p>Go criteria: jitter on target · CI regression all green</p>
+    <p>Team trial feedback loop</p>
+  </div>
+</section>
+
+<footer>
+  <div class="box">
+    <div class="icon">
+      <svg width="24pt" height="24pt" viewBox="0 0 24 24">
+        <path fill="#16386e" d="M12 1.6l8.4 3.1v6.5c0 5.3-3.6 9.9-8.4 11.6-4.8-1.7-8.4-6.3-8.4-11.6V4.7L12 1.6z"/>
+        <path fill="#f2f4f8" d="M12 4.4l5.4 2v4.8c0 3.8-2.3 7.2-5.4 8.6-3.1-1.4-5.4-4.8-5.4-8.6V6.4l5.4-2z"/>
+        <path fill="#16386e" d="M10.9 13.9l-3.3-3.3 1.2-1.2 2.1 2.1 4.3-4.3 1.2 1.2z"/>
+      </svg>
+    </div>
+    <div>
+      <p class="bt">Three standing disciplines (C++17 debt guard)</p>
+      <p class="b">Threads only via TaskThread wrappers · formatting only via fmt · no allocation on the RT path (PMR pools)</p>
+      <p class="b">A future C++20 upgrade swaps the wrappers, not the business code</p>
+    </div>
+  </div>
+  <div class="box">
+    <div class="icon">
+      <svg width="24pt" height="24pt" viewBox="0 0 24 24">
+        <g transform="rotate(45 12 12)">
+          <path fill="#16386e" d="M12 1.5c3 2.3 4.3 5.3 4.3 9s-1.4 6.9-4.3 6.9-4.3-3.2-4.3-6.9 1.3-6.7 4.3-9z"/>
+          <circle fill="#f2f4f8" cx="12" cy="9.3" r="1.7"/>
+          <path fill="#16386e" d="M7.7 12.8L4 17.2l4.2-1.1zM16.3 12.8l3.7 4.4-4.2-1.1z"/>
+          <path fill="#16386e" d="M10.4 17.7L12 22.5l1.6-4.8z"/>
+        </g>
+      </svg>
+    </div>
+    <div>
+      <p class="bt">Phase 1 preview: HIL</p>
+      <p class="b">PREEMPT_RT real-time → PTP rig time sync → residual bus simulation</p>
+      <p class="b">OpenSCENARIO scenario engine (integrating the esmini player)</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

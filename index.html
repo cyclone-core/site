@@ -692,6 +692,7 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
     </div>
     <p class="facts zh">POC 合作方案（含商务条款）不公开下载，请通过下方联系方式获取。</p>
     <p class="facts en">The POC proposal (incl. commercial terms) is not publicly downloadable — please request it via the contact below.</p>
+    <p class="facts"><span class="zh">英文版：</span><span class="en">English editions: </span><a href="product-sheet-en.pdf">Product Sheet (EN)</a> · <a href="roadmap-en.pdf">Roadmap (EN)</a></p>
   </section>
 
   <!-- ============ 附录 C 技术笔记 ============ -->
@@ -701,7 +702,8 @@ out/aeb_manifest.json   <span class="c"># 证据索引 / evidence index</span></
     <p class="clause-sub zh">统计判定系列（点估计 → Wilson 下界 → SPRT → 裕度分析）+ 架构篇与跨行业方法学。</p>
     <p class="clause-sub en">Statistical verdicts, architecture notes, and cross-industry methodology (articles in Chinese).</p>
     <div class="posts">
-      {% for post in site.posts %}
+      {% assign zh_posts = site.posts | sort: "tn" %}
+      {% for post in zh_posts %}
       <a class="post-row" href="{{ post.url }}">
         <span class="meta">{{ post.tn }} · {{ post.date | date: "%Y-%m-%d" }}</span>
         <span class="post-title">{{ post.title }}</span>
