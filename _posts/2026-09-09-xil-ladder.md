@@ -4,6 +4,7 @@ title: "XiL 阶梯对照：汽车和芯片，画的是同一张图"
 description: "汽车说 SiL/HiL，芯片说 ISS/cycle-approx——画在纸上，是同一条从快而假到慢而真的阶梯。"
 series: "扩圈篇（上）"
 tn: "TN-06"
+en_url: "/en/blog/xil-ladder/"
 cta_text: "查看全部文章"
 cta_url: "/#blog"
 ---

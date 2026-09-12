@@ -4,6 +4,7 @@ title: "裕度分析三步法：阈值不是拍脑袋，是可推导的"
 description: "验收线为什么定在 0.98？跑基线、定裕度、双向校验——把阈值从装饰变成证据，附可行性判据与剂量-响应曲线。"
 series: "统计判定系列 · 第 4 篇"
 tn: "TN-04"
+en_url: "/en/blog/margin-analysis/"
 cta_text: "预约 POC 咨询"
 cta_url: "/#contact"
 ---

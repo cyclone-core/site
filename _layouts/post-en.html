@@ -1,22 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{{ page.title }} · Cyclone 方法论专栏</title>
+<title>{{ page.title }} · Cyclone Technical Notes</title>
 <meta name="description" content="{{ page.description }}">
 <meta property="og:title" content="{{ page.title }}">
 <meta property="og:description" content="{{ page.description }}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://www.cyclone-xil.com{{ page.url }}">
 <meta property="og:image" content="https://www.cyclone-xil.com/assets/og-cover.png">
-<meta property="og:locale" content="zh_CN">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="https://www.cyclone-xil.com/assets/og-cover.png">
 <link rel="canonical" href="https://www.cyclone-xil.com{{ page.url }}">
-<link rel="alternate" hreflang="zh" href="https://www.cyclone-xil.com{{ page.url }}">
-{% if page.en_url %}<link rel="alternate" hreflang="en" href="https://www.cyclone-xil.com{{ page.en_url }}">
-{% endif %}<link rel="alternate" hreflang="x-default" href="https://www.cyclone-xil.com{{ page.url }}">
+{% if page.zh_url %}<link rel="alternate" hreflang="zh" href="https://www.cyclone-xil.com{{ page.zh_url }}">
+<link rel="alternate" hreflang="en" href="https://www.cyclone-xil.com{{ page.url }}">
+<link rel="alternate" hreflang="x-default" href="https://www.cyclone-xil.com{{ page.zh_url }}">
+{% endif %}
 <style>
   :root {
     --paper:#fdfdfa; --ink:#16181a; --hair:#d9d9d2; --mono:#6b6f6b;
@@ -104,7 +106,6 @@
   }
   .foot-legend { margin-bottom: 0.9rem; }
   .foot-legend p { margin: 0.25rem 0; }
-  /* 状态点：●绿 supported / ●琥珀 proto / ○灰 planned */
   .st { display: inline-flex; align-items: center; gap: 5px; font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; color: var(--mono); white-space: nowrap; }
   .sdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
   .sdot.g { background: var(--grn); } .sdot.a { background: var(--ambdot); } .sdot.o { background: transparent; border: 1.5px solid #999; }
@@ -114,8 +115,8 @@
 <div class="wrap">
 
   <nav>
-    <div class="brand"><a href="/">CYCLONE · TECHNICAL NOTE</a></div>
-    <div class="navlinks">{{ page.tn }} · <a href="/#blog">全部笔记 ←</a>{% if page.en_url %} · <a href="{{ page.en_url }}" hreflang="en">EN</a>{% endif %}</div>
+    <div class="brand"><a href="/en/">CYCLONE · TECHNICAL NOTE</a></div>
+    <div class="navlinks">{{ page.tn }} · <a href="/en/#blog">All notes ←</a>{% if page.zh_url %} · <a href="{{ page.zh_url }}" hreflang="zh">中文</a>{% endif %}</div>
   </nav>
 
   <article>
@@ -126,22 +127,31 @@
 
     {% if page.cta_url %}
     <div class="post-cta">
-      <p>下一步：</p>
+      <p>Next step:</p>
       <a class="btn primary" href="{{ page.cta_url }}">{{ page.cta_text }}</a>
     </div>
     {% endif %}
 
+    {% assign sorted = site.en_posts | sort: "tn" %}
+    {% for d in sorted %}
+      {% if d.url == page.url %}
+        {% assign prev_i = forloop.index0 | minus: 1 %}
+        {% assign next_i = forloop.index0 | plus: 1 %}
+        {% if prev_i >= 0 %}{% assign prev_doc = sorted[prev_i] %}{% endif %}
+        {% if next_i < sorted.size %}{% assign next_doc = sorted[next_i] %}{% endif %}
+      {% endif %}
+    {% endfor %}
     <div class="series-nav">
-      <span>{% if page.next %}<a href="{{ page.next.url }}">← {{ page.next.title }}</a>{% endif %}</span>
-      <span>{% if page.previous %}<a href="{{ page.previous.url }}">{{ page.previous.title }} →</a>{% endif %}</span>
+      <span>{% if prev_doc %}<a href="{{ prev_doc.url }}">← {{ prev_doc.title }}</a>{% endif %}</span>
+      <span>{% if next_doc %}<a href="{{ next_doc.url }}">{{ next_doc.title }} →</a>{% endif %}</span>
     </div>
   </article>
 
   <footer>
     <div class="foot-legend">
-      <p>能力标签：<span class="st"><i class="sdot g"></i>已支持</span> 当前版本可用 · <span class="st"><i class="sdot a"></i>原型验证中</span> 已有可演示原型 · <span class="st"><i class="sdot o"></i>规划中</span> 路线图项，未交付。文中示例数值均为演示数据，非真实 SUT 实测。</p>
+      <p>Status tags: <span class="st"><i class="sdot g"></i>Supported</span> available today · <span class="st"><i class="sdot a"></i>Prototype</span> demonstrable prototype · <span class="st"><i class="sdot o"></i>Planned</span> on the roadmap, not shipped. All sample figures in this article are demo data, not measured on a real SUT.</p>
     </div>
-    Cyclone — 确定性场景测试内核 · © 2026 · 联系：caojian258@icloud.com / 微信 jiancao258
+    Cyclone — Deterministic Scenario Testing Kernel · © 2026 · Contact: caojian258@icloud.com / WeChat jiancao258
   </footer>
 </div>
 </body>

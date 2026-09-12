@@ -1,0 +1,758 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cyclone — Deterministic Scenario Testing Kernel</title>
+<meta name="description" content="Same case hash, same test result. Every time. Cyclone turns ADAS/robotics regression testing into one pipeline: replay → fault injection → statistical verdict → evidence chain.">
+<meta property="og:title" content="Cyclone — Deterministic Scenario Testing Kernel">
+<meta property="og:description" content="Same case hash, same test result. Replay → fault injection → statistical verdict → evidence chain.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.cyclone-xil.com/en/">
+<meta property="og:image" content="https://www.cyclone-xil.com/assets/og-cover.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="zh_CN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://www.cyclone-xil.com/assets/og-cover.png">
+<link rel="canonical" href="https://www.cyclone-xil.com/en/">
+<link rel="alternate" hreflang="zh" href="https://www.cyclone-xil.com/">
+<link rel="alternate" hreflang="en" href="https://www.cyclone-xil.com/en/">
+<link rel="alternate" hreflang="x-default" href="https://www.cyclone-xil.com/">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Cyclone",
+  "alternateName": "Cyclone Deterministic Scenario Testing Kernel",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Cross-platform",
+  "url": "https://www.cyclone-xil.com/en/",
+  "inLanguage": "en",
+  "description": "Deterministic XiL scenario testing kernel: same case hash, same test result. Dataset replay → fault injection → statistical verdicts (Wilson/SPRT) → auditable evidence chain."
+}
+</script>
+<style>
+  :root {
+    --paper: #fdfdfa; --ink: #16181a; --hair: #d9d9d2; --mono: #6b6f6b;
+    --grn: #0a7a2f; --red: #c01818; --amb: #a06a00; --ambdot: #d9a520;
+    --term-bg: #10141a; --term-fg: #d6e2d8;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, "PingFang SC", "Segoe UI", "Microsoft YaHei", sans-serif;
+    color: var(--ink); background: var(--paper); margin: 0; line-height: 1.65;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; padding: 0 1.4rem; }
+  body[data-lang="zh"] .en { display: none; }
+  body[data-lang="en"] .zh { display: none; }
+  .mono { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+
+  /* ---- 眉线导航 ---- */
+  nav {
+    display: flex; justify-content: space-between; align-items: baseline;
+    padding: 0.8rem 0; border-bottom: 1px solid var(--ink);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .brand { font-weight: 700; letter-spacing: 1.5px; font-size: 0.95rem; }
+  .brand small { color: var(--mono); font-weight: 400; margin-left: 8px; letter-spacing: 0.5px; }
+  .navlinks { display: flex; gap: 1.3rem; align-items: center; }
+  .navlinks a { color: var(--mono); text-decoration: none; font-size: 0.8rem; letter-spacing: 0.5px; }
+  .navlinks a:hover { color: var(--grn); }
+  @media (max-width: 640px) { .navlinks a { display: none; } .navlinks a:last-of-type { display: inline; } }
+  #langbtn {
+    border: 1px solid var(--ink); background: transparent; border-radius: 0;
+    padding: 3px 12px; cursor: pointer; font-size: 0.78rem; color: var(--ink);
+    font-family: inherit;
+  }
+  #langbtn:hover { background: var(--ink); color: var(--paper); }
+
+  /* ---- 封面 ---- */
+  .cover {
+    padding: 2.8rem 0 2.2rem;
+    background-image:
+      repeating-linear-gradient(0deg, transparent 0 23px, rgba(22,24,26,.045) 23px 24px),
+      repeating-linear-gradient(90deg, transparent 0 23px, rgba(22,24,26,.045) 23px 24px);
+    border-bottom: 2px solid var(--ink);
+  }
+  .cover .docmeta {
+    display: flex; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap;
+    font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem;
+    letter-spacing: 1.6px; color: var(--mono);
+    padding-bottom: 0.7rem; margin-bottom: 1.8rem; border-bottom: 1px solid var(--ink);
+  }
+  .cover h1 { font-size: 2.1rem; font-weight: 800; letter-spacing: -0.5px; line-height: 1.35; margin: 0 0 0.5rem; }
+  .cover .sub-en { color: var(--mono); font-size: 0.92rem; margin-bottom: 1.4rem; }
+  .abstract {
+    border-left: 3px solid var(--ink); padding: 0.1rem 0 0.1rem 1rem;
+    max-width: 44rem; color: #333; font-size: 0.95rem;
+  }
+  .abstract .lbl {
+    display: block; font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem;
+    letter-spacing: 1.5px; color: var(--mono); margin-bottom: 0.3rem;
+  }
+  @media (max-width: 640px) { .cover h1 { font-size: 1.6rem; } }
+
+  /* ---- 条款区块 ---- */
+  .clause { padding: 2.2rem 0; border-bottom: 1px solid var(--hair); }
+  .clause-head {
+    font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem;
+    letter-spacing: 2px; color: var(--mono); font-weight: 600; margin: 0 0 0.3rem;
+  }
+  .clause-name { font-size: 1.25rem; font-weight: 700; margin: 0 0 1.1rem; }
+  .clause-name .en { color: var(--mono); font-size: 0.9rem; font-weight: 400; margin-left: 8px; }
+  .clause-sub { color: var(--mono); font-size: 0.92rem; margin: -0.6rem 0 1.1rem; max-width: 46rem; }
+
+  /* 条款行：编号 + 内容，顶虚线 */
+  .c-row { display: flex; gap: 1rem; padding: 0.65rem 0; border-top: 1px dashed var(--hair); font-size: 0.95rem; }
+  .c-row:first-of-type { border-top: none; }
+  .c-no { font-family: ui-monospace, Menlo, monospace; color: var(--mono); font-size: 0.78rem; padding-top: 0.2rem; min-width: 3.2rem; flex-shrink: 0; }
+  .c-bad { color: var(--red); font-weight: 600; flex: 1; }
+  .c-fix { color: #3a3d3a; flex: 1.4; }
+  .c-fix::before { content: "→ "; color: var(--grn); }
+  @media (max-width: 640px) { .c-row { flex-direction: column; gap: 0.25rem; } }
+
+  /* 卡片（保留网格，改直角发丝线） */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .cards.three { grid-template-columns: 1fr 1fr 1fr; }
+  @media (max-width: 760px) { .cards, .cards.three { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--hair); border-radius: 0; padding: 1rem 1.2rem; background: #fff; }
+  .card h3 { margin: 0 0 0.4rem; font-size: 1.02rem; }
+  .card h3 .en { color: var(--mono); font-weight: 400; font-size: 0.85rem; margin-left: 6px; }
+  .card p { margin: 0; color: var(--mono); font-size: 0.92rem; }
+  a.card { text-decoration: none; color: var(--ink); display: block; }
+  a.card:hover { border-color: var(--ink); }
+  .aud-who { font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; color: var(--mono); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* 状态点：●绿 supported / ●琥珀 proto / ○灰 planned */
+  .st { display: inline-flex; align-items: center; gap: 5px; font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; color: var(--mono); white-space: nowrap; }
+  .sdot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .sdot.g { background: var(--grn); } .sdot.a { background: var(--ambdot); } .sdot.o { background: transparent; border: 1.5px solid #999; }
+
+  /* 图件 */
+  .fig { margin: 1.2rem 0 0.6rem; }
+  .figtag { font-family: ui-monospace, Menlo, monospace; font-size: 0.68rem; letter-spacing: 1.5px; color: var(--mono); margin-bottom: 0.4rem; }
+  .figcap { font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; color: var(--mono); margin-top: 0.4rem; }
+
+  /* 终端块（深色实物打印件） */
+  .term {
+    background: var(--term-bg); color: var(--term-fg); border-radius: 0;
+    border: 1px solid #22303c; padding: 1rem 1.2rem;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    font-size: 0.85rem; overflow-x: auto; white-space: pre; line-height: 1.7;
+  }
+  .term .c { color: #5c6a75; } .term .p { color: #5a8fc9; } .term .ok { color: #3fd08c; }
+
+  /* 表格 */
+  table.pos { border-collapse: collapse; width: 100%; margin: 0.6rem 0; }
+  table.pos th, table.pos td { border: 1px solid var(--hair); padding: 9px 13px; text-align: left; font-size: 0.92rem; vertical-align: top; }
+  table.pos th { background: #f4f4ef; font-family: ui-monospace, Menlo, monospace; font-size: 0.72rem; letter-spacing: 1px; font-weight: 600; }
+  table.pos td.no { color: var(--mono); }
+  table.pos td.yes { color: var(--grn); }
+  table.pos td.yes strong { color: var(--grn); }
+
+  /* 流水线步骤 */
+  .flow { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .flow .step { border: 1px solid var(--hair); border-radius: 0; padding: 0.45rem 0.9rem; font-size: 0.9rem; background: #fff; font-family: ui-monospace, Menlo, monospace; }
+  .flow .arrow { color: var(--mono); }
+
+  .facts { color: var(--mono); font-size: 0.9rem; margin-top: 1.1rem; }
+  .facts a { color: var(--ink); }
+
+  /* 深色证据带 → 保留深色，作 FIG. 5-1 实物打印件 */
+  .evidence { background: var(--term-bg); color: #e6edf3; border-bottom: none; padding: 2.4rem 0; }
+  .evidence .clause-name { color: #e6edf3; }
+  .evidence .clause-head { color: #5c6a75; }
+  .ev-inner { display: flex; gap: 2rem; align-items: flex-start; }
+  .ev-left { flex: 1.2; }
+  .ev-right { flex: 1; display: flex; flex-wrap: wrap; gap: 0.6rem; align-content: flex-start; padding-top: 0.4rem; }
+  .ev-steps { margin: 0; padding-left: 1.3rem; color: #9fb3c8; font-size: 0.95rem; }
+  .ev-steps li { margin-bottom: 0.5rem; }
+  .ev-steps code, .ev-note code { color: #3fd08c; font-family: ui-monospace, Menlo, monospace; font-size: 0.85em; }
+  .ev-note { color: #9fb3c8; font-size: 0.88rem; margin: 1rem 0 0; }
+  .pill { border: 1px solid #22303c; background: #131b22; color: #9fb3c8; border-radius: 0; padding: 0.4rem 0.9rem; font-size: 0.82rem; font-family: ui-monospace, Menlo, monospace; }
+  .pill b { color: #3fd08c; font-weight: 600; }
+  @media (max-width: 640px) { .ev-inner { flex-direction: column; } }
+
+  /* 话术框（四合一） */
+  .map-punch { border-left: 3px solid var(--ink); background: #f4f4ef; padding: 0.8rem 1.1rem; margin-top: 1.4rem; }
+  .map-punch p { margin: 0; }
+
+  /* 下载卡 */
+  .roadmap-img { width: 100%; border: 1px solid var(--hair); border-radius: 0; display: block; background: #fff; }
+  .roadmap-img:hover { border-color: var(--ink); }
+  .dl-card { display: flex; gap: 1rem; align-items: center; border: 1px solid var(--hair); border-radius: 0; padding: 1rem 1.2rem; text-decoration: none; color: var(--ink); background: #fff; }
+  .dl-card:hover { border-color: var(--ink); }
+  .dl-card img { width: 84px; height: 84px; object-fit: cover; border: 1px solid var(--hair); border-radius: 0; flex-shrink: 0; }
+  .dl-card h3 { margin: 0 0 0.25rem; font-size: 1rem; }
+  .dl-card p { margin: 0 0 0.25rem; color: var(--mono); font-size: 0.88rem; }
+  .dl-card .meta { font-size: 0.8rem; color: var(--mono); font-family: ui-monospace, Menlo, monospace; }
+
+  /* 文章列表 */
+  .posts { display: flex; flex-direction: column; gap: 0; }
+  a.post-row { display: flex; gap: 1rem; align-items: baseline; border-top: 1px dashed var(--hair); padding: 0.8rem 0; text-decoration: none; color: var(--ink); }
+  a.post-row:last-child { border-bottom: 1px dashed var(--hair); }
+  a.post-row:hover .post-title { color: var(--grn); }
+  .post-row .meta { color: var(--mono); font-size: 0.78rem; font-family: ui-monospace, Menlo, monospace; flex-shrink: 0; min-width: 10.5rem; }
+  .post-row .post-title { font-weight: 600; }
+  .post-row .post-desc { color: var(--mono); font-size: 0.86rem; }
+  @media (max-width: 640px) { a.post-row { flex-direction: column; gap: 0.15rem; } }
+
+  /* 按钮：方形墨框 */
+  .cta { text-align: center; padding: 2.6rem 0 3rem; }
+  .cta p { color: var(--mono); }
+  .btn {
+    display: inline-block; border: 1px solid var(--ink); border-radius: 0;
+    padding: 0.6rem 1.6rem; margin: 0 0.4rem; text-decoration: none; color: var(--ink);
+    font-size: 0.85rem; font-family: ui-monospace, Menlo, monospace; letter-spacing: 1px;
+    background: transparent; cursor: pointer;
+  }
+  .btn.primary { background: var(--ink); color: var(--paper); }
+  .btn:hover { border-color: var(--grn); color: var(--grn); }
+  .btn.primary:hover { background: var(--grn); border-color: var(--grn); color: #fff; }
+
+  .wx-pop { margin-top: 1.2rem; color: var(--mono); font-size: 0.9rem; }
+  .wx-pop img { width: 140px; height: 140px; object-fit: cover; border: 1px solid var(--hair); border-radius: 0; display: block; margin: 0.6rem auto; }
+  .repo-link { margin-top: 1.2rem; font-size: 0.88rem; font-family: ui-monospace, Menlo, monospace; }
+  .repo-link a { color: var(--mono); }
+  .repo-link a:hover { color: var(--grn); }
+
+  /* 页脚：文档控制块 */
+  footer { border-top: 2px solid var(--ink); padding: 1.4rem 0 2.4rem; color: var(--mono); font-size: 0.85rem; }
+  .foot-legend { margin-bottom: 0.9rem; font-size: 0.8rem; }
+  .foot-legend p { margin: 0.25rem 0; }
+
+  /* 滚动淡入（reduced-motion 关闭） */
+  .reveal { opacity: 0; transform: translateY(10px); transition: opacity .45s ease, transform .45s ease; }
+  .reveal.in { opacity: 1; transform: none; }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+</style>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <div class="brand">CYCLONE<small>Deterministic Scenario Testing</small></div>
+    <div class="navlinks">
+      <a href="#pillars">§02 Features</a>
+      <a href="#testmap">§03 Testing</a>
+      <a href="#evidence">§05 Evidence</a>
+      <a href="#scenariopack">App.A Scenarios</a>
+      <a href="#blog">App.C Notes</a>
+      <button id="langbtn" onclick="location.href='/'">中</button>
+    </div>
+  </nav>
+
+  <!-- ============ 封面 ============ -->
+  <div class="cover">
+    <div class="docmeta">
+      <span>CYCLONE SPECIFICATION</span>
+      <span>DOC NO. CY-SPEC-001 · REV 2026-09-12</span>
+    </div>
+    <h1>Same case hash.<br>Same test result. Every time.</h1>
+    <p class="sub-en">The deterministic XiL scenario testing kernel</p>
+    <div class="abstract">
+      <span class="lbl">ABSTRACT</span>
+      
+      Cyclone turns ADAS / robotics regression testing into one pipeline: replay → fault injection → statistical verdict → evidence chain. A PASS is no longer "it went green once" — it is reproducible, auditable machine proof.
+    </div>
+    <div class="fig">
+      <div class="figtag">FIG. 0-1 · Live run (recomputable)</div>
+      <div class="term"><span class="p">$</span> cyclone run cases/aeb_cipv_50kph.yaml --out out/
+verdict: <span class="ok">PASS</span>
+<span class="p">$</span> shasum -a 256 out/AEB_CIPV_50kph_log.jsonl
+2e075b42f19031aa…
+<span class="p">$</span> cyclone run cases/aeb_cipv_50kph.yaml --out out2/ <span class="c"># run it again</span>
+<span class="p">$</span> shasum -a 256 out2/AEB_CIPV_50kph_log.jsonl
+2e075b42f19031aa…   <span class="c"># same seed → bitwise identical</span></div>
+      <div class="figcap">Fig. 0-1 — Two runs of the same case, bitwise-identical SHA-256. Machine-checkable.</div>
+    </div>
+    <p class="facts" style="margin-top:1.2rem;">
+      <span class="st"><i class="sdot g"></i>261 tests green</span> ·
+      <span class="st"><i class="sdot g"></i>bitwise reproducible</span> ·
+      <span class="st"><i class="sdot g"></i>Wilson · SPRT verdicts</span> ·
+      <span class="st"><i class="sdot a"></i>rules_cyclone prototype</span> ·
+      <span class="st"><i class="sdot o"></i>single binary planned</span>
+    </p>
+    <p style="margin-top:1.6rem;">
+      <a class="btn primary" href="mailto:caojian258@icloud.com?subject=Cyclone%20POC%20demo">Book a POC demo →</a>
+      <a class="btn" href="#scenariopack">App.A · Get the scenario pack</a>
+    </p>
+  </div><!-- /cover -->
+</div><!-- /wrap（上半） -->
+
+  <!-- ============ §05 证据链规范 ============ -->
+  <section class="evidence" id="evidence">
+    <div class="wrap">
+      <p class="clause-head">§05 · EVIDENCE CHAIN SPECIFICATION</p>
+      <h2 class="clause-name">Evidence chain specification</h2>
+      <div class="ev-inner">
+        <div class="ev-left">
+          <div class="figtag" style="color:#5c6a75">FIG. 5-1 · Physical proof — don't take our word, verify it</div>
+          <ol class="ev-steps">
+            <li>Run the same case twice: <code>cyclone run cases/aeb.yaml</code></li>
+            <li>Compare the SHA-256 of both runs — bitwise identical, machine-checkable.</li>
+            <li>Open <code>manifest.json</code>: every verdict traces to the case version and raw data.</li>
+          </ol>
+          <p class="ev-note">The evidence four-piece set: <code>case hash</code> · <code>JSONL SHA-256 digest</code> · <code>failure snapshot</code> · <code>JUnit XML</code></p>
+        </div>
+        <div class="ev-right">
+          <span class="pill"><b>261</b> automated tests green</span>
+          <span class="pill">bitwise <b>reproducible</b></span>
+          <span class="pill">JUnit native · Bazel ruleset <b>prototype</b></span>
+          <span class="pill">M0→M3 twelve-week roadmap</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap"><!-- 下半部分继续 -->
+
+  <!-- ============ §07 适用范围 ============ -->
+  <section class="clause reveal" id="audience">
+    <p class="clause-head">§07 · APPLICABILITY</p>
+    <h2 class="clause-name">Applicability: who it's for</h2>
+    <div class="cards three">
+      <a class="card" href="#boundary">
+        <span class="aud-who">OEM · ADAS test teams</span>
+        <h3>§7.1 Machine evidence for safety audits</h3>
+        
+        <p>Every PASS / FAIL traces to the case version and raw data; evidence formats tailored to audit needs.</p>
+      </a>
+      <a class="card" href="#integrate">
+        <span class="aud-who">Tier1 · Suppliers</span>
+        <h3>§7.2 Augment, never replace</h3>
+        
+        <p>Layers on top of CANoe / dSPACE / in-house scripts; JUnit output drops into your CI.</p>
+      </a>
+      <a class="card" href="#integrate">
+        <span class="aud-who">Robotics · Robotics teams</span>
+        <h3>§7.3 First scenario in five minutes</h3>
+        
+        <p>Single-file binary, download and run <span class="st"><i class="sdot o"></i>Planned</span>; one YAML is one regression case.</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ §02 系统特性 ============ -->
+  <section class="clause reveal" id="pillars">
+    <p class="clause-head">§02 · SYSTEM CHARACTERISTICS</p>
+    <h2 class="clause-name">System characteristics</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>§2.1 Deterministic Replay <span class="st"><i class="sdot g"></i>Supported</span></h3>
+        
+        <p>Virtual-time replay with content addressing: identical seeds produce bitwise-identical evidence logs.</p>
+      </div>
+      <div class="card">
+        <h3>§2.2 Statistical Verdicts <span class="st"><i class="sdot g"></i>Supported</span></h3>
+        
+        <p>Wilson score intervals + SPRT sequential testing — statistical significance instead of hand-tuned thresholds.</p>
+      </div>
+      <div class="card">
+        <h3>§2.3 Evidence Chain <span class="st"><i class="sdot g"></i>Supported</span></h3>
+        
+        <p>The four-piece set: case hash + JSONL SHA-256 digest + failure snapshot + JUnit XML — every CI record traces back to the case version and raw data.</p>
+      </div>
+      <div class="card">
+        <h3>§2.4 CI-Native</h3>
+        
+        <p>JUnit XML out of the box <span class="st"><i class="sdot g"></i>Supported</span>; rules_cyclone makes scenario tests first-class bazel test citizens <span class="st"><i class="sdot a"></i>Prototype</span>; BES-ready <span class="st"><i class="sdot a"></i>Prototype</span>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ §03 测试类型矩阵 ============ -->
+  <section class="clause reveal" id="testmap">
+    <p class="clause-head">§03 · TEST-TYPE MATRIX</p>
+    <h2 class="clause-name">Test-type matrix: one engine, four test types</h2>
+    
+    <p class="clause-sub">All four share the same scenario YAML, scheduler, verdict engine, and evidence chain — what changes is the clock mode, the metric set, and the fault recipe.</p>
+
+    <table class="pos">
+      <tr>
+        <th>Test type</th>
+        <th>The question</th>
+        <th>Core mechanism</th>
+        <th>Verdict metrics</th>
+      </tr>
+      <tr>
+        <td class="yes">Functional</td>
+        <td>Did it do what it should</td>
+        <td>Scenario replay + behavioral assertions</td>
+        <td>Recall, warning timing, zero false triggers</td>
+      </tr>
+      <tr>
+        <td class="yes">Performance</td>
+        <td>Fast and steady enough</td>
+        <td>Online mode + hardware timestamping</td>
+        <td>Latency p95, deadline misses, jitter</td>
+      </tr>
+      <tr>
+        <td class="yes">Reliability</td>
+        <td>Does it stay right</td>
+        <td>Seed matrix + Wilson/SPRT</td>
+        <td>Success-rate lower bound, soak duration</td>
+      </tr>
+      <tr>
+        <td class="yes">Environmental</td>
+        <td>Still normal under stress</td>
+        <td>Fault injection = the software projection of environmental stress</td>
+        <td>Degradation curve, zero latch-up violations</td>
+      </tr>
+    </table>
+
+    <div class="cards" style="margin-top:1rem;">
+      <div class="card">
+        <h3>§3.1 Functional <span class="st"><i class="sdot g"></i>Supported</span></h3>
+        
+        <p>Offline mode on a virtual clock: rerunning the same case is bitwise identical. Statistical metric verdicts are supported; per-event assertions ("brake must fire before TTC &lt; 1.2 s") are planned.</p>
+      </div>
+      <div class="card">
+        <h3>§3.2 Performance <span class="st"><i class="sdot a"></i>Prototype</span></h3>
+        
+        <p>Online mode on the real clock, with hardware timestamps at bus ingress/egress. Boundary: CPU load and WCET belong to OS-level profilers — Cyclone owns bus-visible end-to-end latency.</p>
+      </div>
+      <div class="card">
+        <h3>§3.3 Reliability <span class="st"><i class="sdot g"></i>Supported</span></h3>
+        
+        <p>A seed matrix of 300 runs feeding Wilson/SPRT — only 300/300 supports a ≥ 99% reliability claim at 95% confidence; soak runs watch memory leaks and counter overflows. The report reads "0.99 (95% CI lower bound, n=300, case hash recomputable)".</p>
+      </div>
+      <div class="card">
+        <h3>§3.4 Environmental <span class="st"><i class="sdot a"></i>Prototype</span></h3>
+        
+        <p>An honest boundary: heat, vibration, EMC, salt spray (ISO 16750 / GB/T 28046) belong to climate chambers and rigs — no software platform runs physical env tests. But every environmental stress eventually projects onto the bus, and that projection is the software half.</p>
+      </div>
+    </div>
+
+    <p class="mono" style="font-size:0.78rem;letter-spacing:1.5px;color:var(--mono);margin:1.4rem 0 0.6rem;">§3.5 · ENV-STRESS PROJECTION (INJECTION METHODS TAGGED BY STATUS)</p>
+    <table class="pos">
+      <tr>
+        <th>Physical stress</th>
+        <th>Software projection</th>
+        <th>Injection method</th>
+      </tr>
+      <tr>
+        <td>Heat → sensor drift</td>
+        <td>Range bias, extra noise</td>
+        <td>corrupt_field offset <span class="st"><i class="sdot a"></i>Prototype</span></td>
+      </tr>
+      <tr>
+        <td>Vibration → loose connectors</td>
+        <td>Bursty frame drops</td>
+        <td>Bursty drop <span class="st"><i class="sdot a"></i>Prototype</span></td>
+      </tr>
+      <tr>
+        <td>EMC</td>
+        <td>Bit flips, CRC errors</td>
+        <td>corrupt_field / corrupt_crc <span class="st"><i class="sdot o"></i>Planned</span></td>
+      </tr>
+      <tr>
+        <td>Voltage drop → ECU restart</td>
+        <td>Node freeze &amp; recovery</td>
+        <td>freeze + restart <span class="st"><i class="sdot o"></i>Planned</span></td>
+      </tr>
+    </table>
+
+    <div class="map-punch">
+      
+      <p>Elsewhere it's four teams and four report formats: functional scripts, performance fixtures, reliability rigs, env tests. Cyclone is one platform: all four reports share one format, one hash-verifiable chain, and one CI gate. It is the software companion to physical env tests — while the sample bakes in the chamber, the fault campaign runs on the rig, and both evidence sets bind into one DV/PV report.</p>
+    </div>
+
+    
+    <p class="facts">Status tags: <span class="st"><i class="sdot g"></i>Supported</span> available today · <span class="st"><i class="sdot a"></i>Prototype</span> demonstrable prototype · <span class="st"><i class="sdot o"></i>Planned</span> on the roadmap, not shipped</p>
+  </section>
+
+  <!-- ============ §04 架构 ============ -->
+  <section class="clause reveal" id="architecture">
+    <p class="clause-head">§04 · ARCHITECTURE</p>
+    <h2 class="clause-name">Architecture: one kernel, two notions of time</h2>
+    
+    <p class="clause-sub">Offline mode trades the real clock for reproducibility; online mode trades back for realism — same scenario YAML, just flip the clock mode.</p>
+
+    <table class="pos">
+      <tr>
+        <th></th>
+        <th>Virtual clock</th>
+        <th>Real clock</th>
+      </tr>
+      <tr>
+        <th>Replay data</th>
+        
+        <td class="yes"><strong>Offline mode</strong>: a fully controlled lab — reruns with the same seed are bitwise identical <span class="st"><i class="sdot g"></i>Supported</span></td>
+        
+        <td class="no">Rarely used (replays are in no hurry)</td>
+      </tr>
+      <tr>
+        <th>Live bus</th>
+        
+        <td class="no">No sense — live data waits for no one</td>
+        
+        <td class="yes"><strong>Online mode</strong>: the real world live — SocketCAN/UDP ingress with hardware timestamps <span class="st"><i class="sdot g"></i>Supported</span></td>
+      </tr>
+    </table>
+
+    
+    <p class="facts">Capture once, replay forever: record the bus once on the vehicle, replay offline indefinitely · A layered single engine — C++ kernel + Python scenario layer; the process boundary is the YAML schema + evidence-pack format</p>
+    <p class="facts"><a href="/en/blog/dual-clock/">Deep dive: The dual-mode clock — reproducible offline, realistic online →</a></p>
+  </section>
+
+  <!-- ============ §04-B 数据流 ============ -->
+  <section class="clause reveal" id="pipeline">
+    <p class="clause-head">§04-B · DATA FLOW</p>
+    <div class="fig">
+      <div class="figtag">FIG. 4-1 · Verdict pipeline</div>
+      <div class="flow">
+        <span class="step">Case YAML</span><span class="arrow">→</span>
+        <span class="step">Dataset replay</span><span class="arrow">→</span>
+        <span class="step">Fault injection</span><span class="arrow">→</span>
+        <span class="step">SUT</span><span class="arrow">→</span>
+        <span class="step">Verdicts</span><span class="arrow">→</span>
+        <span class="step">Evidence report</span>
+      </div>
+      <div class="figcap">Fig. 4-1 — One pipeline from case YAML to evidence report.</div>
+    </div>
+    
+    <p class="facts">261 automated tests green · JUnit/Jenkins ready · UDS diagnostics demo <span class="st"><i class="sdot a"></i>Prototype</span> · Bazel ruleset rules_cyclone <span class="st"><i class="sdot a"></i>Prototype</span></p>
+  </section>
+
+  <!-- ============ §01 问题定义 ============ -->
+  <section class="clause reveal" id="pains">
+    <p class="clause-head">§01 · PROBLEM STATEMENT</p>
+    <h2 class="clause-name">Problem statement: old problems, new answers</h2>
+    <div class="c-row"><span class="c-no">§1.1</span>
+      <span class="c-bad">A failure: product bug or test noise? You can't tell.</span>
+      <span class="c-fix">The deterministic kernel makes "same input, different result" structurally impossible. Red means red.</span>
+    </div>
+    <div class="c-row"><span class="c-no">§1.2</span>
+      <span class="c-bad">The report says PASS, with no machine-verifiable evidence.</span>
+      <span class="c-fix">Every case emits a case hash + SHA-256 digest; bitwise-identical reruns are machine-checkable proof.</span>
+    </div>
+    <div class="c-row"><span class="c-no">§1.3</span>
+      <span class="c-bad">CI integration costs a week of glue code.</span>
+      <span class="c-fix">Native JUnit / Bazel / BES output — not "integratable", a first-class citizen.</span>
+    </div>
+    <div class="c-row"><span class="c-no">§1.4</span>
+      <span class="c-bad">Why is the acceptance line 0.98 and not 0.95? One question in review, and the room goes silent.</span>
+      <span class="c-fix">Wilson lower bounds replace surface pass rates, and thresholds are derived by three-step margin analysis — a threshold with a derivation is a gate; without one, decoration.</span>
+    </div>
+  </section>
+
+  <!-- ============ §01-B 范围与非范围 ============ -->
+  <section class="clause reveal" id="boundary">
+    <p class="clause-head">§01-B · SCOPE / NON-SCOPE</p>
+    <h2 class="clause-name">Scope and non-scope</h2>
+    <table class="pos">
+      <tr>
+        <th>Non-scope</th>
+        <th>Scope</th>
+      </tr>
+      <tr>
+        
+        <td class="no">A simulator — CarMaker / Carla own "how real the world is"</td>
+        
+        <td class="yes">A testing kernel — it owns "how trustworthy the result is"</td>
+      </tr>
+      <tr>
+        
+        <td class="no">Test management — people and process</td>
+        
+        <td class="yes">An execution engine — machines and evidence</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ============ §06 判定方法学 ============ -->
+  <section class="clause reveal" id="methodology">
+    <p class="clause-head">§06 · VERDICT METHODOLOGY</p>
+    <h2 class="clause-name">Verdict methodology: thresholds are derived, not guessed</h2>
+    
+    <p class="clause-sub">Why is the acceptance line at 0.98 and not 0.95? A threshold you can't explain is decoration — too loose it misses regressions, too tight it kills healthy builds. The three-step margin analysis derives the answer:</p>
+
+    <div class="cards three">
+      <div class="card">
+        <h3>§6.1 Run the baseline</h3>
+        
+        <p>Run fault-free rounds to get the metric baseline — a distribution, not a number (demo example: near-range recall 0.9931).</p>
+      </div>
+      <div class="card">
+        <h3>§6.2 Set the margin</h3>
+        
+        <p>Threshold = baseline − acceptable degradation (demo example: tighten by 1.3 points, τ = 0.98).</p>
+      </div>
+      <div class="card">
+        <h3>§6.3 Verify both ways</h3>
+        
+        <p>Fault scenarios must FAIL while the baseline must PASS — checking only one side is not calibration.</p>
+      </div>
+    </div>
+
+    
+    <p class="facts">Feasibility criterion: baseline CI lower bound &gt; fault CI upper bound, otherwise the fault is undetectable at that intensity · Window phasing: fault window × metric bin × scenario phase must align · Dose-response curve: sweep fault intensity for a robustness profile — first-class safety-case material</p>
+    <p class="facts"><a href="/en/blog/margin-analysis/">Deep dive: Margin analysis in three steps →</a> · Threshold calibration is a standard POC service</p>
+  </section>
+
+  <!-- ============ §08 修订路线 ============ -->
+  <section class="clause reveal" id="roadmap">
+    <p class="clause-head">§08 · REVISION ROADMAP</p>
+    <h2 class="clause-name">Revision roadmap</h2>
+    
+    <p class="clause-sub">M0→M3 in twelve weeks: walking skeleton → real-time kernel → data loop → CI acceptance. Weekly deliverables, a decision gate every three weeks.</p>
+    <div class="fig">
+      <div class="figtag">FIG. 8-1 · M0→M3 twelve-week roadmap</div>
+      <a href="roadmap.pdf" title="Download the PDF">
+        <img class="roadmap-img" src="assets/roadmap.webp"
+             alt="Cyclone Core MVP roadmap M0–M3" loading="lazy">
+      </a>
+      <div class="figcap">Fig. 8-1 — Weekly deliverables, a decision gate every three weeks (click for the PDF).</div>
+    </div>
+  </section>
+
+  <!-- ============ §09 集成接口 ============ -->
+  <section class="clause reveal" id="integrate">
+    <p class="clause-head">§09 · INTEGRATION INTERFACES</p>
+    <h2 class="clause-name">Integration interfaces</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>§9.1 For Bazel users <span class="st"><i class="sdot a"></i>Prototype</span></h3>
+        <div class="term"><span class="c"># MODULE.bazel</span>
+bazel_dep(name = "rules_cyclone", version = "0.1.0")
+
+<span class="c"># BUILD.bazel</span>
+cyclone_test(
+    name = "aeb_regression",
+    scenario = "scenarios/aeb.yaml",
+)
+
+<span class="p">$</span> bazel test //...   <span class="c"># same graph, same cache, same dashboard as unit tests</span></div>
+      </div>
+      <div class="card">
+        <h3>§9.2 Any other CI</h3>
+        <div class="term"><span class="c"># single-file binary, download and run (planned)</span>
+<span class="p">$</span> cyclone run cases/aeb.yaml --out out/
+
+<span class="c"># JUnit XML → consumed directly by Jenkins / GitLab CI (supported)</span>
+out/aeb_report.xml
+out/aeb_manifest.json   <span class="c"># evidence index</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 附录 A 场景包 ============ -->
+  <section class="clause reveal" id="scenariopack">
+    <p class="clause-head">APPENDIX A · SCENARIO PACK</p>
+    <h2 class="clause-name">Appendix A · Scenario pack</h2>
+    
+    <p class="clause-sub">22 ADAS scenario YAMLs, every verdict matching expectations. One YAML is one regression case — tweak parameters to derive new scenarios.</p>
+
+    <div class="flow">
+      <span class="step">Active safety ×13</span>
+      <span class="step">Driving assist ×5</span>
+      <span class="step">Parking ×1</span>
+      <span class="step">Shared driving ×2</span>
+      <span class="step">L3 admission ×1</span>
+    </div>
+
+    
+    <p style="margin:1.4rem 0 0.8rem;">The catalog is public; the full pack of 22 YAMLs is sent on request:</p>
+    <a class="btn primary" href="mailto:caojian258@icloud.com?subject=Cyclone%20scenario%20pack%20request">Email us for the full pack</a>
+
+    
+    <p class="facts">All in-scenario figures are demo data, not measured on a real SUT; thresholds must be calibrated against your SUT baseline (a margin-analysis service item).</p>
+  </section>
+
+  <!-- ============ 附录 B 参考资料 ============ -->
+  <section class="clause reveal" id="downloads">
+    <p class="clause-head">APPENDIX B · REFERENCES</p>
+    <h2 class="clause-name">Appendix B · References</h2>
+    <div class="cards">
+      <a class="dl-card" href="product-sheet.pdf">
+        <img src="assets/product-sheet-thumb.webp" alt="Product sheet">
+        <div>
+          <h3>Product Sheet</h3>
+          
+          <p>Deterministic fault injection × statistical verdicts × auditable evidence chain</p>
+          <span class="meta">PDF · 3 pages · 2.1 MB</span>
+        </div>
+      </a>
+      <a class="dl-card" href="roadmap.pdf">
+        <img src="assets/roadmap.webp" alt="Roadmap">
+        <div>
+          <h3>Roadmap</h3>
+          
+          <p>The M0→M3 twelve-week plan with decision gates</p>
+          <span class="meta">PDF · 1 page · 243 KB</span>
+        </div>
+      </a>
+    </div>
+    
+    <p class="facts">The POC proposal (incl. commercial terms) is not publicly downloadable — please request it via the contact below.</p>
+  </section>
+
+  <!-- ============ 附录 C 技术笔记 ============ -->
+  <section class="clause reveal" id="blog">
+    <p class="clause-head">APPENDIX C · TECHNICAL NOTES</p>
+    <h2 class="clause-name">Appendix C · Technical notes</h2>
+    
+    <p class="clause-sub">Statistical verdicts, architecture notes, and cross-industry methodology.</p>
+    <div class="posts">
+      {% assign en_posts = site.en_posts | sort: "tn" %}
+      {% for post in en_posts %}
+      <a class="post-row" href="{{ post.url }}">
+        <span class="meta">{{ post.tn }} · {{ post.date | date: "%Y-%m-%d" }}</span>
+        <span class="post-title">{{ post.title }}</span>
+        <span class="post-desc">{{ post.description }}</span>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ============ 文档控制 ============ -->
+  <div class="cta" id="contact">
+    <p class="clause-head">DOCUMENT CONTROL</p>
+    <h2>Run it on your own scenario</h2>
+    
+    <p>A 30-minute demo: AEB regression → inject a fault → open the evidence report.</p>
+    <a class="btn primary" href="mailto:caojian258@icloud.com?subject=Cyclone%20demo%20booking">Book a 30-min demo</a>
+    <a class="btn" href="mailto:caojian258@icloud.com?subject=Cyclone%20quote%20request">Get a quote</a>
+    <button class="btn" id="wxbtn" type="button">Add WeChat</button>
+    <p class="wx-pop" id="wxpop" hidden>
+      <img src="assets/wechat-qr.png" alt="WeChat QR" onerror="this.style.display='none'">
+      WeChat ID: <b>jiancao258</b>
+    </p>
+    <p class="repo-link"><a href="https://github.com/cyclone-core/rules-cyclone">GitHub: cyclone-core/rules-cyclone ↗</a></p>
+  </div>
+
+  <footer>
+    <div class="foot-legend">
+      <p>Status tags: <span class="st"><i class="sdot g"></i>Supported</span> available today · <span class="st"><i class="sdot a"></i>Prototype</span> demonstrable prototype · <span class="st"><i class="sdot o"></i>Planned</span> on the roadmap, not shipped</p>
+      <p>All sample figures on this site (success rates, thresholds) are demo data, not measured on a real SUT; thresholds must be calibrated against your SUT baseline.</p>
+    </div>
+    
+    Cyclone — Deterministic Scenario Testing Kernel · © 2026
+     · Contact: caojian258@icloud.com / WeChat jiancao258
+     · Last updated 2026-09-12
+  </footer>
+</div>
+
+<script>
+  document.getElementById("wxbtn").addEventListener("click", function () {
+    var p = document.getElementById("wxpop");
+    p.hidden = !p.hidden;
+  });
+  if ("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll(".reveal").forEach(function (el) { io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function (el) { el.classList.add("in"); });
+  }
+</script>
+</body>
+</html>

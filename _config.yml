@@ -15,8 +15,17 @@ url: "https://www.cyclone-xil.com"
 plugins:
   - jekyll-sitemap
 
+collections:
+  en_posts:
+    output: true
+    permalink: /en/blog/:name/
+
 defaults:
   - scope:
       type: posts
     values:
       permalink: /blog/:title/
+  - scope:
+      type: en_posts
+    values:
+      layout: post-en
