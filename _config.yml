@@ -10,6 +10,11 @@ exclude:
   - 博客草稿_06_XiL阶梯对照.md
   - 博客草稿_验证方法学的跨行业同构.md
 
+url: "https://www.cyclone-xil.com"
+
+plugins:
+  - jekyll-sitemap
+
 defaults:
   - scope:
       type: posts
